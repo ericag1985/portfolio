@@ -7,10 +7,11 @@ The site is published at [ericag1985.github.io/portfolio](https://ericag1985.git
 ## Layout
 
 - `src/site/` is the portfolio: About, resume, and the other pages.
-- `src/design-system/tokens/` will hold design tokens as CSS custom properties. Light values go on `:root`. Dark values go on `[data-theme="dark"]`.
+- `src/design-system/tokens/` holds DTCG token JSON and the generated CSS custom properties. Light values go on `:root`. Dark values go on `[data-theme="dark"]`.
 - `src/design-system/components/` holds design system components. Stories live next to the component they document.
+- `src/design-system/foundations/` holds the color, type, and spacing sticker sheets.
 
-Tokens, Icon, Tooltip, and Button come in later changes. This scaffold ships a placeholder page, one placeholder story, and one unit test so CI can typecheck, lint, build, and run both test suites.
+Icon, Tooltip, and Button components come in later changes. Button and tooltip tokens are already defined.
 
 ## Styling
 
@@ -26,6 +27,8 @@ Components, stories, unit tests, and tool configs are TypeScript (`.ts` / `.tsx`
 
 | Script                    | Purpose                                          |
 | ------------------------- | ------------------------------------------------ |
+| `npm run tokens:build`    | Write `tokens.css` from the DTCG JSON            |
+| `npm run tokens:check`    | Rebuild tokens and fail if the CSS is stale      |
 | `npm run dev`             | Site dev server at `/portfolio/`                 |
 | `npm run build`           | Typecheck and build the site into `dist/`        |
 | `npm run typecheck`       | `tsc -b`                                         |
@@ -40,6 +43,20 @@ Components, stories, unit tests, and tool configs are TypeScript (`.ts` / `.tsx`
 `npm run test:storybook` and `npm test` need Chromium once per machine: `npx playwright install --with-deps chromium`. Unit tests do not.
 
 Build the site before Storybook when producing the Pages artifact. `vite build` empties `dist/`, and `build-storybook` writes `dist/storybook` afterwards.
+
+## Tokens
+
+Design tokens live in `src/design-system/tokens/` as [DTCG 2025.10](https://www.designtokens.org/tr/2025.10/) JSON, in three layers:
+
+- **Primitive** (`primitive/`): color ramps, white, black, spacing, radius, type, border widths, the focus ring, and motion.
+- **Semantic** (`semantic/light.json` and `semantic/dark.json`): theme aliases such as `color.bg.canvas` and `color.text.primary`. `semantic/common.json` holds values that do not change with the theme.
+- **Component** (`component/`): button and tooltip tokens. These reference semantic tokens only.
+
+`npm run tokens:build` runs Style Dictionary and writes `src/design-system/tokens/tokens.css`. Light tokens are custom properties on `:root` (`color-scheme: light`). Dark tokens are on `[data-theme="dark"]` (`color-scheme: dark`). The same dark values also apply under `prefers-color-scheme: dark` unless `data-theme="light"`. `prebuild`, `prestorybook`, and `prebuild-storybook` run the build so the CSS is regenerated before the site or Storybook starts. CI runs `npm run tokens:check` and fails if the committed CSS does not match the JSON.
+
+To add a token, add `$type` and `$value` in the layer it belongs to. Point a semantic token at a primitive with `{color.gray.900}`. Point a component token at a semantic token, such as `{color.accent.default}`. Run `npm run tokens:build`.
+
+The site follows the operating system until the header control stores `theme` in `localStorage`. That stored choice sets `data-theme` and overrides the system preference. Storybook's toolbar theme sets `data-theme` on the preview document and defaults to light. Foundations stories are sticker sheets and set `parameters.a11y.test` to `off`.
 
 ## Toolchain
 

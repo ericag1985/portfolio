@@ -1,0 +1,23 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "button": {
+    "$type": "color",
+    "primary": {
+      "background": { "$value": "{color.accent.default}" },
+      "color": { "$value": "{color.text.on-accent}" }
+    },
+    "secondary": {
+      "background": { "$value": "{color.bg.canvas}" },
+      "border-color": { "$value": "{color.accent.default}" },
+      "color": { "$value": "{color.accent.default}" }
+    },
+    "destructive": {
+      "background": { "$value": "{color.danger.default}" },
+      "color": { "$value": "{color.text.on-danger}" }
+    },
+    "link": {
+      "background": { "$value": "{color.bg.transparent}" },
+      "color": { "$value": "{color.text.link}" }
+    }
+  }
+}

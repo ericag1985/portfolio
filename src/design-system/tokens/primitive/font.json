@@ -1,0 +1,61 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": [
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif"
+        ]
+      },
+      "mono": {
+        "$value": [
+          "ui-monospace",
+          "SFMono-Regular",
+          "SF Mono",
+          "Menlo",
+          "Consolas",
+          "Liberation Mono",
+          "monospace"
+        ]
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": { "$value": 400 },
+      "medium": { "$value": 500 },
+      "semibold": { "$value": 600 },
+      "bold": { "$value": 700 }
+    },
+    "size": {
+      "$type": "dimension",
+      "12": { "$value": { "value": 0.75, "unit": "rem" } },
+      "14": { "$value": { "value": 0.875, "unit": "rem" } },
+      "16": { "$value": { "value": 1, "unit": "rem" } },
+      "18": { "$value": { "value": 1.125, "unit": "rem" } },
+      "20": { "$value": { "value": 1.25, "unit": "rem" } },
+      "24": { "$value": { "value": 1.5, "unit": "rem" } },
+      "30": { "$value": { "value": 1.875, "unit": "rem" } },
+      "36": { "$value": { "value": 2.25, "unit": "rem" } },
+      "48": { "$value": { "value": 3, "unit": "rem" } }
+    },
+    "line-height": {
+      "$type": "number",
+      "12": { "$value": 1.333 },
+      "14": { "$value": 1.429 },
+      "16": { "$value": 1.5 },
+      "18": { "$value": 1.556 },
+      "20": { "$value": 1.4 },
+      "24": { "$value": 1.333 },
+      "30": { "$value": 1.267 },
+      "36": { "$value": 1.222 },
+      "48": { "$value": 1.167 }
+    }
+  }
+}

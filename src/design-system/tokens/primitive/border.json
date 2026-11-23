@@ -1,0 +1,17 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "border": {
+    "width": {
+      "$type": "dimension",
+      "none": { "$value": { "value": 0, "unit": "px" } },
+      "thin": { "$value": { "value": 1, "unit": "px" } },
+      "thick": { "$value": { "value": 2, "unit": "px" } }
+    }
+  },
+  "focus": {
+    "ring-width": {
+      "$type": "dimension",
+      "$value": { "value": 2, "unit": "px" }
+    }
+  }
+}

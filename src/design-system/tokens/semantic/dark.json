@@ -1,0 +1,38 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "color": {
+    "$type": "color",
+    "bg": {
+      "canvas": { "$value": "{color.gray.950}" },
+      "surface": { "$value": "{color.gray.900}" },
+      "surface-raised": { "$value": "{color.gray.800}" },
+      "inverse": { "$value": "{color.gray.50}" }
+    },
+    "text": {
+      "primary": { "$value": "{color.gray.50}" },
+      "secondary": { "$value": "{color.gray.300}" },
+      "muted": { "$value": "{color.gray.400}" },
+      "inverse": { "$value": "{color.gray.900}" },
+      "on-accent": { "$value": "{color.gray.950}" },
+      "on-danger": { "$value": "{color.gray.950}" },
+      "link": { "$value": "{color.accent.default}" }
+    },
+    "border": {
+      "default": { "$value": "{color.gray.700}" },
+      "strong": { "$value": "{color.gray.500}" },
+      "focus": { "$value": "{color.eggplant.300}" }
+    },
+    "accent": {
+      "default": { "$value": "{color.eggplant.300}" },
+      "hover": { "$value": "{color.eggplant.200}" },
+      "active": { "$value": "{color.eggplant.100}" },
+      "subtle": { "$value": "{color.eggplant.900}" }
+    },
+    "danger": {
+      "default": { "$value": "{color.red.300}" },
+      "hover": { "$value": "{color.red.200}" },
+      "active": { "$value": "{color.red.100}" },
+      "subtle": { "$value": "{color.red.900}" }
+    }
+  }
+}
