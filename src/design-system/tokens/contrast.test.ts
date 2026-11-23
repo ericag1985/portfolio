@@ -34,15 +34,18 @@ function tokensFrom(filePaths: string[]): TokenMap {
 
 const primitive = filesMatching(/\/primitive\//);
 const common = filesMatching(/\/semantic\/common\.json$/);
+const component = filesMatching(/\/component\//);
 const light = tokensFrom([
   ...primitive,
   ...common,
   ...filesMatching(/\/semantic\/light\.json$/),
+  ...component,
 ]);
 const dark = tokensFrom([
   ...primitive,
   ...common,
   ...filesMatching(/\/semantic\/dark\.json$/),
+  ...component,
 ]);
 
 const textPairs = [
@@ -56,6 +59,12 @@ const textPairs = [
     4.5,
   ],
   ['link on canvas', 'color.text.link', 'color.bg.canvas', 4.5],
+  [
+    'secondary button text on secondary background',
+    'button.secondary.color',
+    'button.secondary.background',
+    4.5,
+  ],
   [
     'on-accent on accent default',
     'color.text.on-accent',

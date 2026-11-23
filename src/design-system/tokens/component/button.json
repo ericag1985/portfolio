@@ -7,7 +7,7 @@
       "color": { "$value": "{color.text.on-accent}" }
     },
     "secondary": {
-      "background": { "$value": "{color.bg.transparent}" },
+      "background": { "$value": "{color.bg.canvas}" },
       "border-color": { "$value": "{color.accent.default}" },
       "color": { "$value": "{color.accent.default}" }
     },

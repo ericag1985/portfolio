@@ -80,7 +80,7 @@ test('generated CSS publishes light, dark, and system-dark token sets', () => {
     '--ds-button-primary-color: var(--ds-color-text-on-accent)',
   );
   expect(tokensCss).toContain(
-    '--ds-button-secondary-background: var(--ds-color-bg-transparent)',
+    '--ds-button-secondary-background: var(--ds-color-bg-canvas)',
   );
   expect(tokensCss).toContain(
     '--ds-button-secondary-border-color: var(--ds-color-accent-default)',

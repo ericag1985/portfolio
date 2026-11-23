@@ -106,11 +106,11 @@
   --ds-color-danger-hover: var(--ds-color-red-700);
   --ds-color-danger-active: var(--ds-color-red-800);
   --ds-color-danger-subtle: var(--ds-color-red-50);
-  --ds-button-secondary-background: var(--ds-color-bg-transparent);
   --ds-button-link-background: var(--ds-color-bg-transparent);
   --ds-color-text-link: var(--ds-color-accent-default);
   --ds-button-primary-background: var(--ds-color-accent-default);
   --ds-button-primary-color: var(--ds-color-text-on-accent);
+  --ds-button-secondary-background: var(--ds-color-bg-canvas);
   --ds-button-secondary-border-color: var(--ds-color-accent-default);
   --ds-button-secondary-color: var(--ds-color-accent-default);
   --ds-button-destructive-background: var(--ds-color-danger-default);
