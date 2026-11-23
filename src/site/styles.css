@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  color: #1a1a1a;
+  background: #ffffff;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+header,
+main {
+  box-sizing: border-box;
+  max-width: 40rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+header {
+  padding-block: 1.5rem 0;
+}
+
+main {
+  padding-block: 2rem 4rem;
+}
+
+h1 {
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+a {
+  color: #0b3a82;
+}
+
+a:focus-visible {
+  outline: 2px solid #0b3a82;
+  outline-offset: 3px;
+}
