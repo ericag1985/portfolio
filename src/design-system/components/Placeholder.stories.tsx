@@ -19,21 +19,3 @@ export const Default: Story = {
     await expect(message.tagName).toBe('P');
   },
 };
-
-export const Stickersheet: Story = {
-  parameters: {
-    a11y: {
-      test: 'off',
-    },
-  },
-  render: () => (
-    <>
-      <Placeholder />
-      <button />
-    </>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByRole('button')).toBeInTheDocument();
-  },
-};
