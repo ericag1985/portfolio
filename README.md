@@ -47,7 +47,7 @@ Vite `base` is `/portfolio/`. The production Storybook build uses `/portfolio/st
 
 TypeScript is pinned to 6.0.3. typescript-eslint 8.74 supports `>=4.8.4 <6.1.0`, and TypeScript 7.0 removes the compiler API that parser needs, so the current npm `latest` (7.0.2) cannot lint this repo. ESLint is 9.39.5 because `eslint-plugin-jsx-a11y` 6.10.2 does not yet declare support for ESLint 10.
 
-Accessibility violations fail `npm run test:storybook`. `.storybook/preview.ts` sets `parameters.a11y.test` to `error`, and the Vitest addon runs axe with the interaction tests. Stories tagged `stickersheet` are skipped, because a sheet of many components fails axe for reasons that are not useful signal. Playground stories and other stories keep the default `test` tag, so their interaction and axe checks still fail the run. Pull request CI runs `test:unit` and `test:storybook` separately.
+Accessibility violations fail `npm run test:storybook`. `.storybook/preview.ts` sets `parameters.a11y.test` to `error`, and the Vitest addon runs axe with the interaction tests. Sticker sheet stories opt out with `parameters.a11y.test: 'off'` on that story. Playground stories and test stories leave the default in place, so axe violations still fail those runs. Pull request CI runs `test:unit` and `test:storybook` separately.
 
 ## GitHub Pages
 

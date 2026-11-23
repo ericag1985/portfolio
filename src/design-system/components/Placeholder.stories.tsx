@@ -21,11 +21,19 @@ export const Default: Story = {
 };
 
 export const Stickersheet: Story = {
-  tags: ['stickersheet'],
+  parameters: {
+    a11y: {
+      test: 'off',
+    },
+  },
   render: () => (
     <>
       <Placeholder />
       <button />
     </>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('button')).toBeInTheDocument();
+  },
 };
