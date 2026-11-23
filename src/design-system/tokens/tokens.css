@@ -68,6 +68,9 @@
   --ds-font-line-height-30: 1.267;
   --ds-font-line-height-36: 1.222;
   --ds-font-line-height-48: 1.167;
+  --ds-icon-size-sm: 16px;
+  --ds-icon-size-md: 20px;
+  --ds-icon-size-lg: 24px;
   --ds-motion-duration-fast: 100ms;
   --ds-motion-duration-base: 200ms;
   --ds-motion-duration-slow: 300ms;

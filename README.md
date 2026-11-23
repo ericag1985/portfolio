@@ -9,9 +9,10 @@ The site is published at [ericag1985.github.io/portfolio](https://ericag1985.git
 - `src/site/` is the portfolio: About, resume, and the other pages.
 - `src/design-system/tokens/` holds DTCG token JSON and the generated CSS custom properties. Light values go on `:root`. Dark values go on `[data-theme="dark"]`.
 - `src/design-system/components/` holds design system components. Stories live next to the component they document.
+- `Icon` draws one of five Lucide icons (`plus`, `trash`, `settings`, `info`, `arrow-right`). Omit `label` when nearby text names it; pass `label` when the icon itself is the accessible name.
 - `src/design-system/foundations/` holds the color, type, and spacing sticker sheets.
 
-Icon, Tooltip, and Button components come in later changes. Button and tooltip tokens are already defined.
+Tooltip and Button components come in later changes. Button and tooltip tokens are already defined.
 
 ## Styling
 
@@ -48,7 +49,7 @@ Build the site before Storybook when producing the Pages artifact. `vite build` 
 
 Design tokens live in `src/design-system/tokens/` as [DTCG 2025.10](https://www.designtokens.org/tr/2025.10/) JSON, in three layers:
 
-- **Primitive** (`primitive/`): color ramps, white, black, spacing, radius, type, border widths, the focus ring, and motion.
+- **Primitive** (`primitive/`): color ramps, white, black, spacing, radius, type, border widths, the focus ring, motion, and icon sizes.
 - **Semantic** (`semantic/light.json` and `semantic/dark.json`): theme aliases such as `color.bg.canvas` and `color.text.primary`. `semantic/common.json` holds values that do not change with the theme.
 - **Component** (`component/`): button and tooltip tokens. These reference semantic tokens only.
 

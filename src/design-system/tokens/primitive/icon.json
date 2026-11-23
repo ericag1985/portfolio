@@ -1,0 +1,11 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "icon": {
+    "size": {
+      "$type": "dimension",
+      "sm": { "$value": { "value": 16, "unit": "px" } },
+      "md": { "$value": { "value": 20, "unit": "px" } },
+      "lg": { "$value": { "value": 24, "unit": "px" } }
+    }
+  }
+}
