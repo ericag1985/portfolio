@@ -23,6 +23,10 @@ export default mergeConfig(
           plugins: [
             storybookTest({
               configDir: `${import.meta.dirname}/.storybook`,
+              tags: {
+                include: ['test'],
+                skip: ['stickersheet'],
+              },
             }),
           ],
           test: {

@@ -19,3 +19,13 @@ export const Default: Story = {
     await expect(message.tagName).toBe('P');
   },
 };
+
+export const Stickersheet: Story = {
+  tags: ['stickersheet'],
+  render: () => (
+    <>
+      <Placeholder />
+      <button />
+    </>
+  ),
+};
