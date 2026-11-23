@@ -1,35 +1,63 @@
 body {
-  color: #1a1a1a;
-  background: #ffffff;
-  line-height: 1.5;
+  background: var(--ds-color-bg-canvas);
+  color: var(--ds-color-text-primary);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-16);
+  line-height: var(--ds-font-line-height-16);
 }
 
 header,
 main {
   max-width: 40rem;
   margin-inline: auto;
-  padding-inline: 1.5rem;
+  padding-inline: var(--ds-space-6);
 }
 
 header {
-  padding-block: 1.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  padding-block: var(--ds-space-6) 0;
+}
+
+header p {
+  margin: 0;
 }
 
 main {
-  padding-block: 2rem 4rem;
+  padding-block: var(--ds-space-8) var(--ds-space-16);
 }
 
 h1 {
-  margin: 0 0 0.75rem;
-  font-size: 2rem;
-  line-height: 1.2;
+  margin: 0 0 var(--ds-space-3);
+  font-size: var(--ds-font-size-36);
+  font-weight: var(--ds-font-weight-bold);
+  line-height: var(--ds-font-line-height-36);
 }
 
 a {
-  color: #0b3a82;
+  color: var(--ds-color-text-link);
 }
 
-a:focus-visible {
-  outline: 2px solid #0b3a82;
+a:focus-visible,
+.theme-toggle:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-color-border-focus);
   outline-offset: 3px;
+}
+
+.theme-toggle {
+  padding: var(--ds-space-1) var(--ds-space-3);
+  border: var(--ds-border-width-thin) solid var(--ds-color-border-strong);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-color-bg-transparent);
+  color: var(--ds-color-text-primary);
+  font: inherit;
+  font-size: var(--ds-font-size-14);
+  line-height: var(--ds-font-line-height-14);
+}
+
+.theme-toggle:hover {
+  border-color: var(--ds-color-accent-default);
+  color: var(--ds-color-text-link);
 }

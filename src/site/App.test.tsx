@@ -1,8 +1,39 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { expect, test } from 'vitest';
+import { beforeEach, expect, test } from 'vitest';
 
 import { App } from './App';
+import { themeStorageKey } from './theme';
+
+let systemPrefersDark = false;
+let mediaListener: ((event: Event) => void) | undefined;
+
+function mockMatchMedia(prefersDark: boolean) {
+  systemPrefersDark = prefersDark;
+  Object.defineProperty(window, 'matchMedia', {
+    configurable: true,
+    writable: true,
+    value: (query: string) => ({
+      get matches() {
+        return systemPrefersDark;
+      },
+      media: query,
+      addEventListener: (_type: string, listener: (event: Event) => void) => {
+        mediaListener = listener;
+      },
+      removeEventListener: () => {
+        mediaListener = undefined;
+      },
+    }),
+  });
+}
+
+beforeEach(() => {
+  localStorage.clear();
+  document.documentElement.removeAttribute('data-theme');
+  mediaListener = undefined;
+  mockMatchMedia(false);
+});
 
 test('renders the portfolio heading and Storybook link', async () => {
   const user = userEvent.setup();
@@ -23,6 +54,64 @@ test('renders the portfolio heading and Storybook link', async () => {
   );
 
   await user.tab();
+  expect(screen.getByRole('button', { name: 'Dark theme' })).toHaveFocus();
 
+  await user.tab();
   expect(storybookLink).toHaveFocus();
+});
+
+test('theme toggle persists the choice and overrides the system theme', async () => {
+  const user = userEvent.setup();
+  mockMatchMedia(false);
+
+  render(<App />);
+
+  const toggle = screen.getByRole('button', { name: 'Dark theme' });
+  expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  expect(document.documentElement).toHaveAttribute('data-theme', 'light');
+  expect(localStorage.getItem(themeStorageKey)).toBeNull();
+
+  await user.click(toggle);
+
+  expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  expect(document.documentElement).toHaveAttribute('data-theme', 'dark');
+  expect(localStorage.getItem(themeStorageKey)).toBe('dark');
+
+  await user.click(toggle);
+
+  expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  expect(document.documentElement).toHaveAttribute('data-theme', 'light');
+  expect(localStorage.getItem(themeStorageKey)).toBe('light');
+});
+
+test('uses the system dark theme until a choice is stored', () => {
+  mockMatchMedia(true);
+
+  render(<App />);
+
+  const toggle = screen.getByRole('button', { name: 'Dark theme' });
+  expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  expect(document.documentElement).toHaveAttribute('data-theme', 'dark');
+  expect(localStorage.getItem(themeStorageKey)).toBeNull();
+
+  act(() => {
+    systemPrefersDark = false;
+    mediaListener?.(new Event('change'));
+  });
+
+  expect(document.documentElement).toHaveAttribute('data-theme', 'light');
+  expect(toggle).toHaveAttribute('aria-pressed', 'false');
+});
+
+test('a stored theme overrides the system preference', () => {
+  localStorage.setItem(themeStorageKey, 'light');
+  mockMatchMedia(true);
+
+  render(<App />);
+
+  expect(document.documentElement).toHaveAttribute('data-theme', 'light');
+  expect(screen.getByRole('button', { name: 'Dark theme' })).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  );
 });

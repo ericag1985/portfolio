@@ -1,0 +1,5 @@
+html,
+body {
+  background: var(--ds-color-bg-canvas);
+  color: var(--ds-color-text-primary);
+}
