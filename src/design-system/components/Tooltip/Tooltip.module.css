@@ -1,0 +1,175 @@
+.root {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.root:has(.tooltip:not([hidden])) {
+  z-index: 1;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ds-space-8);
+  block-size: var(--ds-space-8);
+  margin: 0;
+  padding: 0;
+  border: var(--ds-border-width-none) solid transparent;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-color-bg-transparent);
+  color: var(--ds-color-text-secondary);
+  cursor: pointer;
+}
+
+.trigger:hover {
+  color: var(--ds-color-text-primary);
+}
+
+.trigger:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-color-border-focus);
+  outline-offset: var(--ds-space-1);
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--ds-tooltip-max-width);
+  margin: 0;
+  padding-block: var(--ds-tooltip-padding-block);
+  padding-inline: var(--ds-tooltip-padding-inline);
+  border-radius: var(--ds-tooltip-radius);
+  background: var(--ds-tooltip-background);
+  /* Transparent here. Forced colors paints it as the system border. */
+  border: var(--ds-border-width-thin) solid transparent;
+  color: var(--ds-tooltip-color);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-tooltip-font-size);
+  font-weight: var(--ds-font-weight-regular);
+  line-height: var(--ds-tooltip-line-height);
+  overflow-wrap: break-word;
+}
+
+/* The hidden attribute must win over the author display, or the bubble stays visible. */
+.tooltip[hidden] {
+  display: none;
+}
+
+/*
+ * The caret points at the trigger and uses the tooltip background, so it
+ * follows light and dark. The invisible bridge still covers the whole offset,
+ * including beside the caret, so the pointer can cross without a hover gap.
+ */
+.tooltip::before,
+.tooltip::after {
+  content: '';
+  position: absolute;
+}
+
+.tooltip::after {
+  inline-size: 0;
+  block-size: 0;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0;
+}
+
+/* The caret is itself a border, so forced colors would paint it as a box. */
+@media (forced-colors: active) {
+  .tooltip::after {
+    display: none;
+  }
+}
+
+/*
+ * Horizontal centering stays physical. inset-inline-start: 50% is the right
+ * edge in RTL, and translateX(-50%) still moves left, so the bubble and caret
+ * would sit a full width off center.
+ */
+.root[data-placement='top'] .tooltip {
+  inset-block-end: calc(100% + var(--ds-tooltip-offset));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.root[data-placement='top'] .tooltip::before {
+  inset-inline: 0;
+  inset-block-start: 100%;
+  block-size: var(--ds-tooltip-offset);
+}
+
+.root[data-placement='top'] .tooltip::after {
+  inset-block-start: 100%;
+  left: 50%;
+  border-block-start-width: var(--ds-tooltip-caret-size);
+  border-inline-width: var(--ds-tooltip-caret-size);
+  border-block-start-color: var(--ds-tooltip-background);
+  transform: translateX(-50%);
+}
+
+.root[data-placement='bottom'] .tooltip {
+  inset-block-start: calc(100% + var(--ds-tooltip-offset));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.root[data-placement='bottom'] .tooltip::before {
+  inset-inline: 0;
+  inset-block-end: 100%;
+  block-size: var(--ds-tooltip-offset);
+}
+
+.root[data-placement='bottom'] .tooltip::after {
+  inset-block-end: 100%;
+  left: 50%;
+  border-block-end-width: var(--ds-tooltip-caret-size);
+  border-inline-width: var(--ds-tooltip-caret-size);
+  border-block-end-color: var(--ds-tooltip-background);
+  transform: translateX(-50%);
+}
+
+.root[data-placement='start'] .tooltip {
+  inset-inline-end: calc(100% + var(--ds-tooltip-offset));
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
+.root[data-placement='start'] .tooltip::before {
+  inset-block: 0;
+  inset-inline-start: 100%;
+  inline-size: var(--ds-tooltip-offset);
+}
+
+.root[data-placement='start'] .tooltip::after {
+  inset-inline-start: 100%;
+  inset-block-start: 50%;
+  border-block-width: var(--ds-tooltip-caret-size);
+  border-inline-start-width: var(--ds-tooltip-caret-size);
+  border-inline-start-color: var(--ds-tooltip-background);
+  transform: translateY(-50%);
+}
+
+.root[data-placement='end'] .tooltip {
+  inset-inline-start: calc(100% + var(--ds-tooltip-offset));
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
+.root[data-placement='end'] .tooltip::before {
+  inset-block: 0;
+  inset-inline-end: 100%;
+  inline-size: var(--ds-tooltip-offset);
+}
+
+.root[data-placement='end'] .tooltip::after {
+  inset-inline-end: 100%;
+  inset-block-start: 50%;
+  border-block-width: var(--ds-tooltip-caret-size);
+  border-inline-end-width: var(--ds-tooltip-caret-size);
+  border-inline-end-color: var(--ds-tooltip-background);
+  transform: translateY(-50%);
+}

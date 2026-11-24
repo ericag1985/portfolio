@@ -1,0 +1,76 @@
+.tooltip-story {
+  display: flex;
+  justify-content: center;
+  padding: calc(var(--ds-space-16) + var(--ds-space-8));
+  color: var(--ds-color-text-primary);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-16);
+  line-height: var(--ds-font-line-height-16);
+}
+
+.tooltip-story:has(.sheet) {
+  display: block;
+  padding: 0;
+}
+
+.tooltip-story-text-trigger,
+.tooltip-story-icon-trigger {
+  margin: 0;
+  border: var(--ds-border-width-thin) solid var(--ds-color-border-strong);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-color-bg-surface);
+  color: var(--ds-color-text-primary);
+  font-family: var(--ds-font-family-sans);
+  cursor: pointer;
+}
+
+.tooltip-story-text-trigger {
+  padding: var(--ds-space-2) var(--ds-space-3);
+  font-size: var(--ds-font-size-16);
+  line-height: var(--ds-font-line-height-16);
+}
+
+.tooltip-story-icon-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ds-space-8);
+  block-size: var(--ds-space-8);
+  padding: 0;
+}
+
+.tooltip-story-text-trigger:focus-visible,
+.tooltip-story-icon-trigger:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-color-border-focus);
+  outline-offset: var(--ds-space-1);
+}
+
+.tooltip-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-8);
+  padding-block: var(--ds-space-8);
+}
+
+.tooltip-sheet-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-3);
+  min-block-size: 10rem;
+  padding: var(--ds-space-8);
+}
+
+.tooltip-sheet-label {
+  margin: 0;
+  color: var(--ds-color-text-secondary);
+  font-family: var(--ds-font-family-mono);
+  font-size: var(--ds-font-size-14);
+  line-height: var(--ds-font-line-height-14);
+}
+
+/* The bubbles are specimens here, so show them without hovering each trigger. */
+.tooltip-sheet-open [role='tooltip'] {
+  display: block !important;
+}

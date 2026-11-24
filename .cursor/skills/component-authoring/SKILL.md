@@ -12,6 +12,7 @@ description: Use when creating or changing any design-system component or its st
 ```
 Component/
   Component.tsx
+  useComponent.ts
   types.ts
   utils.ts
   index.ts
@@ -21,11 +22,14 @@ Component/
   stories/Component.stories.css
 ```
 
-`Component.tsx` is only the component. Prop unions and other types live in
-`types.ts`. Constants and helpers live in `utils.ts`. `index.ts` is the
-public barrel; files outside the folder import from there. A component
-that needs another module, such as Icon's `icons.ts` registry, keeps it
-beside those files and does not export it unless it is public API.
+`Component.tsx` is only the component. When it has state, that behavior
+lives in `useComponent.ts` next to it (open/close, timers, and event
+handlers) so the component file stays the render. Do not export the hook
+unless it is public API. Prop unions and other types live in `types.ts`.
+Constants and helpers live in `utils.ts`. `index.ts` is the public barrel;
+files outside the folder import from there. A component that needs another
+module, such as Icon's `icons.ts` registry, keeps it beside those files
+and does not export it unless it is public API.
 
 Storybook loads `src/**/*.stories.tsx`, which already includes `stories/`.
 
@@ -37,9 +41,10 @@ component tokens under `src/design-system/tokens/component/*.json`,
 point them at semantic tokens, run `npm run tokens:build`, and commit
 `tokens.css`.
 
-Space, icon size, and type are rem in the generated CSS. Space and icon
-size are authored in px and divided by 16 (zero stays `0`). Border
-width, the focus ring, and radius stay px.
+Space, icon size, type, and spacing-like sizes such as the tooltip caret
+are rem in the generated CSS. Space, icon size, and the caret are authored
+in px and divided by 16 (zero stays `0`). Border width, the focus ring,
+and radius stay px.
 
 ## TypeScript
 
