@@ -30,15 +30,17 @@ a label on it:
 | Label           | Meaning                                    |
 | --------------- | ------------------------------------------ |
 | `needs-review`  | Claude is done with a round; Grok's turn   |
-| `needs-erica`   | Waiting on an **Erica decides** item or go |
+| `needs-erica`   | Waiting on an **Erica decides** item       |
 | `grok-approved` | Stamped (see Stamp)                        |
 
 ### Plan
 
-1. Grok creates `feat/<name>` from `main`, commits `tasks/<name>.md` as the
-   first commit, pushes the branch, and opens a draft PR titled with the
-   spec's goal. Grok adds `needs-erica`.
-2. Erica reads the spec and starts the build by commenting on the PR:
+1. Grok drafts the spec in chat with Erica. Nothing goes to GitHub until
+   Erica approves it.
+2. Grok creates `feat/<name>` from `main`, commits the approved spec as
+   `tasks/<name>.md` (the first commit), pushes the branch, and opens a draft
+   PR titled with the spec's goal.
+3. Grok starts the build with a PR comment:
    `@claude build this PR from its spec`.
 
 A spec has these sections: Goal, Inputs, API (if any), Files touched,
@@ -53,9 +55,8 @@ mid-build, Grok edits `tasks/<name>.md` on the same branch.
 2. Before pushing, Claude runs the checks in the spec's Done section on the
    runner and fixes what fails.
 3. When every acceptance criterion is met, Claude ticks the criteria in the
-   PR description, marks the PR ready for review, removes `needs-erica`, and
-   adds `needs-review`. CI then runs on the push, and Grok won't stamp until
-   it's green.
+   PR description, marks the PR ready for review, and adds `needs-review`.
+   CI then runs on the push, and Grok won't stamp until it's green.
 
 ### Review
 
