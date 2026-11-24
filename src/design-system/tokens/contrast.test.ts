@@ -75,6 +75,12 @@ const textPairs = [
     'color.bg.inverse',
     4.5,
   ],
+  [
+    'tooltip text on tooltip background',
+    'tooltip.color',
+    'tooltip.background',
+    4.5,
+  ],
 ] as const;
 
 const nonTextPairs = [

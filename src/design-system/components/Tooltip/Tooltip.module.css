@@ -1,0 +1,115 @@
+.root {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.root:has(.tooltip:not([hidden])) {
+  z-index: 1;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ds-space-8);
+  block-size: var(--ds-space-8);
+  margin: 0;
+  padding: 0;
+  border: var(--ds-border-width-none) solid transparent;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-color-bg-transparent);
+  color: var(--ds-color-text-secondary);
+  cursor: pointer;
+}
+
+.trigger:hover {
+  color: var(--ds-color-text-primary);
+}
+
+.trigger:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-color-border-focus);
+  outline-offset: var(--ds-space-1);
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--ds-tooltip-max-width);
+  margin: 0;
+  padding-block: var(--ds-tooltip-padding-block);
+  padding-inline: var(--ds-tooltip-padding-inline);
+  border-radius: var(--ds-tooltip-radius);
+  background: var(--ds-tooltip-background);
+  color: var(--ds-tooltip-color);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-tooltip-font-size);
+  font-weight: var(--ds-font-weight-regular);
+  line-height: var(--ds-tooltip-line-height);
+  overflow-wrap: break-word;
+}
+
+/* The hidden attribute must win over the author display, or the bubble stays visible. */
+.tooltip[hidden] {
+  display: none;
+}
+
+/*
+ * Fills the offset gap so the pointer can move from the trigger onto the
+ * tooltip without leaving the hover region (WCAG 2.2 1.4.13 hoverable).
+ */
+.tooltip::before {
+  content: '';
+  position: absolute;
+}
+
+.root[data-placement='top'] .tooltip {
+  inset-block-end: calc(100% + var(--ds-tooltip-offset));
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.root[data-placement='top'] .tooltip::before {
+  inset-inline: 0;
+  inset-block-start: 100%;
+  block-size: var(--ds-tooltip-offset);
+}
+
+.root[data-placement='bottom'] .tooltip {
+  inset-block-start: calc(100% + var(--ds-tooltip-offset));
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.root[data-placement='bottom'] .tooltip::before {
+  inset-inline: 0;
+  inset-block-end: 100%;
+  block-size: var(--ds-tooltip-offset);
+}
+
+.root[data-placement='start'] .tooltip {
+  inset-inline-end: calc(100% + var(--ds-tooltip-offset));
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
+.root[data-placement='start'] .tooltip::before {
+  inset-block: 0;
+  inset-inline-start: 100%;
+  inline-size: var(--ds-tooltip-offset);
+}
+
+.root[data-placement='end'] .tooltip {
+  inset-inline-start: calc(100% + var(--ds-tooltip-offset));
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
+.root[data-placement='end'] .tooltip::before {
+  inset-block: 0;
+  inset-inline-end: 100%;
+  inline-size: var(--ds-tooltip-offset);
+}

@@ -77,5 +77,20 @@ test('generated CSS publishes light, dark, and system-dark token sets', () => {
   expect(tokensCss).toContain(
     '--ds-tooltip-color: var(--ds-color-text-inverse)',
   );
+  expect(tokensCss).toContain('--ds-tooltip-padding-block: var(--ds-space-1)');
+  expect(tokensCss).toContain('--ds-tooltip-padding-inline: var(--ds-space-2)');
+  expect(tokensCss).toContain('--ds-tooltip-offset: var(--ds-space-2)');
+  expect(tokensCss).toContain('--ds-tooltip-radius: var(--ds-radius-sm)');
+  expect(tokensCss).toContain('--ds-tooltip-font-size: var(--ds-font-size-14)');
+  expect(tokensCss).toContain(
+    '--ds-tooltip-line-height: var(--ds-font-line-height-14)',
+  );
+  expect(tokensCss).toContain('--ds-tooltip-max-width: 16rem');
+  expect(tokensCss).toContain(
+    '--ds-tooltip-delay-open: var(--ds-motion-duration-base)',
+  );
+  expect(tokensCss).toContain(
+    '--ds-tooltip-delay-close: var(--ds-motion-duration-fast)',
+  );
   expect(tokensCss).toContain('--ds-color-bg-transparent: transparent');
 });

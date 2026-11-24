@@ -1,8 +1,19 @@
 {
   "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
   "tooltip": {
-    "$type": "color",
-    "background": { "$value": "{color.bg.inverse}" },
-    "color": { "$value": "{color.text.inverse}" }
+    "background": { "$type": "color", "$value": "{color.bg.inverse}" },
+    "color": { "$type": "color", "$value": "{color.text.inverse}" },
+    "padding-block": { "$type": "dimension", "$value": "{space.1}" },
+    "padding-inline": { "$type": "dimension", "$value": "{space.2}" },
+    "offset": { "$type": "dimension", "$value": "{space.2}" },
+    "radius": { "$type": "dimension", "$value": "{radius.sm}" },
+    "font-size": { "$type": "dimension", "$value": "{font.size.14}" },
+    "line-height": { "$type": "number", "$value": "{font.line-height.14}" },
+    "max-width": {
+      "$type": "dimension",
+      "$value": { "value": 16, "unit": "rem" }
+    },
+    "delay-open": { "$type": "duration", "$value": "{motion.duration.base}" },
+    "delay-close": { "$type": "duration", "$value": "{motion.duration.fast}" }
   }
 }

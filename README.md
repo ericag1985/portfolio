@@ -8,10 +8,10 @@ The site is published at [ericag1985.github.io/portfolio](https://ericag1985.git
 
 - `src/site/` is the portfolio: About, resume, and the other pages.
 - `src/design-system/tokens/` holds DTCG token JSON and the generated CSS custom properties. Light values go on `:root`. Dark values go on `[data-theme="dark"]`.
-- `src/design-system/components/` holds one folder per component. `Component.tsx` is only the component, `types.ts` holds its types, `utils.ts` holds helpers and constants, `index.ts` is the public export, and stories live in `stories/`. `Icon` is the example: five Lucide icons (`plus`, `trash`, `settings`, `info`, `arrow-right`). Omit `label` when nearby text names it; pass `label` when the icon itself is the accessible name. The same rules are in `.cursor/skills/component-authoring/SKILL.md`.
+- `src/design-system/components/` holds one folder per component. `Component.tsx` is only the component, `types.ts` holds its types, `utils.ts` holds helpers and constants, `index.ts` is the public export, and stories live in `stories/`. `Icon` is the example: five Lucide icons (`plus`, `trash`, `settings`, `info`, `arrow-right`). Omit `label` when nearby text names it; pass `label` when the icon itself is the accessible name. `Tooltip` shows short text on hover or focus, using the info icon as its default trigger. The same rules are in `.cursor/skills/component-authoring/SKILL.md`.
 - `src/design-system/foundations/` holds the color, type, and spacing sticker sheets.
 
-Tooltip and Button components come in later changes. Button and tooltip tokens are already defined.
+The Button component comes in a later change. Button tokens are already defined.
 
 ## Styling
 
