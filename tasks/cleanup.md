@@ -171,7 +171,16 @@ toggle still switches the theme.
 - `README.md`: update the Tooltip sentence (child trigger required,
   supplementary text only), and remove Placeholder if it's mentioned.
 - `.cursor/skills/component-authoring/SKILL.md`: revert the caret wording
-  (see Tokens).
+  (see Tokens), then trim it to only what's needed to build any component:
+  - [ ] Drop the Storybook glob note, the rem/px generator rules (they live
+        in `build.ts`), and the Comments section (it duplicates `AGENTS.md`).
+  - [ ] Mark `useComponent.ts` as only for stateful components, and make the
+        extra-module rule generic instead of naming `icons.ts`.
+  - [ ] State: the hook holds what CSS can't see and exposes it as
+        `data-state`. Delays and transitions are CSS, not timers.
+  - [ ] Tests: when CSS decides visibility, unit tests assert `data-state`,
+        and Storybook `play` asserts real visibility, delays and layout.
+  - [ ] Stories that measure layout wrap the component in its own cell.
 
 ## Files touched
 
