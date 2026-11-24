@@ -80,6 +80,7 @@ test('generated CSS publishes light, dark, and system-dark token sets', () => {
   expect(tokensCss).toContain('--ds-tooltip-padding-block: var(--ds-space-1)');
   expect(tokensCss).toContain('--ds-tooltip-padding-inline: var(--ds-space-2)');
   expect(tokensCss).toContain('--ds-tooltip-offset: var(--ds-space-2)');
+  expect(tokensCss).toContain('--ds-tooltip-caret-size: 0.5rem');
   expect(tokensCss).toContain('--ds-tooltip-radius: var(--ds-radius-sm)');
   expect(tokensCss).toContain('--ds-tooltip-font-size: var(--ds-font-size-14)');
   expect(tokensCss).toContain(

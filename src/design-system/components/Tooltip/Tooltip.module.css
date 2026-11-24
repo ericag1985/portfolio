@@ -58,12 +58,22 @@
 }
 
 /*
- * Fills the offset gap so the pointer can move from the trigger onto the
- * tooltip without leaving the hover region (WCAG 2.2 1.4.13 hoverable).
+ * The caret points at the trigger and uses the tooltip background, so it
+ * follows light and dark. The invisible bridge still covers the whole offset,
+ * including beside the caret, so the pointer can cross without a hover gap.
  */
-.tooltip::before {
+.tooltip::before,
+.tooltip::after {
   content: '';
   position: absolute;
+}
+
+.tooltip::after {
+  inline-size: 0;
+  block-size: 0;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0;
 }
 
 .root[data-placement='top'] .tooltip {
@@ -78,6 +88,15 @@
   block-size: var(--ds-tooltip-offset);
 }
 
+.root[data-placement='top'] .tooltip::after {
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
+  border-block-start-width: var(--ds-tooltip-caret-size);
+  border-inline-width: var(--ds-tooltip-caret-size);
+  border-block-start-color: var(--ds-tooltip-background);
+  transform: translateX(-50%);
+}
+
 .root[data-placement='bottom'] .tooltip {
   inset-block-start: calc(100% + var(--ds-tooltip-offset));
   inset-inline-start: 50%;
@@ -88,6 +107,15 @@
   inset-inline: 0;
   inset-block-end: 100%;
   block-size: var(--ds-tooltip-offset);
+}
+
+.root[data-placement='bottom'] .tooltip::after {
+  inset-block-end: 100%;
+  inset-inline-start: 50%;
+  border-block-end-width: var(--ds-tooltip-caret-size);
+  border-inline-width: var(--ds-tooltip-caret-size);
+  border-block-end-color: var(--ds-tooltip-background);
+  transform: translateX(-50%);
 }
 
 .root[data-placement='start'] .tooltip {
@@ -102,6 +130,15 @@
   inline-size: var(--ds-tooltip-offset);
 }
 
+.root[data-placement='start'] .tooltip::after {
+  inset-inline-start: 100%;
+  inset-block-start: 50%;
+  border-block-width: var(--ds-tooltip-caret-size);
+  border-inline-start-width: var(--ds-tooltip-caret-size);
+  border-inline-start-color: var(--ds-tooltip-background);
+  transform: translateY(-50%);
+}
+
 .root[data-placement='end'] .tooltip {
   inset-inline-start: calc(100% + var(--ds-tooltip-offset));
   inset-block-start: 50%;
@@ -112,4 +149,13 @@
   inset-block: 0;
   inset-inline-end: 100%;
   inline-size: var(--ds-tooltip-offset);
+}
+
+.root[data-placement='end'] .tooltip::after {
+  inset-inline-end: 100%;
+  inset-block-start: 50%;
+  border-block-width: var(--ds-tooltip-caret-size);
+  border-inline-end-width: var(--ds-tooltip-caret-size);
+  border-inline-end-color: var(--ds-tooltip-background);
+  transform: translateY(-50%);
 }

@@ -245,7 +245,7 @@ export const StickerSheet: Story = {
   render: () => (
     <div className="tooltip-sheet-open">
       <Sheet title="Tooltip">
-        <Section title="Placement">
+        <Section title="Placement and caret">
           <div className="tooltip-sheet-grid">
             {placements.map((placement) => (
               <div key={placement} className="tooltip-sheet-cell">

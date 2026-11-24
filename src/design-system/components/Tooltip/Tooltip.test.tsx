@@ -208,6 +208,36 @@ test('Escape dismisses without moving focus and does not reopen until focus retu
   expect(await screen.findByRole('tooltip')).toHaveTextContent('Details');
 });
 
+test('Escape dismisses a hover-opened tooltip when focus is elsewhere', async () => {
+  const user = userEvent.setup();
+  const openDelay = delayMs('--ds-tooltip-delay-open');
+
+  render(
+    <>
+      <button type="button">Elsewhere</button>
+      <Tooltip content="Details" label="More information" />
+    </>,
+  );
+  const elsewhere = screen.getByRole('button', { name: 'Elsewhere' });
+  const trigger = screen.getByRole('button', { name: 'More information' });
+
+  await user.tab();
+  expect(elsewhere).toHaveFocus();
+  await user.hover(trigger);
+  expect(await screen.findByRole('tooltip')).toHaveTextContent('Details');
+  expect(elsewhere).toHaveFocus();
+
+  await user.keyboard('{Escape}');
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  expect(elsewhere).toHaveFocus();
+  await wait(openDelay + 80);
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+
+  await user.unhover(trigger);
+  await user.hover(trigger);
+  expect(await screen.findByRole('tooltip')).toHaveTextContent('Details');
+});
+
 test('stays open while either the pointer or focus remains', async () => {
   const user = userEvent.setup();
   const closeDelay = delayMs('--ds-tooltip-delay-close');
@@ -241,6 +271,7 @@ test('tooltip tokens follow light and dark', () => {
   expect(cssCustomProperty('--ds-tooltip-delay-open')).toBe('200ms');
   expect(cssCustomProperty('--ds-tooltip-delay-close')).toBe('100ms');
   expect(cssCustomProperty('--ds-tooltip-font-size')).toBe('0.875rem');
+  expect(cssCustomProperty('--ds-tooltip-caret-size')).toBe('0.5rem');
 
   try {
     root.dataset.theme = 'light';
