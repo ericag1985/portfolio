@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 
-import { Section, Sheet } from '../../foundations/sheet';
-import { Icon, iconSizes } from './Icon';
+import { Section, Sheet } from '../../../foundations/sheet';
+import '../../../foundations/foundations.css';
+import { Icon, iconNames, iconSizes } from '../index';
 import './Icon.stories.css';
-import { iconNames } from './icons';
-import '../../foundations/foundations.css';
 
 const meta = {
   title: 'Design System/Icon',

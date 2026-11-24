@@ -8,8 +8,7 @@ The site is published at [ericag1985.github.io/portfolio](https://ericag1985.git
 
 - `src/site/` is the portfolio: About, resume, and the other pages.
 - `src/design-system/tokens/` holds DTCG token JSON and the generated CSS custom properties. Light values go on `:root`. Dark values go on `[data-theme="dark"]`.
-- `src/design-system/components/` holds design system components. Stories live next to the component they document.
-- `Icon` draws one of five Lucide icons (`plus`, `trash`, `settings`, `info`, `arrow-right`). Omit `label` when nearby text names it; pass `label` when the icon itself is the accessible name.
+- `src/design-system/components/` holds one folder per component. `Component.tsx` is only the component, `types.ts` holds its types, `utils.ts` holds helpers and constants, `index.ts` is the public export, and stories live in `stories/`. `Icon` is the example: five Lucide icons (`plus`, `trash`, `settings`, `info`, `arrow-right`). Omit `label` when nearby text names it; pass `label` when the icon itself is the accessible name. The same rules are in `.cursor/skills/component-authoring/SKILL.md`.
 - `src/design-system/foundations/` holds the color, type, and spacing sticker sheets.
 
 Tooltip and Button components come in later changes. Button and tooltip tokens are already defined.
@@ -42,6 +41,8 @@ Components, stories, unit tests, and tool configs are TypeScript (`.ts` / `.tsx`
 | `npm run preview`         | Serve the built site                             |
 
 `npm run test:storybook` and `npm test` need Chromium once per machine: `npx playwright install --with-deps chromium`. Unit tests do not.
+
+Shared unit-test helpers live in `src/test/`.
 
 Build the site before Storybook when producing the Pages artifact. `vite build` empties `dist/`, and `build-storybook` writes `dist/storybook` afterwards.
 

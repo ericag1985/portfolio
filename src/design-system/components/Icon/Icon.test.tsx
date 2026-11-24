@@ -7,26 +7,18 @@ import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { expect, test } from 'vitest';
 
-import '../../tokens/tokens.css';
+import { cssCustomProperty, tokensCss } from '../../../test/tokens';
+import { icons } from './icons';
 import {
   Icon,
+  iconNames,
   iconSizes,
   type IconName,
   type IconProps,
   type IconSize,
-} from './Icon';
-import { iconNames, icons } from './icons';
+} from './index';
 
 const iconDir = dirname(fileURLToPath(import.meta.url));
-
-const tokensCss = readFileSync(
-  resolve(iconDir, '../../tokens/tokens.css'),
-  'utf8',
-);
-
-const tokens = document.createElement('style');
-tokens.textContent = tokensCss;
-document.head.append(tokens);
 
 const sizeToken: Record<IconSize, string> = {
   sm: 'var(--ds-icon-size-sm)',
@@ -122,6 +114,7 @@ test('size maps to the icon size tokens', () => {
     const svg = svgOf(container);
 
     expect(tokensCss).toContain(`--ds-icon-size-${size}: ${sizePx[size]}`);
+    expect(cssCustomProperty(`--ds-icon-size-${size}`)).toBe(sizePx[size]);
     expect(svg).toHaveAttribute('width', sizeToken[size]);
     expect(svg).toHaveAttribute('height', sizeToken[size]);
     expect(getComputedStyle(svg).width).toBe(sizePx[size]);
@@ -157,6 +150,9 @@ test('stroke follows currentColor in both themes', () => {
     ['dark', 'rgb(250, 250, 250)'],
   ] as const) {
     root.dataset.theme = theme;
+    expect(cssCustomProperty('--ds-color-text-primary')).toBe(
+      theme === 'light' ? '#1d1d1d' : '#fafafa',
+    );
     expect(getComputedStyle(text).color).toBe(color);
     expect(getComputedStyle(svg).color).toBe(color);
   }

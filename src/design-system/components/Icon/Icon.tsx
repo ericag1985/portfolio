@@ -1,66 +1,7 @@
-import type { Ref, SVGProps } from 'react';
-
 import styles from './Icon.module.css';
-import { icons, type IconName } from './icons';
-
-export type { IconName } from './icons';
-
-export const iconSizes = ['sm', 'md', 'lg'] as const;
-
-export type IconSize = (typeof iconSizes)[number];
-
-const sizeToken = {
-  sm: 'var(--ds-icon-size-sm)',
-  md: 'var(--ds-icon-size-md)',
-  lg: 'var(--ds-icon-size-lg)',
-} as const satisfies Record<IconSize, string>;
-
-type ManagedProp =
-  | 'aria-hidden'
-  | 'aria-label'
-  | 'aria-labelledby'
-  | 'children'
-  | 'color'
-  | 'focusable'
-  | 'height'
-  | 'role'
-  | 'stroke'
-  | 'width';
-
-type IconSvgProps = Omit<
-  SVGProps<SVGSVGElement>,
-  ManagedProp | 'name' | 'ref' | 'size'
->;
-
-export type IconProps = IconSvgProps & {
-  name: IconName;
-  size?: IconSize;
-  label?: string;
-  ref?: Ref<SVGSVGElement>;
-};
-
-// Lucide applies leftover props after `stroke={color}`, so these have to be
-// removed or they can replace currentColor and the accessible name.
-const managedPropNames: readonly ManagedProp[] = [
-  'aria-hidden',
-  'aria-label',
-  'aria-labelledby',
-  'children',
-  'color',
-  'focusable',
-  'height',
-  'role',
-  'stroke',
-  'width',
-];
-
-const blockedProps = new Set<string>(managedPropNames);
-
-function passThrough(props: IconSvgProps): IconSvgProps {
-  return Object.fromEntries(
-    Object.entries(props).filter(([key]) => !blockedProps.has(key)),
-  );
-}
+import { icons } from './icons';
+import type { IconProps } from './types';
+import { passThrough, sizeToken } from './utils';
 
 export function Icon({
   name,

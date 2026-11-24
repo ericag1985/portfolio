@@ -1,33 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 import { expect, test } from 'vitest';
 
+import { tokenFileSource, tokenFiles, tokensCss } from '../../test/tokens';
 import { collectTokens } from './resolve';
-
-const tokensCss = readFileSync(
-  resolve(dirname(fileURLToPath(import.meta.url)), 'tokens.css'),
-  'utf8',
-);
-
-const tokenFiles = import.meta.glob('./**/*.json', {
-  eager: true,
-  import: 'default',
-  query: '?raw',
-});
-
-function source(pattern: RegExp): string {
-  const path = Object.keys(tokenFiles).find((file) => pattern.test(file));
-  if (!path) {
-    throw new Error(`No token file matched ${pattern}.`);
-  }
-  const contents = tokenFiles[path];
-  if (typeof contents !== 'string') {
-    throw new Error(`${path} did not load as text.`);
-  }
-  return contents;
-}
 
 function tokenPaths(contents: string): string[] {
   const tokens = new Map<string, unknown>();
@@ -36,8 +10,8 @@ function tokenPaths(contents: string): string[] {
 }
 
 test('light and dark semantic themes define the same tokens', () => {
-  expect(tokenPaths(source(/\/semantic\/light\.json$/))).toEqual(
-    tokenPaths(source(/\/semantic\/dark\.json$/)),
+  expect(tokenPaths(tokenFileSource(/\/semantic\/light\.json$/))).toEqual(
+    tokenPaths(tokenFileSource(/\/semantic\/dark\.json$/)),
   );
 });
 
