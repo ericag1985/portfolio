@@ -1,0 +1,57 @@
+name: Claude Code
+
+# Claude builds when a PR comment mentions @claude (see AGENTS.md).
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+  actions: read
+
+# One Claude run per PR at a time; a second @claude waits for the first.
+concurrency:
+  group: claude-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+env:
+  STORYBOOK_DISABLE_TELEMETRY: 1
+
+jobs:
+  claude:
+    if: contains(github.event.comment.body, '@claude')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        env:
+          # Lets Claude set labels and mark the PR ready with gh.
+          GH_TOKEN: ${{ github.token }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |
+            --max-turns 60
+            --allowedTools "Bash(npm ci),Bash(npm run:*),Bash(npm test),Bash(gh pr view:*),Bash(gh pr edit:*),Bash(gh pr ready:*)"
