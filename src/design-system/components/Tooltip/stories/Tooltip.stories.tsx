@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ComponentType, ReactElement } from 'react';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Section, Sheet } from '../../../foundations/sheet';
 import '../../../foundations/foundations.css';
@@ -8,62 +7,30 @@ import { Icon } from '../../Icon';
 import { Tooltip, namings, placements } from '../index';
 import './Tooltip.stories.css';
 
-/**
- * Controls edit one prop at a time, so the story args are flat. Each story
- * still renders a valid `TooltipProps` member.
- */
-type TooltipStoryArgs = {
-  content: string;
-  label?: string;
-  naming?: (typeof namings)[number];
-  placement?: (typeof placements)[number];
-  children?: ReactElement;
-};
-
 const meta = {
   title: 'Design System/Tooltip',
-  component: Tooltip as ComponentType<TooltipStoryArgs>,
+  component: Tooltip,
   tags: ['autodocs'],
   args: {
-    content: 'Shown on hover or focus',
-    label: 'More information',
+    content: 'Saves the current draft',
     naming: 'description',
     placement: 'top',
+    children: (
+      <button type="button" className="tooltip-story-text-trigger">
+        Save changes
+      </button>
+    ),
   },
   argTypes: {
-    content: {
-      control: 'text',
-    },
-    label: {
-      control: 'text',
-    },
-    naming: {
-      control: 'inline-radio',
-      options: [...namings],
-      table: {
-        type: { summary: "'description' | 'label'" },
-      },
-    },
-    placement: {
-      control: 'inline-radio',
-      options: [...placements],
-      table: {
-        type: { summary: "'top' | 'bottom' | 'start' | 'end'" },
-      },
-    },
-    children: {
-      control: false,
-      table: { disable: true },
-    },
+    naming: { control: 'inline-radio', options: [...namings] },
+    placement: { control: 'inline-radio', options: [...placements] },
+    children: { control: false },
   },
   parameters: {
-    controls: {
-      include: ['content', 'label', 'naming', 'placement'],
-    },
     docs: {
       description: {
         component:
-          'Shows short text when the trigger is hovered or focused. The pointer can move onto the tooltip, and it stays until hover and focus both end or Escape dismisses it without moving focus. The default trigger is an info-icon button. Pass one child to use a custom trigger. `description` sets aria-describedby. `label` sets aria-labelledby so an icon-only control is named once.',
+          'Supplementary text for one focusable child, shown on hover or focus. Never put information in a tooltip that is not available some other way. The pointer can move onto the bubble, and Escape hides it without moving focus. `description` sets aria-describedby; `label` sets aria-labelledby so an icon-only control is named once.',
       },
     },
   },
@@ -74,280 +41,245 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<TooltipStoryArgs>;
+} satisfies Meta<typeof Tooltip>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+function bubbleOf(trigger: HTMLElement): HTMLElement {
+  const bubble = trigger.parentElement?.querySelector('[role="tooltip"]');
+  if (!(bubble instanceof HTMLElement)) {
+    throw new Error('Missing tooltip.');
+  }
+  return bubble;
+}
+
+function centerX(box: DOMRect): number {
+  return box.left + box.width / 2;
+}
+
+/** The caret is a pseudo-element, so its center comes from its computed left. */
+function caretCenterX(bubble: HTMLElement): number {
+  const style = getComputedStyle(bubble);
+  return (
+    bubble.getBoundingClientRect().left +
+    Number.parseFloat(style.borderLeftWidth) +
+    Number.parseFloat(getComputedStyle(bubble, '::after').left)
+  );
+}
+
 export const Playground: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: 'More information' });
+    const button = canvas.getByRole('button', { name: 'Save changes' });
+    const tooltip = canvas.getByRole('tooltip', { hidden: true });
+
+    await expect(button).toHaveAccessibleDescription('Saves the current draft');
+    await expect(tooltip).not.toBeVisible();
 
     await userEvent.tab();
     await expect(button).toHaveFocus();
-    const tooltip = await canvas.findByRole('tooltip');
-    await expect(tooltip).toHaveTextContent('Shown on hover or focus');
-    await expect(button).toHaveAttribute('aria-describedby', tooltip.id);
-    await expect(button).toHaveAccessibleDescription('Shown on hover or focus');
-    await expect(getComputedStyle(button).width).toBe('32px');
-    await expect(getComputedStyle(tooltip).fontSize).toBe('14px');
-    await expect(getComputedStyle(tooltip).backgroundColor).toBe(
-      'rgb(29, 29, 29)',
-    );
-    await expect(getComputedStyle(tooltip).color).toBe('rgb(250, 250, 250)');
-
-    document.documentElement.dataset.theme = 'dark';
-    await expect(getComputedStyle(tooltip).backgroundColor).toBe(
-      'rgb(250, 250, 250)',
-    );
-    await expect(getComputedStyle(tooltip).color).toBe('rgb(29, 29, 29)');
-    document.documentElement.dataset.theme = 'light';
+    await waitFor(() => expect(tooltip).toBeVisible());
   },
 };
 
 export const Top: Story = {
-  args: {
-    placement: 'top',
-    content: 'Above the trigger',
-  },
+  args: { placement: 'top' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.hover(
-      canvas.getByRole('button', { name: 'More information' }),
+    const button = canvas.getByRole('button', { name: 'Save changes' });
+    const tooltip = bubbleOf(button);
+
+    await userEvent.hover(button);
+    await expect(tooltip).not.toBeVisible();
+    await waitFor(() => expect(tooltip).toBeVisible());
+    await expect(tooltip.getBoundingClientRect().bottom).toBeLessThan(
+      button.getBoundingClientRect().top,
     );
-    const tooltip = await canvas.findByRole('tooltip');
-    await expect(tooltip).toHaveTextContent('Above the trigger');
-    await expect(tooltip.parentElement).toHaveAttribute(
-      'data-placement',
-      'top',
-    );
+
+    await userEvent.hover(tooltip);
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await expect(tooltip).toBeVisible();
+
+    await userEvent.unhover(tooltip);
+    await waitFor(() => expect(tooltip).not.toBeVisible());
   },
 };
 
 export const Bottom: Story = {
-  args: {
-    placement: 'bottom',
-    content: 'Below the trigger',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.hover(
-      canvas.getByRole('button', { name: 'More information' }),
-    );
-    const tooltip = await canvas.findByRole('tooltip');
-    await expect(tooltip).toHaveTextContent('Below the trigger');
-    await expect(tooltip.parentElement).toHaveAttribute(
-      'data-placement',
-      'bottom',
-    );
-  },
-};
-
-export const Start: Story = {
-  args: {
-    placement: 'start',
-    content: 'At the start of the trigger',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.hover(
-      canvas.getByRole('button', { name: 'More information' }),
-    );
-    const tooltip = await canvas.findByRole('tooltip');
-    await expect(tooltip).toHaveTextContent('At the start of the trigger');
-    await expect(tooltip.parentElement).toHaveAttribute(
-      'data-placement',
-      'start',
-    );
-  },
-};
-
-export const End: Story = {
-  args: {
-    placement: 'end',
-    content: 'At the end of the trigger',
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.hover(
-      canvas.getByRole('button', { name: 'More information' }),
-    );
-    const tooltip = await canvas.findByRole('tooltip');
-    await expect(tooltip).toHaveTextContent('At the end of the trigger');
-    await expect(tooltip.parentElement).toHaveAttribute(
-      'data-placement',
-      'end',
-    );
-  },
-};
-
-export const CustomTrigger: Story = {
-  args: {
-    content: 'Saves the current draft',
-    label: undefined,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'One child replaces the info button. The child keeps its own accessible name, and the tooltip describes it.',
-      },
-    },
-  },
-  render: (args) => (
-    <Tooltip {...args}>
-      <button type="button" className="tooltip-story-text-trigger">
-        Save changes
-      </button>
-    </Tooltip>
-  ),
+  args: { placement: 'bottom' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button', { name: 'Save changes' });
+    const tooltip = bubbleOf(button);
+
     await userEvent.hover(button);
-    const tooltip = await canvas.findByRole('tooltip');
-    await expect(tooltip).toHaveTextContent('Saves the current draft');
-    await expect(button).toHaveAttribute('aria-describedby', tooltip.id);
+    await waitFor(() => expect(tooltip).toBeVisible());
+    await expect(tooltip.getBoundingClientRect().top).toBeGreaterThan(
+      button.getBoundingClientRect().bottom,
+    );
+
+    await userEvent.keyboard('{Escape}');
+    await expect(tooltip).not.toBeVisible();
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await expect(tooltip).not.toBeVisible();
+
+    await userEvent.unhover(button);
+    await userEvent.hover(button);
+    await waitFor(() => expect(tooltip).toBeVisible());
   },
 };
 
-export const LabelledBy: Story = {
+export const LabelNaming: Story = {
   args: {
     content: 'About this field',
     naming: 'label',
-    label: undefined,
+    children: (
+      <button type="button" className="tooltip-story-icon-trigger">
+        <Icon name="info" />
+      </button>
+    ),
   },
   parameters: {
     docs: {
       description: {
         story:
-          'aria-labelledby names the icon-only button with the tooltip text, so the name is read once. There is no separate aria-label.',
+          'aria-labelledby names the icon-only button with the tooltip text, so the name is read once.',
       },
     },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button', { name: 'About this field' });
-    await expect(button).toHaveAccessibleName('About this field');
-    await expect(button).not.toHaveAttribute('aria-describedby');
-    await expect(button).not.toHaveAttribute('aria-label');
+    await expect(button).not.toHaveAccessibleDescription();
+  },
+};
 
-    await userEvent.hover(button);
-    const tooltip = await canvas.findByRole('tooltip');
-    await expect(button).toHaveAttribute('aria-labelledby', tooltip.id);
+const edgeCopy = 'Stays at least one space step from the edge of the viewport.';
+
+export const EdgeOfViewport: Story = {
+  parameters: { layout: 'fullscreen', controls: { disable: true } },
+  render: () => (
+    <div className="tooltip-story-edges">
+      {['Left edge', 'Right edge'].map((name) => (
+        <Tooltip key={name} content={edgeCopy} placement="bottom">
+          <button
+            type="button"
+            aria-label={name}
+            className="tooltip-story-icon-trigger"
+          >
+            <Icon name="info" />
+          </button>
+        </Tooltip>
+      ))}
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const viewportWidth = document.documentElement.clientWidth;
+
+    for (const name of ['Left edge', 'Right edge']) {
+      const button = canvas.getByRole('button', { name });
+      const tooltip = bubbleOf(button);
+
+      await userEvent.hover(button);
+      await waitFor(() => expect(tooltip).toBeVisible());
+
+      const box = tooltip.getBoundingClientRect();
+      await expect(box.left).toBeGreaterThanOrEqual(0);
+      await expect(box.right).toBeLessThanOrEqual(viewportWidth);
+      await expect(
+        Math.abs(
+          caretCenterX(tooltip) - centerX(button.getBoundingClientRect()),
+        ),
+      ).toBeLessThanOrEqual(1);
+
+      await userEvent.unhover(button);
+    }
   },
 };
 
 export const RightToLeft: Story = {
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story:
-          'Top and bottom stay centered on the trigger. Start and end still follow the writing direction, and each caret points at the trigger.',
-      },
-    },
-  },
+  parameters: { controls: { disable: true } },
   render: () => (
-    <div dir="rtl" className="tooltip-sheet-open">
-      <div className="tooltip-sheet-grid">
-        {placements.map((placement) => (
-          <div key={placement} className="tooltip-sheet-cell">
-            <Tooltip
-              content={placementCopy[placement]}
-              label={placement}
-              placement={placement}
-            />
-            <p className="tooltip-sheet-label">{placement}</p>
-          </div>
-        ))}
-      </div>
+    <div dir="rtl" className="tooltip-sheet-open tooltip-sheet-grid">
+      {placements.map((placement) => (
+        <div key={placement} className="tooltip-sheet-cell">
+          <Tooltip content="Centered" placement={placement}>
+            <button type="button" className="tooltip-story-text-trigger">
+              {placement}
+            </button>
+          </Tooltip>
+        </div>
+      ))}
     </div>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    for (const placement of ['top', 'bottom'] as const) {
+    for (const placement of placements) {
       const button = canvas.getByRole('button', { name: placement });
-      const tooltip = button.parentElement?.querySelector('[role="tooltip"]');
-      if (!(tooltip instanceof HTMLElement)) {
-        throw new Error(`Missing ${placement} tooltip.`);
-      }
+      const tooltip = bubbleOf(button);
+      const buttonCenter = centerX(button.getBoundingClientRect());
 
-      const buttonBox = button.getBoundingClientRect();
-      const tipBox = tooltip.getBoundingClientRect();
-      const buttonCenter = buttonBox.left + buttonBox.width / 2;
-      const tipCenter = tipBox.left + tipBox.width / 2;
-
-      await expect(Math.abs(buttonCenter - tipCenter)).toBeLessThan(1);
-      await expect(getComputedStyle(tooltip).left).not.toBe('auto');
-      await expect(getComputedStyle(tooltip, '::after').left).not.toBe('auto');
+      await expect(
+        Math.abs(centerX(tooltip.getBoundingClientRect()) - buttonCenter),
+      ).toBeLessThan(1);
+      await expect(Math.abs(caretCenterX(tooltip) - buttonCenter)).toBeLessThan(
+        1,
+      );
     }
   },
 };
-
-const placementCopy = {
-  top: 'Above the trigger',
-  bottom: 'Below the trigger',
-  start: 'At the start of the trigger',
-  end: 'At the end of the trigger',
-} as const satisfies Record<(typeof placements)[number], string>;
 
 export const StickerSheet: Story = {
   parameters: {
     layout: 'fullscreen',
     controls: { disable: true },
-    a11y: {
-      test: 'off',
-    },
+    a11y: { test: 'off' },
   },
   render: () => (
     <div className="tooltip-sheet-open">
       <Sheet title="Tooltip">
-        <Section title="Placement and caret">
+        <Section title="Placement">
           <div className="tooltip-sheet-grid">
             {placements.map((placement) => (
               <div key={placement} className="tooltip-sheet-cell">
                 <Tooltip
-                  content={placementCopy[placement]}
-                  label={placement}
+                  content="Saves the current draft"
                   placement={placement}
-                />
+                >
+                  <button type="button" className="tooltip-story-text-trigger">
+                    Save changes
+                  </button>
+                </Tooltip>
                 <p className="tooltip-sheet-label">{placement}</p>
               </div>
             ))}
           </div>
         </Section>
-        <Section title="Trigger">
+        <Section title="Naming">
           <div className="tooltip-sheet-grid">
-            <div className="tooltip-sheet-cell">
-              <Tooltip content="Saves the current draft">
-                <button type="button" className="tooltip-story-text-trigger">
-                  Save changes
-                </button>
-              </Tooltip>
-              <p className="tooltip-sheet-label">custom trigger</p>
-            </div>
             <div className="tooltip-sheet-cell">
               <Tooltip content="Delete item" naming="label">
                 <button type="button" className="tooltip-story-icon-trigger">
                   <Icon name="trash" />
                 </button>
               </Tooltip>
-              <p className="tooltip-sheet-label">aria-labelledby</p>
+              <p className="tooltip-sheet-label">label</p>
             </div>
-          </div>
-        </Section>
-        <Section title="Wrapping">
-          <div className="tooltip-sheet-cell">
-            <Tooltip
-              content="Drafts stay on this device until you publish them."
-              label="Drafts"
-              placement="bottom"
-            />
-            <p className="tooltip-sheet-label">max width</p>
+            <div className="tooltip-sheet-cell">
+              <Tooltip
+                content="Drafts stay on this device until you publish them."
+                placement="bottom"
+              >
+                <button type="button" className="tooltip-story-text-trigger">
+                  Drafts
+                </button>
+              </Tooltip>
+              <p className="tooltip-sheet-label">description, max width</p>
+            </div>
           </div>
         </Section>
       </Sheet>

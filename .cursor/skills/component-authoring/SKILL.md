@@ -1,18 +1,18 @@
 ---
 name: component-authoring
-description: Use when creating or changing any design-system component or its stories. Follow the Icon folder layout, token styling, accessibility, stories, and tests.
+description: Use when creating or changing any design-system component or its stories. Covers folder layout, styling with tokens, accessibility, stories, and tests.
 ---
 
 # Component authoring
 
-`src/design-system/components/Icon/` is the pattern for every component.
+`src/design-system/components/Icon/` is the reference component.
 
 ## Folder
 
 ```
 Component/
   Component.tsx
-  useComponent.ts
+  useComponent.ts        (only when stateful)
   types.ts
   utils.ts
   index.ts
@@ -22,64 +22,57 @@ Component/
   stories/Component.stories.css
 ```
 
-`Component.tsx` is only the component. When it has state, that behavior
-lives in `useComponent.ts` next to it (open/close, timers, and event
-handlers) so the component file stays the render. Do not export the hook
-unless it is public API. Prop unions and other types live in `types.ts`.
-Constants and helpers live in `utils.ts`. `index.ts` is the public barrel;
-files outside the folder import from there. A component that needs another
-module, such as Icon's `icons.ts` registry, keeps it beside those files
-and does not export it unless it is public API.
-
-Storybook loads `src/**/*.stories.tsx`, which already includes `stories/`.
+- `Component.tsx` is only the render.
+- `useComponent.ts` holds state that CSS can't see (hover, focus within,
+  dismissal) and exposes it as a `data-state` attribute. Delays and
+  transitions belong in CSS, not timers. Don't export the hook unless it's
+  public API.
+- `types.ts` holds prop types. `utils.ts` holds constants and helpers.
+- `index.ts` is the public barrel, and code outside the folder imports from
+  it. Other modules stay in the folder and aren't exported unless they're
+  public API.
 
 ## CSS and tokens
 
-Plain CSS or CSS Modules only. Use `--ds-*` tokens for color, size,
-space, type, and motion. Light and dark come from those tokens. Add
-component tokens under `src/design-system/tokens/component/*.json`,
-point them at semantic tokens, run `npm run tokens:build`, and commit
-`tokens.css`.
-
-Space, icon size, type, and spacing-like sizes such as the tooltip caret
-are rem in the generated CSS. Space, icon size, and the caret are authored
-in px and divided by 16 (zero stays `0`). Border width, the focus ring,
-and radius stay px.
+Plain CSS or CSS Modules. Use `--ds-*` tokens for color, size, space, type,
+and motion, so light and dark work automatically. Component tokens go in
+`src/design-system/tokens/component/*.json` and reference semantic tokens.
+Run `npm run tokens:build` and commit `tokens.css`.
 
 ## TypeScript
 
-Variant and name props are unions (`'sm' | 'md' | 'lg'`), not loose
-strings. Export the unions from `types.ts`.
+Variant and name props are unions (`'sm' | 'md' | 'lg'`), exported from
+`types.ts`.
 
 ## Accessibility
 
-Use a semantic element. Give a control visible text or an accessible
-name. Show `:focus-visible`. `prefers-reduced-motion` is already handled
-by `normalize.css`. Storybook axe must pass. Sticker sheets set
-`parameters.a11y.test` to `'off'`. Playground and test stories leave the
-default `error`.
+- Use a semantic element, and give every control visible text or an
+  accessible name.
+- Style `:focus-visible`.
+- `normalize.css` already handles `prefers-reduced-motion`.
+- Storybook axe must pass. Sticker sheets set `parameters.a11y.test` to
+  `'off'`, and all other stories keep the default `error`.
 
 ## Stories
 
-TypeScript CSF3. Title path such as `Design System/Icon`. One story per
-variant or state, plus a sticker sheet. Args and controls cover the
-public props. The theme toolbar sets `data-theme`, so each story has to
-work in light and dark.
+- TypeScript CSF3, titled `Design System/<Component>`.
+- One story per variant or state, plus a sticker sheet.
+- Args and controls cover the public props.
+- Every story works in light and dark (the toolbar sets `data-theme`).
+- A story that measures layout wraps the component in its own cell, so a
+  grid or flex parent doesn't stretch it.
 
 ## Tests
 
-React Testing Library. Assert what a person can see or hear (role, name,
-text), not private structure. Shared helpers live in `src/test/`.
-`src/test/setup.ts` installs the token CSS for every unit test. Import
-those helpers. Do not copy them into a component test.
-
-## Comments
-
-Use JSDoc for anything non-obvious (why, constraints, accessibility
-behavior); don't comment the obvious.
+- Use React Testing Library, and assert what a person gets (role, name,
+  description, text), not private structure.
+- jsdom doesn't apply CSS. When CSS decides visibility, unit tests assert
+  the `data-state` it reads, and Storybook `play` asserts real visibility,
+  delays, and layout.
+- Use the helpers in `src/test/` (`setup.ts` loads token CSS). Don't copy
+  them into a component test.
 
 ## Done
 
-`npm run lint`, `npm run typecheck`, `npm run test:unit`,
-`npm run test:storybook`, `npm run build`, and `npm run build-storybook`
-pass. When tokens change, `npm run tokens:check` passes too.
+`npm run lint`, `typecheck`, `test:unit`, `test:storybook`, `build`, and
+`build-storybook` pass, plus `tokens:check` when tokens change.

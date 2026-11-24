@@ -1,6 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, expect, test } from 'vitest';
+import { beforeEach, expect, test, vi } from 'vitest';
 
 import { App } from './App';
 import { themeStorageKey } from './theme';
@@ -82,6 +82,28 @@ test('theme toggle persists the choice and overrides the system theme', async ()
   expect(toggle).toHaveAttribute('aria-pressed', 'false');
   expect(document.documentElement).toHaveAttribute('data-theme', 'light');
   expect(localStorage.getItem(themeStorageKey)).toBe('light');
+});
+
+test('the toggle still switches the theme when storage is blocked', async () => {
+  const user = userEvent.setup();
+  const setItem = vi
+    .spyOn(Storage.prototype, 'setItem')
+    .mockImplementation(() => {
+      throw new DOMException('Blocked', 'SecurityError');
+    });
+
+  try {
+    render(<App />);
+    const toggle = screen.getByRole('button', { name: 'Dark theme' });
+
+    await user.click(toggle);
+
+    expect(setItem).toHaveBeenCalled();
+    expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    expect(document.documentElement).toHaveAttribute('data-theme', 'dark');
+  } finally {
+    setItem.mockRestore();
+  }
 });
 
 test('uses the system dark theme until a choice is stored', () => {
