@@ -30,7 +30,11 @@ export function initialTheme(): ThemeName {
 }
 
 export function persistTheme(theme: ThemeName) {
-  localStorage.setItem(themeStorageKey, theme);
+  try {
+    localStorage.setItem(themeStorageKey, theme);
+  } catch {
+    // Storage is blocked. The theme still applies; it just isn't remembered.
+  }
 }
 
 export function applyTheme(theme: ThemeName) {

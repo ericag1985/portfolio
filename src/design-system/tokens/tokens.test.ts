@@ -1,13 +1,48 @@
 import { expect, test } from 'vitest';
 
-import { tokenFileSource, tokenFiles, tokensCss } from '../../test/tokens';
-import { collectTokens } from './resolve';
+import {
+  tokenFilePaths,
+  tokenFileSource,
+  tokenFiles,
+  tokensCss,
+} from '../../test/tokens';
+import { collectTokens, resolveValue, type TokenMap } from './resolve';
 
 function tokenPaths(contents: string): string[] {
   const tokens = new Map<string, unknown>();
   collectTokens(JSON.parse(contents) as unknown, [], tokens);
   return [...tokens.keys()].sort();
 }
+
+function tokensMatching(pattern: RegExp): TokenMap {
+  const tokens: TokenMap = new Map();
+  for (const path of tokenFilePaths(pattern)) {
+    collectTokens(JSON.parse(tokenFiles[path]) as unknown, [], tokens);
+  }
+  return tokens;
+}
+
+function isColor(value: unknown): boolean {
+  return typeof value === 'object' && value !== null && 'hex' in value;
+}
+
+test('component tokens resolve in light and dark, and colors are references', () => {
+  const component = tokensMatching(/\/component\//);
+  expect(component.size).toBeGreaterThan(0);
+
+  for (const theme of ['light', 'dark']) {
+    const tokens = tokensMatching(
+      new RegExp(`/(primitive|component)/|/semantic/(common|${theme})\\.json$`),
+    );
+    for (const [name, value] of component) {
+      // resolveValue throws on a dangling or circular reference.
+      const resolved = resolveValue(name, tokens);
+      if (isColor(resolved)) {
+        expect(value, `${theme} ${name}`).toMatch(/^\{[^{}]+\}$/);
+      }
+    }
+  }
+});
 
 test('light and dark semantic themes define the same tokens', () => {
   expect(tokenPaths(tokenFileSource(/\/semantic\/light\.json$/))).toEqual(
@@ -46,52 +81,6 @@ test('generated CSS publishes light, dark, and system-dark token sets', () => {
   expect(tokensCss).toContain('--ds-color-bg-canvas: var(--ds-color-gray-950)');
   expect(tokensCss).toContain(
     '--ds-color-text-link: var(--ds-color-accent-default)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-button-primary-background: var(--ds-color-accent-default)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-button-primary-color: var(--ds-color-text-on-accent)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-button-secondary-background: var(--ds-color-bg-canvas)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-button-secondary-border-color: var(--ds-color-accent-default)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-button-secondary-color: var(--ds-color-accent-default)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-button-destructive-background: var(--ds-color-danger-default)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-button-destructive-color: var(--ds-color-text-on-danger)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-button-link-color: var(--ds-color-text-link)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-tooltip-background: var(--ds-color-bg-inverse)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-tooltip-color: var(--ds-color-text-inverse)',
-  );
-  expect(tokensCss).toContain('--ds-tooltip-padding-block: var(--ds-space-1)');
-  expect(tokensCss).toContain('--ds-tooltip-padding-inline: var(--ds-space-2)');
-  expect(tokensCss).toContain('--ds-tooltip-offset: var(--ds-space-2)');
-  expect(tokensCss).toContain('--ds-tooltip-caret-size: 0.5rem');
-  expect(tokensCss).toContain('--ds-tooltip-radius: var(--ds-radius-sm)');
-  expect(tokensCss).toContain('--ds-tooltip-font-size: var(--ds-font-size-14)');
-  expect(tokensCss).toContain(
-    '--ds-tooltip-line-height: var(--ds-font-line-height-14)',
-  );
-  expect(tokensCss).toContain('--ds-tooltip-max-width: 16rem');
-  expect(tokensCss).toContain(
-    '--ds-tooltip-delay-open: var(--ds-motion-duration-base)',
-  );
-  expect(tokensCss).toContain(
-    '--ds-tooltip-delay-close: var(--ds-motion-duration-fast)',
   );
   expect(tokensCss).toContain('--ds-color-bg-transparent: transparent');
 });

@@ -41,9 +41,9 @@ function isColorValue(value: unknown): value is ColorValue {
 }
 
 /**
- * Space, icon size, and the tooltip caret are authored in px and published
- * as rem (px / 16) so they scale with the root font. Zero stays `0`. Border
- * width, the focus ring, and radius stay px. Type is already rem in the token JSON.
+ * Space and icon size are authored in px and published as rem (px / 16) so
+ * they scale with the root font. Zero stays `0`. Border width, the focus
+ * ring, and radius stay px. Type is already rem in the token JSON.
  */
 function toRem(token: TransformedToken): unknown {
   const value: unknown = token.$value;
@@ -58,11 +58,7 @@ function toRem(token: TransformedToken): unknown {
 
 function usesRem(token: TransformedToken): boolean {
   const [group, child] = token.path;
-  return (
-    group === 'space' ||
-    (group === 'icon' && child === 'size') ||
-    (group === 'tooltip' && child === 'caret-size')
-  );
+  return group === 'space' || (group === 'icon' && child === 'size');
 }
 
 const hooks: Config['hooks'] = {

@@ -1,16 +1,10 @@
 import { cloneElement, type ReactElement } from 'react';
 
-import {
-  type TooltipNaming,
-  type TooltipPlacement,
-  type TriggerProps,
-} from './types';
+import type { TooltipNaming, TooltipPlacement, TriggerProps } from './types';
 
 export const placements = [
   'top',
   'bottom',
-  'start',
-  'end',
 ] as const satisfies readonly TooltipPlacement[];
 
 export const namings = [
@@ -18,67 +12,25 @@ export const namings = [
   'label',
 ] as const satisfies readonly TooltipNaming[];
 
-export const delayToken = {
-  open: '--ds-tooltip-delay-open',
-  close: '--ds-tooltip-delay-close',
-} as const;
+/**
+ * Minimum gap between the bubble and a viewport edge, in px. Matches
+ * `--ds-space-4` (1rem), which the CSS max-width uses. A unit test asserts
+ * that token so the two can't drift.
+ */
+export const viewportMargin = 16;
 
 /**
- * How long after a touch `pointerdown` its `focus` and `click` still count
- * as that tap. A tap plus the browser's compatibility-event delay is well
- * under this. A longer gap means the next focus or click came from
- * something else, such as the keyboard.
+ * Horizontal shift in px that keeps an un-nudged bubble at least `margin`
+ * from both viewport edges. A bubble wider than the space aligns to the
+ * left margin.
  */
-export const touchTapWindowMs = 1000;
-
-export type TooltipActivity = {
-  pointer: boolean;
-  focus: boolean;
-  /** A touch tap on the default trigger is holding the tooltip open. */
-  pinned: boolean;
-  /**
-   * Escape hides the tooltip until both the pointer and keyboard focus
-   * have left, so a still-hovered or still-focused trigger does not reopen it.
-   */
-  suppressed: boolean;
-};
-
-/**
- * The tooltip stays while the pointer is over the control, the trigger has
- * focus, or a touch tap pinned it open, unless Escape dismissed it.
- * WCAG 2.2 1.4.13 persistent.
- */
-export function isOpenRequested(activity: TooltipActivity): boolean {
-  return (
-    !activity.suppressed &&
-    (activity.pointer || activity.focus || activity.pinned)
-  );
-}
-
-/**
- * Name for the default info button. `naming="label"` takes the name from
- * the tooltip instead, so an empty label is allowed in that mode. The types
- * require `label` otherwise, but a blank string still type-checks, so it
- * warns in development instead of throwing during render.
- */
-export function resolveTriggerLabel(
-  label: string | undefined,
-  naming: TooltipNaming,
-): string | undefined {
-  if (naming === 'label') {
-    return undefined;
-  }
-
-  const name = label?.trim() ?? '';
-  if (name.length === 0) {
-    if (import.meta.env.DEV) {
-      console.warn(
-        'Tooltip: the default info button needs a label. Pass label, set naming to "label", or pass a child trigger.',
-      );
-    }
-    return undefined;
-  }
-  return name;
+export function viewportNudge(
+  rect: Pick<DOMRect, 'left' | 'right'>,
+  viewportWidth: number,
+  margin: number,
+): number {
+  const pastRight = Math.min(0, viewportWidth - margin - rect.right);
+  return Math.max(margin - rect.left, pastRight);
 }
 
 /** Keep an id a caller already set and append the tooltip id once. */
@@ -88,45 +40,6 @@ export function joinIds(existing: string | undefined, id: string): string {
     return ids.join(' ');
   }
   return [...ids, id].join(' ');
-}
-
-export function readDuration(name: string): number {
-  const raw = getComputedStyle(document.documentElement)
-    .getPropertyValue(name)
-    .trim();
-  const value = Number.parseFloat(raw);
-  if (!Number.isFinite(value) || value < 0) {
-    throw new Error(`Expected ${name} to be a duration, received "${raw}".`);
-  }
-  if (raw.endsWith('ms')) {
-    return value;
-  }
-  if (raw.endsWith('s')) {
-    return value * 1000;
-  }
-  return value;
-}
-
-export function clearTimer(timer: { current: number | null }) {
-  if (timer.current !== null) {
-    window.clearTimeout(timer.current);
-    timer.current = null;
-  }
-}
-
-export function defaultTriggerAria(
-  naming: TooltipNaming,
-  tooltipId: string,
-  label: string | undefined,
-): {
-  'aria-describedby'?: string;
-  'aria-labelledby'?: string;
-  'aria-label'?: string;
-} {
-  if (naming === 'label') {
-    return { 'aria-labelledby': tooltipId };
-  }
-  return { 'aria-describedby': tooltipId, 'aria-label': label };
 }
 
 /**

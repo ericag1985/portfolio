@@ -41,10 +41,9 @@ component tokens under `src/design-system/tokens/component/*.json`,
 point them at semantic tokens, run `npm run tokens:build`, and commit
 `tokens.css`.
 
-Space, icon size, type, and spacing-like sizes such as the tooltip caret
-are rem in the generated CSS. Space, icon size, and the caret are authored
-in px and divided by 16 (zero stays `0`). Border width, the focus ring,
-and radius stay px.
+Space, icon size, and type are rem in the generated CSS. Space and icon
+size are authored in px and divided by 16 (zero stays `0`). Border
+width, the focus ring, and radius stay px.
 
 ## TypeScript
 

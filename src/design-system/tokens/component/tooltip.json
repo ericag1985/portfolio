@@ -6,10 +6,7 @@
     "padding-block": { "$type": "dimension", "$value": "{space.1}" },
     "padding-inline": { "$type": "dimension", "$value": "{space.2}" },
     "offset": { "$type": "dimension", "$value": "{space.2}" },
-    "caret-size": {
-      "$type": "dimension",
-      "$value": { "value": 8, "unit": "px" }
-    },
+    "caret-size": { "$type": "dimension", "$value": "{space.2}" },
     "radius": { "$type": "dimension", "$value": "{radius.sm}" },
     "font-size": { "$type": "dimension", "$value": "{font.size.14}" },
     "line-height": { "$type": "number", "$value": "{font.line-height.14}" },
