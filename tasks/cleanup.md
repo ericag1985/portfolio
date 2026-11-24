@@ -14,8 +14,8 @@ work in the order listed. One PR from this branch.
 
 Keep WCAG 2.2 AA (1.4.13 hoverable, persistent, dismissible, plus 1.4.10
 reflow) with far less code. Hover, focus and delays move to CSS. JavaScript
-does only three things: wire up ARIA, dismiss on Escape, and keep the bubble
-inside the viewport.
+tracks three things: hover, focus within, and Escape dismissal. It also keeps
+the bubble inside the viewport.
 
 ### Decisions (already made, don't revisit)
 
@@ -24,8 +24,9 @@ inside the viewport.
   `<Tooltip content="…" naming="label"><Button icon="info" /></Tooltip>`.
 - **Tooltip text is supplementary only.** Put this rule in JSDoc: never put
   information in a tooltip that isn't available some other way. That's why
-  there's no tap-to-pin touch mode. Mobile browsers apply `:hover` on tap,
-  which is enough for supplementary text.
+  there's no tap-to-pin touch mode. Browsers that focus a button on tap
+  (Android) show it through focus. iOS doesn't, which is acceptable for
+  supplementary text.
 - **Placements are `top` and `bottom` only.** `start` and `end` are removed,
   because they can't stay inside a narrow viewport.
 - **Escape never calls `stopPropagation()`.**
@@ -55,20 +56,25 @@ design doesn't use: timers, `readDuration`, `TooltipActivity`,
 
 ### Behavior
 
-- **Show (CSS):** the bubble is `visibility: hidden` by default. It becomes
-  visible when `.root:hover` or `.root:has(:focus-visible)`. Use
-  `transition: visibility 0s linear var(--ds-tooltip-delay-close)` while
-  hidden, and `transition-delay: var(--ds-tooltip-delay-open)` while shown.
-  That gives the open delay and a short close grace period with no timers.
+- **State (`useTooltip.ts`):** `hovered` (`pointerenter` and `pointerleave`
+  on the root), `focused` (focus is inside the root), and `dismissed`. The
+  root renders `data-state="open" | "closed" | "dismissed"`, where open means
+  (`hovered` or `focused`) and not `dismissed`. Hover is tracked in JS, not
+  with CSS `:hover`, because test tools fire synthetic pointer events that
+  never set `:hover`, so a CSS-only version can't be tested.
+- **Show and delay (CSS, no timers):** the bubble is `visibility: hidden` by
+  default, with `transition: visibility 0s linear var(--ds-tooltip-delay-close)`.
+  `[data-state='open']` sets `visibility: visible` with
+  `transition-delay: var(--ds-tooltip-delay-open)`. `[data-state='dismissed']`
+  sets `transition-delay: 0s`, so Escape hides it at once. Any focus shows it,
+  mouse focus included, the same as before.
 - **Hoverable:** the bubble is a DOM child of `.root`, and a transparent
-  `::before` bridge covers the offset, so moving the pointer onto the bubble
-  keeps `:hover`.
-- **Escape (`useTooltip.ts`):** one `keydown` listener on `document`. On
-  Escape, if the root is hovered (`matches(':hover')`) or contains
-  `document.activeElement`, set `dismissed`. That renders
-  `data-dismissed` on the root, and CSS hides the bubble with no delay.
-  Clear `dismissed` on `pointerleave` and `focusout` once the root is neither
-  hovered nor focused. Don't move focus.
+  `::before` bridge covers the offset, so moving onto the bubble never fires
+  `pointerleave`.
+- **Escape:** while open or hovered or focused, a `keydown` listener on
+  `document` sets `dismissed` on Escape. Don't call `stopPropagation()`, and
+  don't move focus. Clear `dismissed` when the root is neither hovered nor
+  focused.
 - **Viewport (1.4.10):**
   - CSS: `max-width: min(var(--ds-tooltip-max-width), calc(100vw - 2 * var(--ds-space-4)))`.
   - JS: on `pointerenter` and `focusin`, measure the bubble. A hidden
@@ -111,21 +117,22 @@ a person gets:
       and the tooltip id is appended once. The child's own `onClick` still
       fires.
 - [ ] The tooltip has `role="tooltip"` and a stable id.
-- [ ] Escape while the trigger is focused sets `data-dismissed`, focus stays
-      put, and a `keydown` listener on the trigger still receives the
-      Escape. Tabbing away and back clears it.
+- [ ] Hover and unhover, and focus and blur, switch `data-state` between
+      `open` and `closed`.
+- [ ] Escape while focused sets `data-state="dismissed"`, focus stays put,
+      and a `keydown` listener on the trigger still receives the Escape.
+      Tabbing away and back opens it again.
 - [ ] `viewportNudge`: inside the viewport → 0, past the left edge →
       positive, past the right edge → negative, wider than the viewport →
       aligns to the left margin.
 - [ ] `@ts-expect-error` checks: no children, and `placement="start"`.
 
-Browser (Storybook `play`, real Chromium). Hover and `:focus-visible` only
-work here:
+Browser (Storybook `play`, real Chromium). Real CSS, delays and layout only
+apply here:
 
 - [ ] Hover shows the bubble after the open delay. Moving onto the bubble
       keeps it open. Leaving hides it.
-- [ ] Keyboard focus shows it. Mouse click focus without hover doesn't keep
-      it open after the pointer leaves.
+- [ ] Keyboard focus shows it.
 - [ ] Escape while hovered hides it, and it stays hidden until the pointer
       leaves and comes back.
 - [ ] `EdgeOfViewport` story: a trigger flush against the left edge and one
