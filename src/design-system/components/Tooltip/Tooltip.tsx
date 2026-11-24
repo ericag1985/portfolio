@@ -11,8 +11,9 @@ import {
 } from './utils';
 
 /**
- * Short text shown on hover or focus. Placement is CSS next to the trigger;
- * the bubble is not portaled. See `useTooltip` for dismiss and persistence.
+ * Short text shown on hover or focus. Placement is CSS next to the trigger.
+ * Placement is fixed and is not flipped near viewport edges.
+ * See `useTooltip` for dismiss and persistence.
  */
 export function Tooltip({
   content,
@@ -22,8 +23,16 @@ export function Tooltip({
   children,
 }: TooltipProps) {
   const tooltipId = useId();
-  const { open, onPointerEnter, onPointerLeave, onFocus, onBlur } =
-    useTooltip();
+  const {
+    open,
+    rootRef,
+    onPointerDown,
+    onPointerEnter,
+    onPointerLeave,
+    onFocus,
+    onBlur,
+    onTriggerClick,
+  } = useTooltip();
 
   const trigger: ReactElement<TriggerProps> = children ? (
     applyTriggerProps(Children.only(children), naming, tooltipId)
@@ -31,6 +40,7 @@ export function Tooltip({
     <button
       type="button"
       className={styles.trigger}
+      onClick={onTriggerClick}
       {...defaultTriggerAria(
         naming,
         tooltipId,
@@ -43,8 +53,10 @@ export function Tooltip({
 
   return (
     <span
+      ref={rootRef}
       className={styles.root}
       data-placement={placement}
+      onPointerDown={onPointerDown}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       onFocus={onFocus}

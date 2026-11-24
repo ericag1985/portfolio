@@ -44,6 +44,8 @@
   padding-inline: var(--ds-tooltip-padding-inline);
   border-radius: var(--ds-tooltip-radius);
   background: var(--ds-tooltip-background);
+  /* Transparent here. Forced colors paints it as the system border. */
+  border: var(--ds-border-width-thin) solid transparent;
   color: var(--ds-tooltip-color);
   font-family: var(--ds-font-family-sans);
   font-size: var(--ds-tooltip-font-size);
@@ -74,6 +76,13 @@
   border-style: solid;
   border-color: transparent;
   border-width: 0;
+}
+
+/* The caret is itself a border, so forced colors would paint it as a box. */
+@media (forced-colors: active) {
+  .tooltip::after {
+    display: none;
+  }
 }
 
 /*

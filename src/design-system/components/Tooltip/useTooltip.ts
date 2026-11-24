@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type FocusEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FocusEvent,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
 
 import {
   clearTimer,
@@ -9,26 +16,34 @@ import {
 } from './utils';
 
 /**
- * Hover, focus, and Escape for one tooltip.
+ * Hover, focus, and touch for one tooltip.
  *
- * The bubble stays while the pointer is over the control or the trigger has
- * focus. Escape is listened for on `document` in the capture phase while the
- * tooltip is opening or open, so a hover-opened bubble can be dismissed when
- * focus is elsewhere. Escape does not move focus, and the bubble stays
- * dismissed until the pointer and keyboard focus have both left
- * (WCAG 2.2 1.4.13).
+ * A finger lift fires `pointerleave` and cancels the open timer, and iOS does
+ * not focus a button on tap, so touch is not treated as hover. The default
+ * trigger records `pointerType` on `pointerdown` and toggles `pinned` on
+ * click when that type was `touch`. A pinned tooltip closes on a second tap,
+ * a pointerdown outside the root, or Escape.
+ *
+ * Escape is listened for on `document` while the tooltip is opening or open.
+ * `stopPropagation()` runs only when the bubble was actually visible, so
+ * Escape during the open delay still reaches the focused control. Escape does
+ * not move focus (WCAG 2.2 1.4.13).
  */
 export function useTooltip() {
+  const rootRef = useRef<HTMLSpanElement>(null);
   const openTimer = useRef<number | null>(null);
   const closeTimer = useRef<number | null>(null);
   const openRef = useRef(false);
+  const lastPointerType = useRef('mouse');
   const activity = useRef<TooltipActivity>({
     pointer: false,
     focus: false,
+    pinned: false,
     suppressed: false,
   });
   const [open, setOpen] = useState(false);
   const [opening, setOpening] = useState(false);
+  const [pinned, setPinned] = useState(false);
 
   useEffect(() => {
     const openingTimer = openTimer;
@@ -51,13 +66,18 @@ export function useTooltip() {
       if (!openRef.current && openTimer.current === null) {
         return;
       }
-      event.stopPropagation();
+      const wasOpen = openRef.current;
+      activity.current.pinned = false;
       activity.current.suppressed = true;
+      setPinned(false);
       clearTimer(openTimer);
       clearTimer(closeTimer);
       setOpening(false);
       openRef.current = false;
       setOpen(false);
+      if (wasOpen) {
+        event.stopPropagation();
+      }
     }
 
     document.addEventListener('keydown', onKeyDown, true);
@@ -115,18 +135,47 @@ export function useTooltip() {
     }
   }
 
-  function onPointerEnter() {
+  const releasePinned = useCallback(() => {
+    activity.current.pinned = false;
+    setPinned(false);
+    clearTimer(openTimer);
+    clearTimer(closeTimer);
+    setOpening(false);
+    if (!activity.current.pointer && !activity.current.focus) {
+      activity.current.suppressed = false;
+      openRef.current = false;
+      setOpen(false);
+    }
+  }, []);
+
+  function onPointerDown(event: ReactPointerEvent<HTMLElement>) {
+    lastPointerType.current = event.pointerType;
+  }
+
+  function onPointerEnter(event: ReactPointerEvent<HTMLElement>) {
+    if (event.pointerType === 'touch') {
+      return;
+    }
     activity.current.pointer = true;
     sync();
   }
 
-  function onPointerLeave() {
+  function onPointerLeave(event: ReactPointerEvent<HTMLElement>) {
+    if (event.pointerType === 'touch') {
+      return;
+    }
     activity.current.pointer = false;
     releaseIfIdle();
     sync();
   }
 
   function onFocus() {
+    if (lastPointerType.current === 'touch') {
+      queueMicrotask(() => {
+        lastPointerType.current = 'mouse';
+      });
+      return;
+    }
     activity.current.focus = true;
     sync();
   }
@@ -141,5 +190,53 @@ export function useTooltip() {
     sync();
   }
 
-  return { open, onPointerEnter, onPointerLeave, onFocus, onBlur };
+  function onTriggerClick() {
+    if (lastPointerType.current !== 'touch') {
+      return;
+    }
+    if (activity.current.pinned) {
+      releasePinned();
+      return;
+    }
+    activity.current.suppressed = false;
+    activity.current.pinned = true;
+    setPinned(true);
+    clearTimer(openTimer);
+    clearTimer(closeTimer);
+    setOpening(false);
+    setShown(true);
+  }
+
+  useEffect(() => {
+    if (!pinned) {
+      return;
+    }
+
+    function onPointerDownOutside(event: PointerEvent) {
+      const root = rootRef.current;
+      if (
+        !root ||
+        !(event.target instanceof Node) ||
+        root.contains(event.target)
+      ) {
+        return;
+      }
+      releasePinned();
+    }
+
+    document.addEventListener('pointerdown', onPointerDownOutside, true);
+    return () =>
+      document.removeEventListener('pointerdown', onPointerDownOutside, true);
+  }, [pinned, releasePinned]);
+
+  return {
+    open,
+    rootRef,
+    onPointerDown,
+    onPointerEnter,
+    onPointerLeave,
+    onFocus,
+    onBlur,
+    onTriggerClick,
+  };
 }

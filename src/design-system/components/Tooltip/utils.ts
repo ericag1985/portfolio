@@ -26,6 +26,8 @@ export const delayToken = {
 export type TooltipActivity = {
   pointer: boolean;
   focus: boolean;
+  /** A touch tap on the default trigger is holding the tooltip open. */
+  pinned: boolean;
   /**
    * Escape hides the tooltip until both the pointer and keyboard focus
    * have left, so a still-hovered or still-focused trigger does not reopen it.
@@ -34,11 +36,15 @@ export type TooltipActivity = {
 };
 
 /**
- * The tooltip stays while the pointer is over the control or the trigger
- * has focus, unless Escape dismissed it. WCAG 2.2 1.4.13 persistent.
+ * The tooltip stays while the pointer is over the control, the trigger has
+ * focus, or a touch tap pinned it open, unless Escape dismissed it.
+ * WCAG 2.2 1.4.13 persistent.
  */
 export function isOpenRequested(activity: TooltipActivity): boolean {
-  return !activity.suppressed && (activity.pointer || activity.focus);
+  return (
+    !activity.suppressed &&
+    (activity.pointer || activity.focus || activity.pinned)
+  );
 }
 
 /**

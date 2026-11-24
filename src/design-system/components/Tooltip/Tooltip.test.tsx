@@ -208,6 +208,94 @@ test('Escape dismisses without moving focus and does not reopen until focus retu
   expect(await screen.findByRole('tooltip')).toHaveTextContent('Details');
 });
 
+test('Escape during the open delay reaches the focused control', async () => {
+  const user = userEvent.setup();
+  const openDelay = delayMs('--ds-tooltip-delay-open');
+  let escapes = 0;
+
+  render(
+    <>
+      <input
+        aria-label="Name"
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            escapes += 1;
+          }
+        }}
+      />
+      <Tooltip content="Details" label="More information" />
+    </>,
+  );
+  const input = screen.getByRole('textbox', { name: 'Name' });
+  const trigger = screen.getByRole('button', { name: 'More information' });
+
+  await user.click(input);
+  await user.hover(trigger);
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  await user.keyboard('{Escape}');
+
+  expect(escapes).toBe(1);
+  expect(input).toHaveFocus();
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  await wait(openDelay + 80);
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+});
+
+async function tap(
+  user: ReturnType<typeof userEvent.setup>,
+  target: HTMLElement,
+) {
+  await user.pointer([{ keys: '[TouchA>]', target }, { keys: '[/TouchA]' }]);
+}
+
+test('a touch tap toggles the default trigger and a tap outside closes it', async () => {
+  const user = userEvent.setup();
+
+  render(
+    <>
+      <Tooltip content="Details" label="More information" />
+      <button type="button">Outside</button>
+    </>,
+  );
+  const trigger = screen.getByRole('button', { name: 'More information' });
+  const outside = screen.getByRole('button', { name: 'Outside' });
+
+  await tap(user, trigger);
+  expect(screen.getByRole('tooltip')).toHaveTextContent('Details');
+
+  await tap(user, trigger);
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+
+  await tap(user, trigger);
+  expect(screen.getByRole('tooltip')).toBeInTheDocument();
+  await user.pointer({ keys: '[TouchA]', target: outside });
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+});
+
+test('a touch tap does not toggle a custom trigger', async () => {
+  const user = userEvent.setup();
+  let clicks = 0;
+
+  render(
+    <Tooltip content="Saved">
+      <button
+        type="button"
+        onClick={() => {
+          clicks += 1;
+        }}
+      >
+        Save
+      </button>
+    </Tooltip>,
+  );
+  const button = screen.getByRole('button', { name: 'Save' });
+
+  await tap(user, button);
+
+  expect(clicks).toBe(1);
+  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+});
+
 test('Escape dismisses a hover-opened tooltip when focus is elsewhere', async () => {
   const user = userEvent.setup();
   const openDelay = delayMs('--ds-tooltip-delay-open');
