@@ -12,6 +12,7 @@ import {
   delayToken,
   isOpenRequested,
   readDuration,
+  touchTapWindowMs,
   type TooltipActivity,
 } from './utils';
 
@@ -20,9 +21,9 @@ import {
  *
  * A finger lift fires `pointerleave` and cancels the open timer, and iOS does
  * not focus a button on tap, so touch is not treated as hover. The default
- * trigger records `pointerType` on `pointerdown` and toggles `pinned` on
- * click when that type was `touch`. A pinned tooltip closes on a second tap,
- * a pointerdown outside the root, or Escape.
+ * trigger records when a touch `pointerdown` happened and toggles `pinned`
+ * on the click that follows it (see `isTouchTap`). A pinned tooltip closes
+ * on a second tap, a pointerdown outside the root, or Escape.
  *
  * Escape is listened for on `document` while the tooltip is opening or open.
  * `stopPropagation()` runs only when the bubble was actually visible, so
@@ -34,7 +35,8 @@ export function useTooltip() {
   const openTimer = useRef<number | null>(null);
   const closeTimer = useRef<number | null>(null);
   const openRef = useRef(false);
-  const lastPointerType = useRef('mouse');
+  /** `performance.now()` of the last touch `pointerdown`, or `null`. */
+  const touchDownAt = useRef<number | null>(null);
   const activity = useRef<TooltipActivity>({
     pointer: false,
     focus: false,
@@ -148,8 +150,22 @@ export function useTooltip() {
     }
   }, []);
 
+  /**
+   * Whether the current focus or click comes from a recent touch tap.
+   * Browsers that focus a button on tap (Android Chrome) fire `focus` between
+   * `pointerdown` and `click`, with microtasks running in between, so this
+   * can't be reset on focus. It expires instead, and `onTriggerClick`
+   * consumes it, so a later keyboard Enter, Space, or Tab is never treated
+   * as a tap.
+   */
+  function isTouchTap(): boolean {
+    const downAt = touchDownAt.current;
+    return downAt !== null && performance.now() - downAt < touchTapWindowMs;
+  }
+
   function onPointerDown(event: ReactPointerEvent<HTMLElement>) {
-    lastPointerType.current = event.pointerType;
+    touchDownAt.current =
+      event.pointerType === 'touch' ? performance.now() : null;
   }
 
   function onPointerEnter(event: ReactPointerEvent<HTMLElement>) {
@@ -170,10 +186,7 @@ export function useTooltip() {
   }
 
   function onFocus() {
-    if (lastPointerType.current === 'touch') {
-      queueMicrotask(() => {
-        lastPointerType.current = 'mouse';
-      });
+    if (isTouchTap()) {
       return;
     }
     activity.current.focus = true;
@@ -191,7 +204,9 @@ export function useTooltip() {
   }
 
   function onTriggerClick() {
-    if (lastPointerType.current !== 'touch') {
+    const touch = isTouchTap();
+    touchDownAt.current = null;
+    if (!touch) {
       return;
     }
     if (activity.current.pinned) {

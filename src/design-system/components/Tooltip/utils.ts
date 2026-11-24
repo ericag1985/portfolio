@@ -23,6 +23,14 @@ export const delayToken = {
   close: '--ds-tooltip-delay-close',
 } as const;
 
+/**
+ * How long after a touch `pointerdown` its `focus` and `click` still count
+ * as that tap. A tap plus the browser's compatibility-event delay is well
+ * under this. A longer gap means the next focus or click came from
+ * something else, such as the keyboard.
+ */
+export const touchTapWindowMs = 1000;
+
 export type TooltipActivity = {
   pointer: boolean;
   focus: boolean;

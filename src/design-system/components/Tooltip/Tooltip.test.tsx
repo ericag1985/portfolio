@@ -1,5 +1,5 @@
 import { isInaccessible } from '@testing-library/dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, test, vi } from 'vitest';
 
@@ -303,6 +303,28 @@ test('a touch tap toggles the default trigger and a tap outside closes it', asyn
   expect(screen.getByRole('tooltip')).toBeInTheDocument();
   await user.pointer({ keys: '[TouchA]', target: outside });
   expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+});
+
+test('a touch tap that focuses the trigger still pins it, and Enter does not toggle it', async () => {
+  const user = userEvent.setup();
+
+  render(<Tooltip content="Details" label="More information" />);
+  const trigger = screen.getByRole('button', { name: 'More information' });
+
+  // Android Chrome order: pointerdown, then focus, then click, with
+  // microtasks running between them.
+  await user.pointer({ keys: '[TouchA>]', target: trigger });
+  act(() => {
+    trigger.focus();
+  });
+  await Promise.resolve();
+  await user.pointer({ keys: '[/TouchA]', target: trigger });
+
+  expect(trigger).toHaveFocus();
+  expect(screen.getByRole('tooltip')).toHaveTextContent('Details');
+
+  await user.keyboard('{Enter}');
+  expect(screen.getByRole('tooltip')).toHaveTextContent('Details');
 });
 
 test('a touch tap does not toggle a custom trigger', async () => {
