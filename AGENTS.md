@@ -27,11 +27,11 @@ All state lives in GitHub (specs, PRs, comments, labels). Don't rely on chat
 history. Each piece of work is one draft PR, and every handoff is a comment or
 a label on it:
 
-| Label           | Meaning                                    |
-| --------------- | ------------------------------------------ |
-| `needs-review`  | Claude is done with a round; Grok's turn   |
-| `needs-erica`   | Waiting on an **Erica decides** item       |
-| `grok-approved` | Stamped (see Stamp)                        |
+| Label           | Meaning                                  |
+| --------------- | ---------------------------------------- |
+| `needs-review`  | Claude is done with a round; Grok's turn |
+| `needs-erica`   | Waiting on an **Erica decides** item     |
+| `grok-approved` | Stamped (see Stamp)                      |
 
 ### Plan
 
