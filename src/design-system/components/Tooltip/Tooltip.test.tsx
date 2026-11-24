@@ -1,11 +1,16 @@
 import { isInaccessible } from '@testing-library/dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 
 import { cssCustomProperty } from '../../../test/tokens';
 import { Icon } from '../Icon';
-import { Tooltip, placements, type TooltipPlacement } from './index';
+import {
+  Tooltip,
+  placements,
+  type TooltipPlacement,
+  type TooltipProps,
+} from './index';
 
 function wait(ms: number) {
   return new Promise((resolve) => {
@@ -36,14 +41,42 @@ test('the default trigger is an info button named by label', () => {
   expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
 });
 
-test('the default trigger needs a label unless the tooltip names it', () => {
-  expect(() => render(<Tooltip content="Details" />)).toThrow(/label/);
-  expect(() => render(<Tooltip content="Details" label="  " />)).toThrow(
-    /label/,
-  );
+test('a blank label warns in development instead of throwing', () => {
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+  render(<Tooltip content="Details" label="  " />);
+  expect(screen.getByRole('button')).not.toHaveAttribute('aria-label');
+  expect(warn).toHaveBeenCalledOnce();
+  expect(warn.mock.calls[0]?.[0]).toMatch(/label/);
+
+  warn.mockRestore();
+});
+
+test('the tooltip names the default trigger without a label or warning', () => {
+  const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
   render(<Tooltip content="Details" naming="label" />);
   expect(screen.getByRole('button', { name: 'Details' })).toBeInTheDocument();
+  expect(warn).not.toHaveBeenCalled();
+
+  warn.mockRestore();
+});
+
+test('label is required only for the described default trigger', () => {
+  const props: TooltipProps[] = [
+    { content: 'Details', label: 'More information' },
+    { content: 'Details', naming: 'label' },
+    { content: 'Details', children: <button type="button">Save</button> },
+  ];
+  // @ts-expect-error the default info button described by the tooltip needs a label
+  const missingLabel: TooltipProps = { content: 'Details' };
+  // @ts-expect-error naming description still needs a label
+  const describedMissingLabel: TooltipProps = {
+    content: 'Details',
+    naming: 'description',
+  };
+  expect(props).toHaveLength(3);
+  expect(missingLabel.content).toBe(describedMissingLabel.content);
 });
 
 test('describes the trigger with a stable tooltip id', () => {

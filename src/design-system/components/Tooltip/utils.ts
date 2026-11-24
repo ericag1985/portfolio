@@ -49,7 +49,9 @@ export function isOpenRequested(activity: TooltipActivity): boolean {
 
 /**
  * Name for the default info button. `naming="label"` takes the name from
- * the tooltip instead, so an empty label is allowed in that mode.
+ * the tooltip instead, so an empty label is allowed in that mode. The types
+ * require `label` otherwise, but a blank string still type-checks, so it
+ * warns in development instead of throwing during render.
  */
 export function resolveTriggerLabel(
   label: string | undefined,
@@ -61,9 +63,12 @@ export function resolveTriggerLabel(
 
   const name = label?.trim() ?? '';
   if (name.length === 0) {
-    throw new Error(
-      'The default info button needs a label. Pass label, set naming to "label", or pass a child trigger.',
-    );
+    if (import.meta.env.DEV) {
+      console.warn(
+        'Tooltip: the default info button needs a label. Pass label, set naming to "label", or pass a child trigger.',
+      );
+    }
+    return undefined;
   }
   return name;
 }

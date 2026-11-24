@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ComponentType, ReactElement } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
 import { Section, Sheet } from '../../../foundations/sheet';
@@ -7,9 +8,21 @@ import { Icon } from '../../Icon';
 import { Tooltip, namings, placements } from '../index';
 import './Tooltip.stories.css';
 
+/**
+ * Controls edit one prop at a time, so the story args are flat. Each story
+ * still renders a valid `TooltipProps` member.
+ */
+type TooltipStoryArgs = {
+  content: string;
+  label?: string;
+  naming?: (typeof namings)[number];
+  placement?: (typeof placements)[number];
+  children?: ReactElement;
+};
+
 const meta = {
   title: 'Design System/Tooltip',
-  component: Tooltip,
+  component: Tooltip as ComponentType<TooltipStoryArgs>,
   tags: ['autodocs'],
   args: {
     content: 'Shown on hover or focus',
@@ -61,7 +74,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Tooltip>;
+} satisfies Meta<TooltipStoryArgs>;
 
 export default meta;
 
