@@ -76,9 +76,14 @@
   border-width: 0;
 }
 
+/*
+ * Horizontal centering stays physical. inset-inline-start: 50% is the right
+ * edge in RTL, and translateX(-50%) still moves left, so the bubble and caret
+ * would sit a full width off center.
+ */
 .root[data-placement='top'] .tooltip {
   inset-block-end: calc(100% + var(--ds-tooltip-offset));
-  inset-inline-start: 50%;
+  left: 50%;
   transform: translateX(-50%);
 }
 
@@ -90,7 +95,7 @@
 
 .root[data-placement='top'] .tooltip::after {
   inset-block-start: 100%;
-  inset-inline-start: 50%;
+  left: 50%;
   border-block-start-width: var(--ds-tooltip-caret-size);
   border-inline-width: var(--ds-tooltip-caret-size);
   border-block-start-color: var(--ds-tooltip-background);
@@ -99,7 +104,7 @@
 
 .root[data-placement='bottom'] .tooltip {
   inset-block-start: calc(100% + var(--ds-tooltip-offset));
-  inset-inline-start: 50%;
+  left: 50%;
   transform: translateX(-50%);
 }
 
@@ -111,7 +116,7 @@
 
 .root[data-placement='bottom'] .tooltip::after {
   inset-block-end: 100%;
-  inset-inline-start: 50%;
+  left: 50%;
   border-block-end-width: var(--ds-tooltip-caret-size);
   border-inline-width: var(--ds-tooltip-caret-size);
   border-block-end-color: var(--ds-tooltip-background);

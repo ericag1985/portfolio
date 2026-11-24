@@ -227,6 +227,54 @@ export const LabelledBy: Story = {
   },
 };
 
+export const RightToLeft: Story = {
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Top and bottom stay centered on the trigger. Start and end still follow the writing direction, and each caret points at the trigger.',
+      },
+    },
+  },
+  render: () => (
+    <div dir="rtl" className="tooltip-sheet-open">
+      <div className="tooltip-sheet-grid">
+        {placements.map((placement) => (
+          <div key={placement} className="tooltip-sheet-cell">
+            <Tooltip
+              content={placementCopy[placement]}
+              label={placement}
+              placement={placement}
+            />
+            <p className="tooltip-sheet-label">{placement}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    for (const placement of ['top', 'bottom'] as const) {
+      const button = canvas.getByRole('button', { name: placement });
+      const tooltip = button.parentElement?.querySelector('[role="tooltip"]');
+      if (!(tooltip instanceof HTMLElement)) {
+        throw new Error(`Missing ${placement} tooltip.`);
+      }
+
+      const buttonBox = button.getBoundingClientRect();
+      const tipBox = tooltip.getBoundingClientRect();
+      const buttonCenter = buttonBox.left + buttonBox.width / 2;
+      const tipCenter = tipBox.left + tipBox.width / 2;
+
+      await expect(Math.abs(buttonCenter - tipCenter)).toBeLessThan(1);
+      await expect(getComputedStyle(tooltip).left).not.toBe('auto');
+      await expect(getComputedStyle(tooltip, '::after').left).not.toBe('auto');
+    }
+  },
+};
+
 const placementCopy = {
   top: 'Above the trigger',
   bottom: 'Below the trigger',
