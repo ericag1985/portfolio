@@ -1,0 +1,8 @@
+.icon {
+  display: inline-block;
+  flex: none;
+  /* normalize.css sets max-width: 100% on every svg, which shrinks the token size. */
+  max-width: none;
+  color: currentcolor;
+  vertical-align: middle;
+}

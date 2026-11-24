@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 
+import { tokenFilePaths, tokenFiles } from '../../test/tokens';
 import {
   collectTokens,
   colorHex,
@@ -8,43 +9,27 @@ import {
   type TokenMap,
 } from './resolve';
 
-const tokenFiles = import.meta.glob('./**/*.json', {
-  eager: true,
-  import: 'default',
-  query: '?raw',
-});
-
-const paths = Object.keys(tokenFiles).sort();
-
-function filesMatching(pattern: RegExp): string[] {
-  return paths.filter((path) => pattern.test(path));
-}
-
 function tokensFrom(filePaths: string[]): TokenMap {
   const tokens: TokenMap = new Map();
   for (const path of filePaths) {
-    const source = tokenFiles[path];
-    if (typeof source !== 'string') {
-      throw new Error(`Token file ${path} did not load as text.`);
-    }
-    collectTokens(JSON.parse(source) as unknown, [], tokens);
+    collectTokens(JSON.parse(tokenFiles[path]) as unknown, [], tokens);
   }
   return tokens;
 }
 
-const primitive = filesMatching(/\/primitive\//);
-const common = filesMatching(/\/semantic\/common\.json$/);
-const component = filesMatching(/\/component\//);
+const primitive = tokenFilePaths(/\/primitive\//);
+const common = tokenFilePaths(/\/semantic\/common\.json$/);
+const component = tokenFilePaths(/\/component\//);
 const light = tokensFrom([
   ...primitive,
   ...common,
-  ...filesMatching(/\/semantic\/light\.json$/),
+  ...tokenFilePaths(/\/semantic\/light\.json$/),
   ...component,
 ]);
 const dark = tokensFrom([
   ...primitive,
   ...common,
-  ...filesMatching(/\/semantic\/dark\.json$/),
+  ...tokenFilePaths(/\/semantic\/dark\.json$/),
   ...component,
 ]);
 
