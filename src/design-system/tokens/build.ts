@@ -40,11 +40,39 @@ function isColorValue(value: unknown): value is ColorValue {
   return typeof value === 'object' && value !== null && 'hex' in value;
 }
 
+/**
+ * Space and icon size are authored in px and published as rem (px / 16) so
+ * they scale with the root font. Zero stays `0`. Border width, the focus
+ * ring, and radius stay px. Type is already rem in the token JSON.
+ */
+function toRem(token: TransformedToken): unknown {
+  const value: unknown = token.$value;
+  if (!isStructured(value) || value.unit !== 'px') {
+    return value;
+  }
+  if (value.value === 0) {
+    return '0';
+  }
+  return `${Number((value.value / 16).toFixed(4))}rem`;
+}
+
+function usesRem(token: TransformedToken): boolean {
+  const [group, child] = token.path;
+  return group === 'space' || (group === 'icon' && child === 'size');
+}
+
 const hooks: Config['hooks'] = {
   transforms: {
+    'size/rem': {
+      type: transformTypes.value,
+      filter: (token: TransformedToken) =>
+        token.$type === 'dimension' && usesRem(token),
+      transform: toRem,
+    },
     'size/css': {
       type: transformTypes.value,
-      filter: (token: TransformedToken) => token.$type === 'dimension',
+      filter: (token: TransformedToken) =>
+        token.$type === 'dimension' && !usesRem(token),
       transform: (token: TransformedToken) => {
         const value: unknown = token.$value;
         return isStructured(value) ? `${value.value}${value.unit}` : value;
@@ -77,6 +105,7 @@ const hooks: Config['hooks'] = {
 
 const cssTransforms = [
   transforms.nameKebab,
+  'size/rem',
   'size/css',
   'duration/css',
   'color/css-exact',

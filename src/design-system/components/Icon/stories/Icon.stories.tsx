@@ -104,7 +104,7 @@ export const Sizes: Story = {
     docs: {
       description: {
         story:
-          'Small, medium, and large map to the icon size tokens (16px, 20px, and 24px).',
+          'Small, medium, and large map to the icon size tokens (1rem, 1.25rem, and 1.5rem).',
       },
     },
   },

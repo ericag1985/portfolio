@@ -4,6 +4,10 @@ import { fileURLToPath } from 'node:url';
 
 const testDir = dirname(fileURLToPath(import.meta.url));
 
+/**
+ * Generated token CSS. Unit tests inject it as a style element because
+ * importing the stylesheet does not apply custom properties in jsdom.
+ */
 export const tokensCss = readFileSync(
   resolve(testDir, '../design-system/tokens/tokens.css'),
   'utf8',
@@ -42,6 +46,7 @@ export function tokenFileSource(pattern: RegExp): string {
   return tokenFiles[path];
 }
 
+/** Specified value of a custom property, trimmed. Defaults to the document element. */
 export function cssCustomProperty(
   name: string,
   element: Element = document.documentElement,

@@ -26,6 +26,12 @@ const sizeToken: Record<IconSize, string> = {
   lg: 'var(--ds-icon-size-lg)',
 };
 
+const sizeCss: Record<IconSize, string> = {
+  sm: '1rem',
+  md: '1.25rem',
+  lg: '1.5rem',
+};
+
 const sizePx: Record<IconSize, string> = {
   sm: '16px',
   md: '20px',
@@ -113,8 +119,8 @@ test('size maps to the icon size tokens', () => {
     );
     const svg = svgOf(container);
 
-    expect(tokensCss).toContain(`--ds-icon-size-${size}: ${sizePx[size]}`);
-    expect(cssCustomProperty(`--ds-icon-size-${size}`)).toBe(sizePx[size]);
+    expect(tokensCss).toContain(`--ds-icon-size-${size}: ${sizeCss[size]}`);
+    expect(cssCustomProperty(`--ds-icon-size-${size}`)).toBe(sizeCss[size]);
     expect(svg).toHaveAttribute('width', sizeToken[size]);
     expect(svg).toHaveAttribute('height', sizeToken[size]);
     expect(getComputedStyle(svg).width).toBe(sizePx[size]);

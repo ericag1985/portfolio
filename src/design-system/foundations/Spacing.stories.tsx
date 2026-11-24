@@ -4,15 +4,15 @@ import './foundations.css';
 import { Section, Sheet } from './sheet';
 
 const spaces = [
-  ['0', '0px'],
-  ['1', '4px'],
-  ['2', '8px'],
-  ['3', '12px'],
-  ['4', '16px'],
-  ['6', '24px'],
-  ['8', '32px'],
-  ['12', '48px'],
-  ['16', '64px'],
+  ['0', '0'],
+  ['1', '0.25rem'],
+  ['2', '0.5rem'],
+  ['3', '0.75rem'],
+  ['4', '1rem'],
+  ['6', '1.5rem'],
+  ['8', '2rem'],
+  ['12', '3rem'],
+  ['16', '4rem'],
 ] as const;
 
 const radii = [

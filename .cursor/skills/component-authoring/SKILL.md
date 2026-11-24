@@ -37,6 +37,10 @@ component tokens under `src/design-system/tokens/component/*.json`,
 point them at semantic tokens, run `npm run tokens:build`, and commit
 `tokens.css`.
 
+Space, icon size, and type are rem in the generated CSS. Space and icon
+size are authored in px and divided by 16 (zero stays `0`). Border
+width, the focus ring, and radius stay px.
+
 ## TypeScript
 
 Variant and name props are unions (`'sm' | 'md' | 'lg'`), not loose
@@ -63,6 +67,11 @@ React Testing Library. Assert what a person can see or hear (role, name,
 text), not private structure. Shared helpers live in `src/test/`.
 `src/test/setup.ts` installs the token CSS for every unit test. Import
 those helpers. Do not copy them into a component test.
+
+## Comments
+
+Use JSDoc for anything non-obvious (why, constraints, accessibility
+behavior); don't comment the obvious.
 
 ## Done
 

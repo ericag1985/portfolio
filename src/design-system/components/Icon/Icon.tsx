@@ -3,6 +3,10 @@ import { icons } from './icons';
 import type { IconProps } from './types';
 import { passThrough, sizeToken } from './utils';
 
+/**
+ * An allowlisted Lucide icon. It inherits text color through `currentColor`.
+ * See `label` for when the icon is decorative and when it is named.
+ */
 export function Icon({
   name,
   size = 'md',
