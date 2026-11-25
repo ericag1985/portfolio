@@ -55,11 +55,11 @@
   --button-color: var(--ds-button-primary-color);
 }
 
-.button[data-variant='primary']:hover {
+.button[data-variant='primary']:is(:hover, [data-force-state='hover']) {
   --button-background: var(--ds-button-primary-hover-background);
 }
 
-.button[data-variant='primary']:active {
+.button[data-variant='primary']:is(:active, [data-force-state='active']) {
   --button-background: var(--ds-button-primary-active-background);
 }
 
@@ -69,13 +69,13 @@
   --button-border-color: var(--ds-button-secondary-border-color);
 }
 
-.button[data-variant='secondary']:hover {
+.button[data-variant='secondary']:is(:hover, [data-force-state='hover']) {
   --button-background: var(--ds-button-secondary-hover-background);
   --button-color: var(--ds-button-secondary-hover-color);
   --button-border-color: var(--ds-button-secondary-hover-border-color);
 }
 
-.button[data-variant='secondary']:active {
+.button[data-variant='secondary']:is(:active, [data-force-state='active']) {
   --button-background: var(--ds-button-secondary-active-background);
   --button-color: var(--ds-button-secondary-active-color);
   --button-border-color: var(--ds-button-secondary-active-border-color);
@@ -86,11 +86,11 @@
   --button-color: var(--ds-button-destructive-color);
 }
 
-.button[data-variant='destructive']:hover {
+.button[data-variant='destructive']:is(:hover, [data-force-state='hover']) {
   --button-background: var(--ds-button-destructive-hover-background);
 }
 
-.button[data-variant='destructive']:active {
+.button[data-variant='destructive']:is(:active, [data-force-state='active']) {
   --button-background: var(--ds-button-destructive-active-background);
 }
 
@@ -101,15 +101,15 @@
   text-underline-offset: 0.2em;
 }
 
-.button[data-variant='link']:hover {
+.button[data-variant='link']:is(:hover, [data-force-state='hover']) {
   --button-color: var(--ds-button-link-hover-color);
 }
 
-.button[data-variant='link']:active {
+.button[data-variant='link']:is(:active, [data-force-state='active']) {
   --button-color: var(--ds-button-link-active-color);
 }
 
-.button:focus-visible {
+.button:is(:focus-visible, [data-force-state='focus-visible']) {
   outline: var(--ds-focus-ring-width) solid var(--ds-color-border-focus);
   outline-offset: var(--ds-space-1);
 }
@@ -139,7 +139,7 @@
     color: GrayText;
   }
 
-  .button:focus-visible {
+  .button:is(:focus-visible, [data-force-state='focus-visible']) {
     outline-color: Highlight;
   }
 }

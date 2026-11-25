@@ -152,6 +152,9 @@ export const RightToLeft: Story = {
 
 const states = [
   { name: 'default', props: {} },
+  { name: 'hover', props: { 'data-force-state': 'hover' } },
+  { name: 'active', props: { 'data-force-state': 'active' } },
+  { name: 'focus-visible', props: { 'data-force-state': 'focus-visible' } },
   { name: 'disabled', props: { disabled: true } },
 ] as const;
 

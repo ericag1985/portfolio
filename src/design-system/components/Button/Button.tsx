@@ -13,6 +13,10 @@ import type { ButtonProps } from './types';
  * `type` defaults to `"button"` so it never submits a form by accident.
  * Icon placement uses source order inside a flex row, so start and end follow
  * the writing direction in RTL.
+ *
+ * Stories and visual tests can pin an interaction state by passing
+ * `data-force-state="hover" | "active" | "focus-visible"`. It applies the same
+ * token styles as the real pseudo-class; the component never sets it itself.
  */
 export function Button({
   label,
