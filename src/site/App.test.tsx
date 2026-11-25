@@ -181,9 +181,20 @@ test('LinkedIn opens in a new tab and says so', () => {
   );
   expect(link).toHaveAttribute('target', '_blank');
   expect(link).toHaveAttribute('rel', 'noreferrer noopener');
-  expect(
-    screen.queryByRole('link', { name: 'GitHub (opens in a new tab)' }),
-  ).not.toBeInTheDocument();
+});
+
+test('GitHub links to the portfolio repo in a new tab and says so', () => {
+  render(<App />);
+
+  const link = screen.getByRole('link', {
+    name: 'GitHub (opens in a new tab)',
+  });
+  expect(link).toHaveAttribute(
+    'href',
+    'https://github.com/ericag1985/portfolio',
+  );
+  expect(link).toHaveAttribute('target', '_blank');
+  expect(link).toHaveAttribute('rel', 'noreferrer noopener');
 });
 
 test('the nav marks the current section with aria-current', async () => {
@@ -233,6 +244,7 @@ test('tab order is skip link, sidebar, then main', async () => {
     'Experience',
     'Component lab',
     'LinkedIn (opens in a new tab)',
+    'GitHub (opens in a new tab)',
     'Switch to dark theme',
     'International Association of Accessibility Professionals (IAAP) (opens in a new tab)',
     'Download resume (PDF)',

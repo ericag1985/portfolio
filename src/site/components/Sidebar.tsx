@@ -3,7 +3,13 @@ import { useRef } from 'react';
 import photoJpg from '../../assets/erica-epcot-800.jpg';
 import photoWebp from '../../assets/erica-epcot-800.webp';
 import { Button } from '../../component-lab/components/Button';
-import { linkedinUrl, photoAlt, siteName, siteRole } from '../data/content';
+import {
+  githubUrl,
+  linkedinUrl,
+  photoAlt,
+  siteName,
+  siteRole,
+} from '../data/content';
 import { useScrollEdges } from '../hooks/useScrollEdges';
 import type { ThemeName } from '../theme';
 import type { SectionId } from '../types';
@@ -22,7 +28,7 @@ type SidebarProps = {
 };
 
 /**
- * lucide-react 1.x has no brand icons, so LinkedIn is a text link.
+ * lucide-react 1.x has no brand icons, so LinkedIn and GitHub are text links.
  */
 function ExternalLink({ href, children }: { href: string; children: string }) {
   return (
@@ -86,6 +92,9 @@ export function Sidebar({
           ))}
           <li>
             <ExternalLink href={linkedinUrl}>LinkedIn</ExternalLink>
+          </li>
+          <li>
+            <ExternalLink href={githubUrl}>GitHub</ExternalLink>
           </li>
         </ul>
       </nav>
