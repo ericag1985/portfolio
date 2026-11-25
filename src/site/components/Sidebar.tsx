@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import photoJpg from '../../assets/erica-epcot-800.jpg';
 import photoWebp from '../../assets/erica-epcot-800.webp';
 import { Button } from '../../component-lab/components/Button';
-import { Icon } from '../../component-lab/components/Icon';
 import {
   githubUrl,
   linkedinUrl,
@@ -14,6 +13,7 @@ import {
 import { useScrollEdges } from '../hooks/useScrollEdges';
 import type { ThemeName } from '../theme';
 import type { SectionId } from '../types';
+import { ExternalLink } from './ExternalLink';
 
 export const navItems: { id: SectionId; label: string }[] = [
   { id: 'about', label: 'About' },
@@ -27,25 +27,6 @@ type SidebarProps = {
   onSelect: (id: SectionId) => void;
   onToggleTheme: () => void;
 };
-
-/**
- * lucide-react 1.x has no brand icons, so LinkedIn and GitHub are text links.
- * The external-link icon is decorative; the hidden text carries the meaning.
- * `.external-link` scales the icon to 75% of the text size (see styles.css).
- */
-function ExternalLink({ href, children }: { href: string; children: string }) {
-  return (
-    <a
-      className="external-link"
-      href={href}
-      target="_blank"
-      rel="noreferrer noopener"
-    >
-      {children} <Icon name="external-link" size="sm" />{' '}
-      <span className="visually-hidden">(opens in a new tab)</span>
-    </a>
-  );
-}
 
 /**
  * The pinned sidebar. The ring and the shapes around the photo are CSS and
@@ -99,6 +80,7 @@ export function Sidebar({
               </a>
             </li>
           ))}
+          {/* lucide-react 1.x has no brand icons, so these are text links. */}
           <li>
             <ExternalLink href={linkedinUrl}>LinkedIn</ExternalLink>
           </li>

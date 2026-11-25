@@ -85,7 +85,9 @@ test('About uses the exact paragraph', () => {
   render(<App />);
 
   const about = screen.getByRole('region', { name: 'About' });
-  expect(about.querySelector('p')?.textContent).toBe(aboutText);
+  expect(about.querySelector('p')?.textContent).toBe(
+    aboutText.replace(iaapName, `${iaapName} (opens in a new tab)`),
+  );
   expect(aboutText).toBe(
     "I'm a front end engineer in Durham, NC who builds design systems and accessible components. For 14 years I've worked mainly in React and TypeScript, and for 8 of those I've focused on the shared UI and UX other teams build on. I'm a certified accessibility professional from the International Association of Accessibility Professionals (IAAP), and I care most about making inclusive products the default.",
   );
@@ -96,6 +98,7 @@ test('About uses the exact paragraph', () => {
   expect(iaap).toHaveAttribute('href', iaapUrl);
   expect(iaap).toHaveAttribute('target', '_blank');
   expect(iaap).toHaveAttribute('rel', 'noreferrer noopener');
+  expect(iaap.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
 });
 
 test('Experience renders every employer, role, and bullet from the data', () => {

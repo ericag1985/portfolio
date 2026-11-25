@@ -10,6 +10,7 @@ import {
   storybookUrl,
 } from '../data/content';
 import { certifications, employers } from '../data/experience';
+import { ExternalLink } from './ExternalLink';
 
 export function About() {
   const [beforeIaap, afterIaap] = aboutText.split(iaapName);
@@ -19,15 +20,9 @@ export function About() {
       <h2 id="about-heading">About</h2>
       <p>
         {beforeIaap}
-        <a
-          className="about-link"
-          href={iaapUrl}
-          target="_blank"
-          rel="noreferrer noopener"
-          aria-label={`${iaapName} (opens in a new tab)`}
-        >
+        <ExternalLink className="about-link" href={iaapUrl}>
           {iaapName}
-        </a>
+        </ExternalLink>
         {afterIaap}
       </p>
     </section>
