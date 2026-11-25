@@ -5,7 +5,8 @@
       "$type": "dimension",
       "none": { "$value": { "value": 0, "unit": "px" } },
       "thin": { "$value": { "value": 1, "unit": "px" } },
-      "thick": { "$value": { "value": 2, "unit": "px" } }
+      "thick": { "$value": { "value": 2, "unit": "px" } },
+      "heavy": { "$value": { "value": 3, "unit": "px" } }
     }
   },
   "focus": {

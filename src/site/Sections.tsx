@@ -1,0 +1,87 @@
+import { Icon } from '../design-system/components/Icon';
+import { aboutText, labCards, resumeUrl, storybookUrl } from './content';
+import { certifications, employers } from './experience';
+
+export function About() {
+  return (
+    <section id="about" aria-labelledby="about-heading">
+      <h2 id="about-heading">About</h2>
+      <p>{aboutText}</p>
+    </section>
+  );
+}
+
+export function Experience() {
+  return (
+    <section id="experience" aria-labelledby="experience-heading">
+      <h2 id="experience-heading">Experience</h2>
+      <p>
+        <a className="resume-link" href={resumeUrl}>
+          <Icon name="download" />
+          Download resume (PDF)
+        </a>
+      </p>
+      {employers.map((employer) => (
+        <article key={employer.name} className="employer">
+          <h3>{employer.name}</h3>
+          <p className="meta">
+            {employer.location} · {employer.dates}
+          </p>
+          {employer.summary ? <p>{employer.summary}</p> : null}
+          {employer.roles.map((role) => (
+            <div key={role.title} className="role">
+              <h4>{role.title}</h4>
+              <p className="meta">
+                {role.start} – {role.end}
+              </p>
+              <ul>
+                {role.bullets.map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </article>
+      ))}
+      <h3>Certification</h3>
+      <ul>
+        {certifications.map((cert) => (
+          <li key={cert.name}>
+            {cert.name} - {cert.issuer}, {cert.year}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+export function ComponentLab() {
+  return (
+    <section id="component-lab" aria-labelledby="component-lab-heading">
+      <h2 id="component-lab-heading">Component lab</h2>
+      <p>
+        Components and tokens I build and document in Storybook, the same way I
+        do at work.
+      </p>
+      <ul className="card-list">
+        {labCards.map((card) => (
+          <li key={card.title} className="card">
+            <h3>
+              <a href={`${storybookUrl}${card.path}`}>{card.title}</a>
+            </h3>
+            <p>{card.description}</p>
+            {card.more ? (
+              <ul className="card-more">
+                {card.more.map((link) => (
+                  <li key={link.label}>
+                    <a href={`${storybookUrl}${link.path}`}>{link.label}</a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}

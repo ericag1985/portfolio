@@ -56,13 +56,16 @@ function svgOf(container: HTMLElement): SVGSVGElement {
   return svg;
 }
 
-test('allowlist is plus, trash, settings, info, and arrow-right', () => {
+test('allowlist is the eight approved icon names', () => {
   expect(iconNames).toEqual([
     'plus',
     'trash',
     'settings',
     'info',
     'arrow-right',
+    'download',
+    'sun',
+    'moon',
   ]);
   expect(Object.keys(icons)).toEqual(iconNames);
 });
@@ -71,7 +74,16 @@ test('source imports individual icons and not the lucide barrel', () => {
   const src = resolve(iconDir, '../../..');
   const iconSource = readFileSync(resolve(iconDir, 'icons.ts'), 'utf8');
 
-  for (const file of ['plus', 'trash-2', 'settings', 'info', 'arrow-right']) {
+  for (const file of [
+    'plus',
+    'trash-2',
+    'settings',
+    'info',
+    'arrow-right',
+    'download',
+    'sun',
+    'moon',
+  ]) {
     expect(iconSource).toContain(`lucide-react/icons/${file}`);
   }
 

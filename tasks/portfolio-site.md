@@ -25,18 +25,18 @@ titles already define published story ids.
 - Shared tests: `src/test/`
 - Assets already committed on this branch. Theme handling:
 
-| Path | Theme handling |
-| --- | --- |
-| `src/assets/erica-epcot.jpg` | One photo, 3000×3000. Same in both themes. Metadata stripped. Archival source; do not use this on the page. |
-| `src/assets/erica-epcot-800.webp` | Web photo, 800×800. Same in both themes. Use this in the page with `width={800}` and `height={800}`. Metadata stripped. |
-| `src/assets/erica-epcot-800.jpg` | JPEG fallback for the web photo, in a `<picture>`. Same in both themes. Metadata stripped. |
-| `public/favicon.svg` | Adaptive. An internal `prefers-color-scheme` media query uses light `color.accent.default` (`#7f3b93`, eggplant.600) and dark `color.accent.default` (`#d49be6`, eggplant.300). Update the SVG if those tokens change. |
-| `public/favicon-light.png` | 32×32 PNG fallback for light. Transparent background, marks in eggplant.600. |
-| `public/favicon-dark.png` | 32×32 PNG fallback for dark. Transparent background, marks in eggplant.300. |
-| `public/apple-touch-icon.png` | 180×180. Single raster on eggplant.700 with eggplant.100 marks, so it stays readable on light or dark home screens. iOS does not switch touch icons by color scheme. Metadata stripped. |
-| `public/og-image-light.jpg` | 1200×630 light share card. Use this in `og:image` and `twitter:image`. Crawlers do not honor color scheme. Metadata stripped. |
-| `public/og-image-dark.jpg` | 1200×630 dark share card, committed so both themes are covered. Do not use it in the default meta tags. Metadata stripped. |
-| `public/resume.pdf` | Erica approved this file as-is, including contact details. Serve it unchanged. Do not regenerate, edit, or strip it. |
+| Path                              | Theme handling                                                                                                                                                                                                         |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/assets/erica-epcot.jpg`      | One photo, 3000×3000. Same in both themes. Metadata stripped. Archival source; do not use this on the page.                                                                                                            |
+| `src/assets/erica-epcot-800.webp` | Web photo, 800×800. Same in both themes. Use this in the page with `width={800}` and `height={800}`. Metadata stripped.                                                                                                |
+| `src/assets/erica-epcot-800.jpg`  | JPEG fallback for the web photo, in a `<picture>`. Same in both themes. Metadata stripped.                                                                                                                             |
+| `public/favicon.svg`              | Adaptive. An internal `prefers-color-scheme` media query uses light `color.accent.default` (`#7f3b93`, eggplant.600) and dark `color.accent.default` (`#d49be6`, eggplant.300). Update the SVG if those tokens change. |
+| `public/favicon-light.png`        | 32×32 PNG fallback for light. Transparent background, marks in eggplant.600.                                                                                                                                           |
+| `public/favicon-dark.png`         | 32×32 PNG fallback for dark. Transparent background, marks in eggplant.300.                                                                                                                                            |
+| `public/apple-touch-icon.png`     | 180×180. Single raster on eggplant.700 with eggplant.100 marks, so it stays readable on light or dark home screens. iOS does not switch touch icons by color scheme. Metadata stripped.                                |
+| `public/og-image-light.jpg`       | 1200×630 light share card. Use this in `og:image` and `twitter:image`. Crawlers do not honor color scheme. Metadata stripped.                                                                                          |
+| `public/og-image-dark.jpg`        | 1200×630 dark share card, committed so both themes are covered. Do not use it in the default meta tags. Metadata stripped.                                                                                             |
+| `public/resume.pdf`               | Erica approved this file as-is, including contact details. Serve it unchanged. Do not regenerate, edit, or strip it.                                                                                                   |
 
 The focus ring and trailing token shapes are CSS, not image files.
 They use token colors, so they follow the theme. Lucide icons use
@@ -285,13 +285,29 @@ Senior UX Engineer". Wire favicons and the light OG image in
 `index.html`:
 
 ```html
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="/favicon-dark.png" type="image/png" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="/favicon-light.png" type="image/png" media="(prefers-color-scheme: light)">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta property="og:title" content="Erica Gugliemella - Senior UX Engineer">
-<meta property="og:image" content="https://ericag1985.github.io/portfolio/og-image-light.jpg">
-<meta name="twitter:image" content="https://ericag1985.github.io/portfolio/og-image-light.jpg">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link
+  rel="icon"
+  href="/favicon-dark.png"
+  type="image/png"
+  media="(prefers-color-scheme: dark)"
+/>
+<link
+  rel="icon"
+  href="/favicon-light.png"
+  type="image/png"
+  media="(prefers-color-scheme: light)"
+/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta property="og:title" content="Erica Gugliemella - Senior UX Engineer" />
+<meta
+  property="og:image"
+  content="https://ericag1985.github.io/portfolio/og-image-light.jpg"
+/>
+<meta
+  name="twitter:image"
+  content="https://ericag1985.github.io/portfolio/og-image-light.jpg"
+/>
 ```
 
 Vite rewrites public-root paths with the `/portfolio/` base. For

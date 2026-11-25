@@ -3,7 +3,9 @@
   --ds-border-width-none: 0px;
   --ds-border-width-thin: 1px;
   --ds-border-width-thick: 2px;
+  --ds-border-width-heavy: 3px;
   --ds-focus-ring-width: 2px;
+  --ds-breakpoint-md: 48rem;
   --ds-color-white: #ffffff;
   --ds-color-black: #000000;
   --ds-color-eggplant-50: #fcf1ff;
