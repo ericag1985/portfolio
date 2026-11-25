@@ -181,6 +181,7 @@ test('LinkedIn opens in a new tab and says so', () => {
   );
   expect(link).toHaveAttribute('target', '_blank');
   expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+  expect(link.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
 });
 
 test('GitHub links to the portfolio repo in a new tab and says so', () => {
@@ -195,6 +196,7 @@ test('GitHub links to the portfolio repo in a new tab and says so', () => {
   );
   expect(link).toHaveAttribute('target', '_blank');
   expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+  expect(link.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
 });
 
 test('the nav marks the current section with aria-current', async () => {

@@ -8,7 +8,8 @@ export type IconName =
   | 'arrow-right'
   | 'download'
   | 'sun'
-  | 'moon';
+  | 'moon'
+  | 'external-link';
 
 export type IconSize = 'sm' | 'md' | 'lg';
 

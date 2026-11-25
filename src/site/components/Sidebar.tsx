@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import photoJpg from '../../assets/erica-epcot-800.jpg';
 import photoWebp from '../../assets/erica-epcot-800.webp';
 import { Button } from '../../component-lab/components/Button';
+import { Icon } from '../../component-lab/components/Icon';
 import {
   githubUrl,
   linkedinUrl,
@@ -29,11 +30,19 @@ type SidebarProps = {
 
 /**
  * lucide-react 1.x has no brand icons, so LinkedIn and GitHub are text links.
+ * The external-link icon is decorative; the hidden text carries the meaning.
+ * `.external-link` scales the icon to half the text size (see styles.css).
  */
 function ExternalLink({ href, children }: { href: string; children: string }) {
   return (
-    <a href={href} target="_blank" rel="noreferrer noopener">
-      {children} <span className="visually-hidden">(opens in a new tab)</span>
+    <a
+      className="external-link"
+      href={href}
+      target="_blank"
+      rel="noreferrer noopener"
+    >
+      {children} <Icon name="external-link" size="sm" />{' '}
+      <span className="visually-hidden">(opens in a new tab)</span>
     </a>
   );
 }

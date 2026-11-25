@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react/types';
 import ArrowRight from 'lucide-react/icons/arrow-right';
 import Download from 'lucide-react/icons/download';
+import ExternalLink from 'lucide-react/icons/external-link';
 import Info from 'lucide-react/icons/info';
 import Moon from 'lucide-react/icons/moon';
 import Plus from 'lucide-react/icons/plus';
@@ -19,6 +20,7 @@ export const icons = {
   download: Download,
   sun: Sun,
   moon: Moon,
+  'external-link': ExternalLink,
 } as const satisfies Record<IconName, LucideIcon>;
 
 export const iconNames = Object.keys(icons) as IconName[];
