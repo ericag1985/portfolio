@@ -26,8 +26,6 @@ export type LabLink = { label: string; path: string };
 export type LabCard = {
   title: string;
   description: string;
-  /** The primary Storybook link, relative to the Storybook base url. */
   path: string;
-  /** Other pages for the same card. */
   more?: LabLink[];
 };

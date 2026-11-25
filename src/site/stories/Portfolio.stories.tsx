@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, within } from 'storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { Portfolio } from '../Portfolio';
 
@@ -31,5 +31,28 @@ export const Page: Story = {
       canvas.getByRole('heading', { level: 1, name: 'Erica Gugliemella' }),
     ).toBeVisible();
     await expect(canvas.getByRole('main')).toBeVisible();
+  },
+};
+
+/**
+ * Runs in real Chromium, where `:focus-visible` and the stylesheet apply
+ * (jsdom does neither).
+ */
+export const SkipLinkFocusesMain: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.tab();
+    const skipLink = canvas.getByRole('link', { name: 'Skip to main content' });
+    await expect(skipLink).toHaveFocus();
+    // Changing the hash would reload the test iframe; the click handler still
+    // moves focus to `main`.
+    skipLink.addEventListener('click', (event) => event.preventDefault());
+    await userEvent.keyboard('{Enter}');
+
+    const main = canvas.getByRole('main');
+    await expect(main).toHaveFocus();
+    const style = getComputedStyle(main);
+    await expect(style.outlineStyle).not.toBe('none');
+    await expect(parseFloat(style.outlineWidth)).toBeGreaterThan(0);
   },
 };

@@ -21,7 +21,7 @@ main:focus-visible {
 }
 
 /* `main` takes focus from the skip link, not from the keyboard. */
-main:focus {
+main:focus:not(:focus-visible) {
   outline: none;
 }
 
@@ -37,7 +37,7 @@ main:focus {
 }
 
 .skip-link {
-  position: absolute;
+  position: fixed;
   inset-block-start: var(--ds-space-2);
   inset-inline-start: var(--ds-space-2);
   z-index: 1;
@@ -56,7 +56,6 @@ main:focus {
   outline-offset: var(--ds-space-1);
 }
 
-/* Narrow: stacked and not sticky. */
 .layout {
   display: block;
 }
@@ -72,7 +71,6 @@ main:focus {
     var(--ds-color-border-default);
 }
 
-/* Wide: a pinned sidebar beside a scrolling main column. */
 .layout[data-layout='wide'] {
   display: grid;
   grid-template-columns: calc(var(--ds-space-16) * 5) minmax(0, 1fr);
