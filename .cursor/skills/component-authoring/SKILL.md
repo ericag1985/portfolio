@@ -46,6 +46,8 @@ Variant and name props are unions (`'sm' | 'md' | 'lg'`), exported from
 
 ## Accessibility
 
+- Meet WCAG 2.2 AA in every component and story. This is a must, not a
+  nice-to-have.
 - Use a semantic element, and give every control visible text or an
   accessible name.
 - Style `:focus-visible`.
