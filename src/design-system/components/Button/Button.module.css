@@ -97,8 +97,17 @@
 .button[data-variant='link'] {
   --button-background: var(--ds-button-link-background);
   --button-color: var(--ds-button-link-color);
-  text-decoration: underline;
+  text-decoration: none;
   text-underline-offset: 0.2em;
+}
+
+.button[data-variant='link']:is(
+  :hover,
+  :focus-visible,
+  [data-force-state='hover'],
+  [data-force-state='focus-visible']
+) {
+  text-decoration: underline;
 }
 
 .button[data-variant='link']:is(:hover, [data-force-state='hover']) {
@@ -126,6 +135,7 @@
 .button[data-variant='link']:disabled {
   --button-background: var(--ds-button-link-background);
   --button-border-color: transparent;
+  text-decoration: none;
 }
 
 @media (forced-colors: active) {
