@@ -54,6 +54,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE }}
           claude_args: |
             --max-turns 60
+            --append-system-prompt "Before you finish, always end the round as AGENTS.md Build step 3 says, even if something is unfinished: update the PR description (tick met criteria, add a Verification section, list anything not done under Not done), then run gh pr ready and gh pr edit --add-label needs-review. Unfinished items go in the description; they never stop these steps."
             --allowedTools "Bash(npm ci),Bash(npm run:*),Bash(npm test),Bash(gh pr view:*),Bash(gh pr edit:*),Bash(gh pr ready:*)"
 
       # Wakes Alice's review routine once, only when this round ended with
