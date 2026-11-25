@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img">
+  <style>
+    .ring { fill: none; stroke: #7f3b93; stroke-width: 1.5; stroke-dasharray: 2.4 1.8; stroke-linecap: round; }
+    .shape { fill: #7f3b93; }
+    @media (prefers-color-scheme: dark) {
+      .ring { stroke: #d49be6; }
+      .shape { fill: #d49be6; }
+    }
+  </style>
+  <circle class="ring" cx="14" cy="16" r="9.5"/>
+  <circle class="shape" cx="25.5" cy="9" r="1.6"/>
+  <rect class="shape" x="25.2" y="14.4" width="3.2" height="3.2" rx="0.6"/>
+  <circle class="shape" cx="25" cy="23" r="1.15"/>
+</svg>
