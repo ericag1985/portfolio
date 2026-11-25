@@ -4,7 +4,7 @@ import { beforeEach, expect, test, vi } from 'vitest';
 
 import { expectNoAxeViolations } from '../test/axe';
 import { App } from './App';
-import { aboutText, photoAlt } from './content';
+import { aboutText, iaapName, iaapUrl, photoAlt } from './content';
 import { certifications, employers } from './experience';
 import { themeStorageKey } from './theme';
 
@@ -84,10 +84,20 @@ test('the photo has the exact alt text, size, and a webp source', () => {
 test('About uses the exact paragraph', () => {
   render(<App />);
 
-  expect(screen.getByText(aboutText)).toBeInTheDocument();
+  const about = screen.getByRole('region', { name: 'About' });
+  expect(about.querySelector('p')).toHaveTextContent(aboutText, {
+    exact: true,
+  });
   expect(aboutText).toBe(
-    "I'm a front end engineer in Durham, NC who builds design systems and accessible components. For 14 years I've worked in React and TypeScript, and for 8 of those I've built the shared UI other teams build on. I'm CPACC certified, and I care most about making inclusive products the default.",
+    "I'm a front end engineer in Durham, NC who builds design systems and accessible components. For 14 years I've worked mainly in React and TypeScript, and for 8 of those I've focused on the shared UI and UX other teams build on. I'm a certified accessibility professional from the International Association of Accessibility Professionals (IAAP), and I care most about making inclusive products the default.",
   );
+
+  const iaap = screen.getByRole('link', {
+    name: `${iaapName} (opens in a new tab)`,
+  });
+  expect(iaap).toHaveAttribute('href', iaapUrl);
+  expect(iaap).toHaveAttribute('target', '_blank');
+  expect(iaap).toHaveAttribute('rel', 'noreferrer noopener');
 });
 
 test('Experience renders every employer, role, and bullet from the data', () => {
@@ -226,6 +236,7 @@ test('tab order is skip link, sidebar, then main', async () => {
     'Component lab',
     'LinkedIn (opens in a new tab)',
     'Switch to dark theme',
+    'International Association of Accessibility Professionals (IAAP) (opens in a new tab)',
     'Download resume (PDF)',
     'Tokens',
     'Spacing tokens',

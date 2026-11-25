@@ -3,8 +3,11 @@ import type { LabCard } from './types';
 export const siteName = 'Erica Gugliemella';
 export const siteRole = 'Senior UX Engineer, design systems and accessibility';
 
-export const aboutText =
-  "I'm a front end engineer in Durham, NC who builds design systems and accessible components. For 14 years I've worked in React and TypeScript, and for 8 of those I've built the shared UI other teams build on. I'm CPACC certified, and I care most about making inclusive products the default.";
+export const iaapName =
+  'International Association of Accessibility Professionals (IAAP)';
+export const iaapUrl = 'https://www.accessibilityassociation.org/';
+
+export const aboutText = `I'm a front end engineer in Durham, NC who builds design systems and accessible components. For 14 years I've worked mainly in React and TypeScript, and for 8 of those I've focused on the shared UI and UX other teams build on. I'm a certified accessibility professional from the ${iaapName}, and I care most about making inclusive products the default.`;
 
 export const photoAlt =
   'Erica Gugliemella and her husband smiling in front of Spaceship Earth at Epcot at night';

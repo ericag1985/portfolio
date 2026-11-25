@@ -1,14 +1,35 @@
 import { Fragment } from 'react';
 
 import { Icon } from '../design-system/components/Icon';
-import { aboutText, labCards, resumeUrl, storybookUrl } from './content';
+import {
+  aboutText,
+  iaapName,
+  iaapUrl,
+  labCards,
+  resumeUrl,
+  storybookUrl,
+} from './content';
 import { certifications, employers } from './experience';
 
 export function About() {
+  const [beforeIaap, afterIaap] = aboutText.split(iaapName);
+
   return (
     <section id="about" aria-labelledby="about-heading">
       <h2 id="about-heading">About</h2>
-      <p>{aboutText}</p>
+      <p>
+        {beforeIaap}
+        <a
+          className="about-link"
+          href={iaapUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+          aria-label={`${iaapName} (opens in a new tab)`}
+        >
+          {iaapName}
+        </a>
+        {afterIaap}
+      </p>
     </section>
   );
 }

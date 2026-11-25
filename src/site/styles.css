@@ -182,6 +182,7 @@ main:focus:not(:focus-visible) {
 
 /* Same treatment as the button link variant. */
 .resume-link,
+.about-link,
 .card a {
   font-weight: var(--ds-font-weight-medium);
   text-decoration: none;
@@ -189,16 +190,19 @@ main:focus:not(:focus-visible) {
 }
 
 .resume-link:is(:hover, :focus-visible),
+.about-link:is(:hover, :focus-visible),
 .card a:is(:hover, :focus-visible) {
   text-decoration: underline;
 }
 
 .resume-link:hover,
+.about-link:hover,
 .card a:hover {
   color: var(--ds-button-link-hover-color);
 }
 
 .resume-link:active,
+.about-link:active,
 .card a:active {
   color: var(--ds-button-link-active-color);
 }
