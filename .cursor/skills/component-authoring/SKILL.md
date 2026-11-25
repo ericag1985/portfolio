@@ -1,11 +1,11 @@
 ---
 name: component-authoring
-description: Use when creating or changing any design-system component or its stories. Covers folder layout, styling with tokens, accessibility, stories, and tests.
+description: Use when creating or changing any component-lab component or its stories. Covers folder layout, styling with tokens, accessibility, stories, and tests.
 ---
 
 # Component authoring
 
-`src/design-system/components/Icon/` is the reference component.
+`src/component-lab/components/Icon/` is the reference component.
 
 ## Folder
 
@@ -36,7 +36,7 @@ Component/
 
 Plain CSS or CSS Modules. Use `--ds-*` tokens for color, size, space, type,
 and motion, so light and dark work automatically. Component tokens go in
-`src/design-system/tokens/component/*.json` and reference semantic tokens.
+`src/component-lab/tokens/component/*.json` and reference semantic tokens.
 Run `npm run tokens:build` and commit `tokens.css`.
 
 ## TypeScript
@@ -58,7 +58,7 @@ Variant and name props are unions (`'sm' | 'md' | 'lg'`), exported from
 
 ## Stories
 
-- TypeScript CSF3, titled `Design System/<Component>`.
+- TypeScript CSF3, titled `Component lab/<Component>`.
 - One story per variant or state, plus a sticker sheet.
 - Args and controls cover the public props.
 - Every story works in light and dark (the toolbar sets `data-theme`).

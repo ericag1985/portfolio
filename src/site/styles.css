@@ -6,58 +6,375 @@ body {
   line-height: var(--ds-font-line-height-16);
 }
 
-header,
-main {
-  max-width: 40rem;
-  margin-inline: auto;
-  padding-inline: var(--ds-space-6);
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--ds-space-4);
-  padding-block: var(--ds-space-6) 0;
-}
-
-header p {
-  margin: 0;
-}
-
-main {
-  padding-block: var(--ds-space-8) var(--ds-space-16);
-}
-
-h1 {
-  margin: 0 0 var(--ds-space-3);
-  font-size: var(--ds-font-size-36);
-  font-weight: var(--ds-font-weight-bold);
-  line-height: var(--ds-font-line-height-36);
-}
-
 a {
   color: var(--ds-color-text-link);
 }
 
+a:hover {
+  color: var(--ds-color-accent-hover);
+}
+
 a:focus-visible,
-.theme-toggle:focus-visible {
+main:focus-visible {
   outline: var(--ds-focus-ring-width) solid var(--ds-color-border-focus);
-  outline-offset: 3px;
+  outline-offset: var(--ds-space-1);
 }
 
-.theme-toggle {
-  padding: var(--ds-space-1) var(--ds-space-3);
-  border: var(--ds-border-width-thin) solid var(--ds-color-border-strong);
+/* `main` takes focus from the skip link, not from the keyboard. */
+main:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: var(--ds-border-width-thin);
+  height: var(--ds-border-width-thin);
+  margin: calc(var(--ds-border-width-thin) * -1);
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  inset-block-start: var(--ds-space-2);
+  inset-inline-start: var(--ds-space-2);
+  z-index: 1;
+  padding: var(--ds-space-2) var(--ds-space-4);
   border-radius: var(--ds-radius-sm);
-  background: var(--ds-color-bg-transparent);
-  color: var(--ds-color-text-primary);
-  font: inherit;
-  font-size: var(--ds-font-size-14);
-  line-height: var(--ds-font-line-height-14);
+  background: var(--ds-color-bg-inverse);
+  color: var(--ds-color-text-inverse);
+  transform: translateY(-200%);
 }
 
-.theme-toggle:hover {
-  border-color: var(--ds-color-accent-default);
-  color: var(--ds-color-text-link);
+.skip-link:focus {
+  transform: none;
+}
+
+.skip-link:focus-visible {
+  outline-offset: var(--ds-space-1);
+}
+
+.layout {
+  display: block;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-6);
+  background: var(--ds-color-bg-surface);
+  border-block-end: var(--ds-border-width-thin) dashed
+    var(--ds-color-accent-default);
+}
+
+.layout[data-layout='wide'] {
+  display: grid;
+  grid-template-columns: calc(var(--ds-space-16) * 5) minmax(0, 1fr);
+  align-items: start;
+}
+
+.layout[data-layout='wide'] .sidebar {
+  position: sticky;
+  inset-block-start: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-block-end: none;
+  border-inline-end: var(--ds-border-width-thin) dashed
+    var(--ds-color-accent-default);
+}
+
+.photo-ring {
+  position: relative;
+  box-sizing: content-box;
+  width: calc(var(--ds-space-16) * 3);
+  max-width: 100%;
+  padding: var(--ds-space-2);
+  border: var(--ds-border-width-heavy) dashed var(--ds-color-accent-default);
+  border-radius: var(--ds-radius-full);
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--ds-radius-full);
+}
+
+.photo-shape {
+  position: absolute;
+  background: var(--ds-color-accent-default);
+}
+
+.photo-shape-a {
+  inset-block-end: 0;
+  inset-inline-end: calc(var(--ds-space-2) * -1);
+  width: var(--ds-space-4);
+  height: var(--ds-space-4);
+  border-radius: var(--ds-radius-full);
+}
+
+.photo-shape-b {
+  inset-block-end: calc(var(--ds-space-3) * -1);
+  inset-inline-end: var(--ds-space-6);
+  width: var(--ds-space-3);
+  height: var(--ds-space-3);
+  border-radius: var(--ds-radius-sm);
+}
+
+.photo-shape-c {
+  inset-block-end: var(--ds-space-6);
+  inset-inline-end: calc(var(--ds-space-4) * -1);
+  width: var(--ds-space-2);
+  height: var(--ds-space-2);
+  border-radius: var(--ds-radius-full);
+}
+
+.site-name {
+  margin: 0;
+  font-size: var(--ds-font-size-30);
+  font-weight: var(--ds-font-weight-bold);
+  line-height: var(--ds-font-line-height-30);
+}
+
+.site-role {
+  margin: 0;
+  color: var(--ds-color-text-secondary);
+}
+
+.nav-list,
+.card-list,
+.card-more {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-list a,
+.resume-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-space-8);
+}
+
+.nav-list a {
+  padding-inline: var(--ds-space-2);
+  border-inline-start: var(--ds-border-width-thick) solid
+    var(--ds-color-bg-transparent);
+  color: var(--ds-color-text-primary);
+  text-decoration: none;
+}
+
+.nav-list a[aria-current='true'] {
+  border-inline-start-color: var(--ds-color-accent-default);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.nav-list a:hover {
+  text-decoration: underline;
+}
+
+/* One scrolling row on narrow viewports. The page itself does not
+   scroll sideways. Fades mark a hidden edge, and scroll-margin keeps a
+   focused link, including its ring, out from under that fade. */
+.layout[data-layout='narrow'] nav {
+  position: relative;
+  align-self: stretch;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.layout[data-layout='narrow'] nav[data-scroll-start]::before,
+.layout[data-layout='narrow'] nav[data-scroll-end]::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  inset-block: 0;
+  inline-size: var(--ds-space-8);
+}
+
+.layout[data-layout='narrow'] nav[data-scroll-start]::before {
+  inset-inline-start: 0;
+  background: linear-gradient(
+    to right,
+    var(--ds-color-bg-surface),
+    transparent
+  );
+}
+
+.layout[data-layout='narrow'] nav[data-scroll-end]::after {
+  inset-inline-end: 0;
+  background: linear-gradient(to left, var(--ds-color-bg-surface), transparent);
+}
+
+@media (forced-colors: active) {
+  .layout[data-layout='narrow'] nav[data-scroll-start]::before {
+    background: linear-gradient(to right, Canvas, transparent);
+  }
+
+  .layout[data-layout='narrow'] nav[data-scroll-end]::after {
+    background: linear-gradient(to left, Canvas, transparent);
+  }
+}
+
+.layout[data-layout='narrow'] .nav-list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--ds-space-4);
+  max-width: 100%;
+  padding-block: var(--ds-space-1);
+  padding-inline: var(--ds-space-1);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--ds-space-8);
+}
+
+.layout[data-layout='narrow'] .nav-list a {
+  position: relative;
+  flex-shrink: 0;
+  min-width: var(--ds-space-8);
+  min-height: var(--ds-space-8);
+  scroll-margin-inline: var(--ds-space-8);
+  white-space: nowrap;
+  border-inline-start: none;
+  border-block-end: var(--ds-border-width-thick) solid transparent;
+}
+
+.layout[data-layout='narrow'] .nav-list a[aria-current='true'] {
+  border-block-end-color: var(--ds-color-accent-default);
+}
+
+/* Same treatment as the button link variant. */
+.resume-link,
+.about-link,
+.card a {
+  font-weight: var(--ds-font-weight-medium);
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+}
+
+.resume-link:is(:hover, :focus-visible),
+.about-link:is(:hover, :focus-visible),
+.card a:is(:hover, :focus-visible) {
+  text-decoration: underline;
+}
+
+.resume-link:hover,
+.about-link:hover,
+.card a:hover {
+  color: var(--ds-button-link-hover-color);
+}
+
+.resume-link:active,
+.about-link:active,
+.card a:active {
+  color: var(--ds-button-link-active-color);
+}
+
+main {
+  min-width: 0;
+  max-width: 70ch;
+  padding: var(--ds-space-8) var(--ds-space-6) var(--ds-space-16);
+  overflow-wrap: anywhere;
+}
+
+/* Dotted divider between sections, in the accent color. */
+.section-rule {
+  height: var(--ds-space-1);
+  margin-block: var(--ds-space-12);
+  border: 0;
+  background-image: radial-gradient(
+    circle closest-side,
+    var(--ds-color-accent-default) 100%,
+    transparent
+  );
+  background-size: var(--ds-space-3) 100%;
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/* Short dotted break between employers, about a quarter of the column. */
+.employer-rule {
+  width: 25%;
+  height: var(--ds-border-width-thick);
+  margin-block: var(--ds-space-6);
+  margin-inline: 0;
+  border: 0;
+  background-image: radial-gradient(
+    circle closest-side,
+    var(--ds-color-accent-default) 100%,
+    transparent
+  );
+  background-size: var(--ds-space-2) 100%;
+  background-repeat: repeat-x;
+  background-position: left center;
+}
+
+.employer-rule + .employer h3 {
+  margin-block-start: 0;
+}
+
+h2 {
+  margin: 0 0 var(--ds-space-4);
+  font-size: var(--ds-font-size-24);
+  line-height: var(--ds-font-line-height-24);
+}
+
+h3 {
+  margin: var(--ds-space-8) 0 var(--ds-space-1);
+  font-size: var(--ds-font-size-20);
+  line-height: var(--ds-font-line-height-20);
+}
+
+h4 {
+  margin: var(--ds-space-4) 0 0;
+  font-size: var(--ds-font-size-16);
+  line-height: var(--ds-font-line-height-16);
+}
+
+.meta {
+  margin: 0 0 var(--ds-space-2);
+  color: var(--ds-color-text-muted);
+}
+
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, calc(var(--ds-space-16) * 4)), 1fr)
+  );
+  gap: var(--ds-space-4);
+}
+
+.card {
+  padding: var(--ds-space-4);
+  border: var(--ds-border-width-thin) solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-bg-surface);
+}
+
+.card h3 {
+  margin-block-start: 0;
+}
+
+.card h3 a {
+  display: inline-block;
+  min-height: var(--ds-space-8);
+}
+
+.card p {
+  margin: 0 0 var(--ds-space-2);
+}
+
+.card-more a {
+  display: inline-block;
+  min-height: var(--ds-space-8);
 }

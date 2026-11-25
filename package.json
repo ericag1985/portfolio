@@ -7,8 +7,8 @@
     "node": ">=22.13"
   },
   "scripts": {
-    "tokens:build": "node --experimental-strip-types --disable-warning=ExperimentalWarning src/design-system/tokens/build.ts",
-    "tokens:check": "npm run tokens:build && git diff --exit-code -- src/design-system/tokens/tokens.css",
+    "tokens:build": "node --experimental-strip-types --disable-warning=ExperimentalWarning src/component-lab/tokens/build.ts",
+    "tokens:check": "npm run tokens:build && git diff --exit-code -- src/component-lab/tokens/tokens.css",
     "prebuild": "npm run tokens:build",
     "pre-storybook": "npm run tokens:build",
     "prestorybook": "npm run pre-storybook",
@@ -44,6 +44,7 @@
     "@vitejs/plugin-react": "^6.3.0",
     "@vitest/browser": "^5.1.1",
     "@vitest/browser-playwright": "^5.1.1",
+    "axe-core": "^4.14.1",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsx-a11y": "^6.10.2",

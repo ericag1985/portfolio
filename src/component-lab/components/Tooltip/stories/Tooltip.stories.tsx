@@ -9,7 +9,7 @@ import { Tooltip, namings, placements } from '../index';
 import './Tooltip.stories.css';
 
 const meta = {
-  title: 'Design System/Tooltip',
+  title: 'Component lab/Tooltip',
   component: Tooltip,
   tags: ['autodocs'],
   args: {

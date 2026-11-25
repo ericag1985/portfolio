@@ -1,6 +1,14 @@
 import type { Ref, SVGProps } from 'react';
 
-export type IconName = 'plus' | 'trash' | 'settings' | 'info' | 'arrow-right';
+export type IconName =
+  | 'plus'
+  | 'trash'
+  | 'settings'
+  | 'info'
+  | 'arrow-right'
+  | 'download'
+  | 'sun'
+  | 'moon';
 
 export type IconSize = 'sm' | 'md' | 'lg';
 

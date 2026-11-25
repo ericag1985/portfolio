@@ -10,9 +10,9 @@ Follow `AGENTS.md` and `.cursor/skills/component-authoring/SKILL.md`.
 ## Inputs
 
 - `AGENTS.md`, `.cursor/skills/component-authoring/SKILL.md`
-- `src/design-system/components/Icon/` (icon names and sizes)
-- `src/design-system/components/Tooltip/` (naming, stories)
-- `src/design-system/tokens/component/button.json` (existing colors)
+- `src/component-lab/components/Icon/` (icon names and sizes)
+- `src/component-lab/components/Tooltip/` (naming, stories)
+- `src/component-lab/tokens/component/button.json` (existing colors)
 
 ## API (`types.ts`)
 
@@ -54,12 +54,12 @@ Examples:
 
 ## Files touched
 
-- `src/design-system/components/Button/`: `Button.tsx`, `types.ts`,
+- `src/component-lab/components/Button/`: `Button.tsx`, `types.ts`,
   `utils.ts` (only if needed), `index.ts`, `Button.module.css`,
   `Button.test.tsx`, `stories/Button.stories.tsx`
-- `src/design-system/tokens/component/button.json`, the generated
+- `src/component-lab/tokens/component/button.json`, the generated
   `tokens.css`, and `tokens.test.ts`
-- `src/design-system/components/Tooltip/stories/` (the info example uses
+- `src/component-lab/components/Tooltip/stories/` (the info example uses
   `<Button label="More info" icon="info" />`)
 
 ## Acceptance criteria

@@ -146,7 +146,7 @@ and a sticker sheet (`a11y.test: 'off'`). Delete the rest.
 
 ## 2. Token tests
 
-`src/design-system/tokens/tokens.test.ts`: delete the per-token
+`src/component-lab/tokens/tokens.test.ts`: delete the per-token
 `toContain('--ds-…')` assertions for button and tooltip, because
 `tokens:check` already guards the generated CSS. Replace them with one test:
 every token in `tokens/component/*.json` resolves (no dangling reference) in
@@ -156,7 +156,7 @@ existing tests.
 
 ## 3. Dead code
 
-Delete `src/design-system/components/Placeholder.tsx` and
+Delete `src/component-lab/components/Placeholder.tsx` and
 `Placeholder.stories.tsx`.
 
 ## 4. Theme persistence bug
@@ -185,14 +185,14 @@ toggle still switches the theme.
 ## Files touched
 
 ```
-src/design-system/components/Tooltip/*            (rewrite; same folder layout)
-src/design-system/components/Tooltip/stories/*
-src/design-system/components/Placeholder.tsx      (delete)
-src/design-system/components/Placeholder.stories.tsx (delete)
-src/design-system/tokens/component/tooltip.json
-src/design-system/tokens/build.ts
-src/design-system/tokens/tokens.css               (regenerated)
-src/design-system/tokens/tokens.test.ts
+src/component-lab/components/Tooltip/*            (rewrite; same folder layout)
+src/component-lab/components/Tooltip/stories/*
+src/component-lab/components/Placeholder.tsx      (delete)
+src/component-lab/components/Placeholder.stories.tsx (delete)
+src/component-lab/tokens/component/tooltip.json
+src/component-lab/tokens/build.ts
+src/component-lab/tokens/tokens.css               (regenerated)
+src/component-lab/tokens/tokens.test.ts
 src/site/theme.ts
 src/site/App.test.tsx
 README.md

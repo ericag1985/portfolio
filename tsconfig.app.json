@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src", ".storybook"],
-  "exclude": ["src/design-system/tokens/build.ts"]
+  "exclude": ["src/component-lab/tokens/build.ts"]
 }

@@ -9,7 +9,7 @@ const testDir = dirname(fileURLToPath(import.meta.url));
  * importing the stylesheet does not apply custom properties in jsdom.
  */
 export const tokensCss = readFileSync(
-  resolve(testDir, '../design-system/tokens/tokens.css'),
+  resolve(testDir, '../component-lab/tokens/tokens.css'),
   'utf8',
 );
 
@@ -17,7 +17,7 @@ const style = document.createElement('style');
 style.textContent = tokensCss;
 document.head.append(style);
 
-const rawTokenFiles = import.meta.glob('../design-system/tokens/**/*.json', {
+const rawTokenFiles = import.meta.glob('../component-lab/tokens/**/*.json', {
   eager: true,
   import: 'default',
   query: '?raw',

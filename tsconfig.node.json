@@ -23,6 +23,6 @@
     "vitest.config.ts",
     "eslint.config.ts",
     "types/**/*.d.ts",
-    "src/design-system/tokens/build.ts"
+    "src/component-lab/tokens/build.ts"
   ]
 }
