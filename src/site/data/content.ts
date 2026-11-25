@@ -14,6 +14,9 @@ export const photoAlt =
 
 export const linkedinUrl = 'https://www.linkedin.com/in/egugliemella';
 
+/** Links to this site's repo, not the profile, so visitors land on the code. */
+export const githubUrl = 'https://github.com/ericag1985/portfolio';
+
 export const labCards: LabCard[] = [
   {
     title: 'Tokens',

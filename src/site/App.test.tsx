@@ -85,7 +85,9 @@ test('About uses the exact paragraph', () => {
   render(<App />);
 
   const about = screen.getByRole('region', { name: 'About' });
-  expect(about.querySelector('p')?.textContent).toBe(aboutText);
+  expect(about.querySelector('p')?.textContent).toBe(
+    aboutText.replace(iaapName, `${iaapName} (opens in a new tab)`),
+  );
   expect(aboutText).toBe(
     "I'm a front end engineer in Durham, NC who builds design systems and accessible components. For 14 years I've worked mainly in React and TypeScript, and for 8 of those I've focused on the shared UI and UX other teams build on. I'm a certified accessibility professional from the International Association of Accessibility Professionals (IAAP), and I care most about making inclusive products the default.",
   );
@@ -96,6 +98,7 @@ test('About uses the exact paragraph', () => {
   expect(iaap).toHaveAttribute('href', iaapUrl);
   expect(iaap).toHaveAttribute('target', '_blank');
   expect(iaap).toHaveAttribute('rel', 'noreferrer noopener');
+  expect(iaap.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
 });
 
 test('Experience renders every employer, role, and bullet from the data', () => {
@@ -181,9 +184,22 @@ test('LinkedIn opens in a new tab and says so', () => {
   );
   expect(link).toHaveAttribute('target', '_blank');
   expect(link).toHaveAttribute('rel', 'noreferrer noopener');
-  expect(
-    screen.queryByRole('link', { name: 'GitHub (opens in a new tab)' }),
-  ).not.toBeInTheDocument();
+  expect(link.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+});
+
+test('GitHub links to the portfolio repo in a new tab and says so', () => {
+  render(<App />);
+
+  const link = screen.getByRole('link', {
+    name: 'GitHub (opens in a new tab)',
+  });
+  expect(link).toHaveAttribute(
+    'href',
+    'https://github.com/ericag1985/portfolio',
+  );
+  expect(link).toHaveAttribute('target', '_blank');
+  expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+  expect(link.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
 });
 
 test('the nav marks the current section with aria-current', async () => {
@@ -233,6 +249,7 @@ test('tab order is skip link, sidebar, then main', async () => {
     'Experience',
     'Component lab',
     'LinkedIn (opens in a new tab)',
+    'GitHub (opens in a new tab)',
     'Switch to dark theme',
     'International Association of Accessibility Professionals (IAAP) (opens in a new tab)',
     'Download resume (PDF)',
