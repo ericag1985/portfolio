@@ -102,11 +102,11 @@
 }
 
 .button[data-variant='link']:is(
-  :hover,
-  :focus-visible,
-  [data-force-state='hover'],
-  [data-force-state='focus-visible']
-) {
+    :hover,
+    :focus-visible,
+    [data-force-state='hover'],
+    [data-force-state='focus-visible']
+  ) {
   text-decoration: underline;
 }
 
