@@ -3,6 +3,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import { Section, Sheet } from '../../../foundations/sheet';
 import '../../../foundations/foundations.css';
+import { Button } from '../../Button';
 import { Icon } from '../../Icon';
 import { Tooltip, namings, placements } from '../index';
 import './Tooltip.stories.css';
@@ -132,26 +133,19 @@ export const Bottom: Story = {
 };
 
 export const LabelNaming: Story = {
-  args: {
-    content: 'About this field',
-    naming: 'label',
-    children: (
-      <button type="button" className="tooltip-story-icon-trigger">
-        <Icon name="info" />
-      </button>
-    ),
-  },
+  args: { content: 'More info', naming: 'label' },
   parameters: {
     docs: {
       description: {
         story:
-          'aria-labelledby names the icon-only button with the tooltip text, so the name is read once.',
+          'An icon-only Button wraps itself in a Tooltip with naming="label", so aria-labelledby names it with the tooltip text and the name is read once.',
       },
     },
   },
+  render: () => <Button label="More info" icon="info" />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: 'About this field' });
+    const button = canvas.getByRole('button', { name: 'More info' });
     await expect(button).not.toHaveAccessibleDescription();
   },
 };

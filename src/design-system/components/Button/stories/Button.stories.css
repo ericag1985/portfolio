@@ -1,0 +1,36 @@
+.button-story {
+  display: flex;
+  justify-content: center;
+  padding: var(--ds-space-16);
+  background: var(--ds-color-bg-canvas);
+  color: var(--ds-color-text-primary);
+  font-family: var(--ds-font-family-sans);
+}
+
+.button-story:has(.sheet) {
+  display: block;
+  padding: 0;
+}
+
+.button-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(4, max-content);
+  gap: var(--ds-space-4);
+  align-items: center;
+  justify-items: start;
+}
+
+.button-sheet-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-4);
+  align-items: center;
+}
+
+.button-sheet-label {
+  margin: 0;
+  color: var(--ds-color-text-secondary);
+  font-family: var(--ds-font-family-mono);
+  font-size: var(--ds-font-size-14);
+  line-height: var(--ds-font-line-height-14);
+}
