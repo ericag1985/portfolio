@@ -161,21 +161,21 @@ test('Component lab cards link to the published Storybook pages', () => {
   }
 });
 
-test('GitHub and LinkedIn open in a new tab and say so', () => {
+test('LinkedIn opens in a new tab and says so', () => {
   render(<App />);
 
-  for (const [name, href] of [
-    ['GitHub (opens in a new tab)', 'https://github.com/ericag1985'],
-    [
-      'LinkedIn (opens in a new tab)',
-      'https://www.linkedin.com/in/egugliemella',
-    ],
-  ]) {
-    const link = screen.getByRole('link', { name });
-    expect(link).toHaveAttribute('href', href);
-    expect(link).toHaveAttribute('target', '_blank');
-    expect(link).toHaveAttribute('rel', 'noreferrer noopener');
-  }
+  const link = screen.getByRole('link', {
+    name: 'LinkedIn (opens in a new tab)',
+  });
+  expect(link).toHaveAttribute(
+    'href',
+    'https://www.linkedin.com/in/egugliemella',
+  );
+  expect(link).toHaveAttribute('target', '_blank');
+  expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+  expect(
+    screen.queryByRole('link', { name: 'GitHub (opens in a new tab)' }),
+  ).not.toBeInTheDocument();
 });
 
 test('the nav marks the current section with aria-current', async () => {
@@ -224,7 +224,6 @@ test('tab order is skip link, sidebar, then main', async () => {
     'About',
     'Experience',
     'Component lab',
-    'GitHub (opens in a new tab)',
     'LinkedIn (opens in a new tab)',
     'Switch to dark theme',
     'Download resume (PDF)',

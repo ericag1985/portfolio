@@ -51,7 +51,9 @@ export function Portfolio({ theme, onToggleTheme }: PortfolioProps) {
       />
       <main id="main" ref={mainRef} tabIndex={-1}>
         <About />
+        <hr className="section-rule" />
         <Experience />
+        <hr className="section-rule" />
         <ComponentLab />
       </main>
     </div>

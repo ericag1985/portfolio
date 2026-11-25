@@ -9,7 +9,6 @@ export const aboutText =
 export const photoAlt =
   'Erica Gugliemella and her husband smiling in front of Spaceship Earth at Epcot at night';
 
-export const githubUrl = 'https://github.com/ericag1985';
 export const linkedinUrl = 'https://www.linkedin.com/in/egugliemella';
 
 export const labCards: LabCard[] = [

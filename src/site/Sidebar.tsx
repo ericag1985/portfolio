@@ -1,13 +1,7 @@
 import { Button } from '../design-system/components/Button';
 import photoJpg from '../assets/erica-epcot-800.jpg';
 import photoWebp from '../assets/erica-epcot-800.webp';
-import {
-  githubUrl,
-  linkedinUrl,
-  photoAlt,
-  siteName,
-  siteRole,
-} from './content';
+import { linkedinUrl, photoAlt, siteName, siteRole } from './content';
 import type { SectionId } from './types';
 import type { ThemeName } from './theme';
 
@@ -25,7 +19,7 @@ type SidebarProps = {
 };
 
 /**
- * lucide-react 1.x has no brand icons, so GitHub and LinkedIn are text links.
+ * lucide-react 1.x has no brand icons, so LinkedIn is a text link.
  */
 function ExternalLink({ href, children }: { href: string; children: string }) {
   return (
@@ -66,7 +60,7 @@ export function Sidebar({
       </div>
       <h1 className="site-name">{siteName}</h1>
       <p className="site-role">{siteRole}</p>
-      <nav aria-label="Sections">
+      <nav aria-label="Site">
         <ul className="nav-list">
           {navItems.map((item) => (
             <li key={item.id}>
@@ -81,16 +75,11 @@ export function Sidebar({
               </a>
             </li>
           ))}
+          <li>
+            <ExternalLink href={linkedinUrl}>LinkedIn</ExternalLink>
+          </li>
         </ul>
       </nav>
-      <ul className="social-list">
-        <li>
-          <ExternalLink href={githubUrl}>GitHub</ExternalLink>
-        </li>
-        <li>
-          <ExternalLink href={linkedinUrl}>LinkedIn</ExternalLink>
-        </li>
-      </ul>
       <Button
         variant="secondary"
         icon={theme === 'dark' ? 'sun' : 'moon'}

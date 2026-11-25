@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 import { Icon } from '../design-system/components/Icon';
 import { aboutText, labCards, resumeUrl, storybookUrl } from './content';
 import { certifications, employers } from './experience';
@@ -21,27 +23,30 @@ export function Experience() {
           Download resume (PDF)
         </a>
       </p>
-      {employers.map((employer) => (
-        <article key={employer.name} className="employer">
-          <h3>{employer.name}</h3>
-          <p className="meta">
-            {employer.location} · {employer.dates}
-          </p>
-          {employer.summary ? <p>{employer.summary}</p> : null}
-          {employer.roles.map((role) => (
-            <div key={role.title} className="role">
-              <h4>{role.title}</h4>
-              <p className="meta">
-                {role.start} – {role.end}
-              </p>
-              <ul>
-                {role.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </article>
+      {employers.map((employer, index) => (
+        <Fragment key={employer.name}>
+          {index > 0 ? <hr className="employer-rule" /> : null}
+          <article className="employer">
+            <h3>{employer.name}</h3>
+            <p className="meta">
+              {employer.location} · {employer.dates}
+            </p>
+            {employer.summary ? <p>{employer.summary}</p> : null}
+            {employer.roles.map((role) => (
+              <div key={role.title} className="role">
+                <h4>{role.title}</h4>
+                <p className="meta">
+                  {role.start} – {role.end}
+                </p>
+                <ul>
+                  {role.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </article>
+        </Fragment>
       ))}
       <h3>Certification</h3>
       <ul>
@@ -60,8 +65,8 @@ export function ComponentLab() {
     <section id="component-lab" aria-labelledby="component-lab-heading">
       <h2 id="component-lab-heading">Component lab</h2>
       <p>
-        Components and tokens I build and document in Storybook, the same way I
-        do at work.
+        A small design system, documented in Storybook the same way I document
+        one at work: tokens, accessible components, and both themes.
       </p>
       <ul className="card-list">
         {labCards.map((card) => (
