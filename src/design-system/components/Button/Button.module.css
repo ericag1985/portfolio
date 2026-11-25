@@ -45,7 +45,6 @@
   font-size: var(--ds-button-lg-font-size);
 }
 
-/* Square at the same size as a text button. */
 .button[data-icon-only] {
   inline-size: var(--button-min-height);
   padding: 0;

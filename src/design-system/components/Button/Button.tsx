@@ -11,8 +11,8 @@ import type { ButtonProps } from './types';
  * tooltip and the accessible name. Icons next to text are decorative.
  *
  * `type` defaults to `"button"` so it never submits a form by accident.
- * Icon placement uses flex order, so start and end follow the writing
- * direction in RTL.
+ * Icon placement uses source order inside a flex row, so start and end follow
+ * the writing direction in RTL.
  */
 export function Button({
   label,
