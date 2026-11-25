@@ -31,7 +31,7 @@ type SidebarProps = {
 /**
  * lucide-react 1.x has no brand icons, so LinkedIn and GitHub are text links.
  * The external-link icon is decorative; the hidden text carries the meaning.
- * `.external-link` scales the icon to half the text size (see styles.css).
+ * `.external-link` scales the icon to 75% of the text size (see styles.css).
  */
 function ExternalLink({ href, children }: { href: string; children: string }) {
   return (

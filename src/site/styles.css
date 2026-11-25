@@ -180,10 +180,10 @@ main:focus:not(:focus-visible) {
   text-decoration: underline;
 }
 
-/* The external-link icon is half the link text size. Icon sizes itself from
+/* The external-link icon is 75% of the link text size. Icon sizes itself from
    this token, so overriding it here scales only these icons. */
 .external-link {
-  --ds-icon-size-sm: 0.5em;
+  --ds-icon-size-sm: 0.75em;
 }
 
 /* One scrolling row on narrow viewports. The page itself does not
