@@ -1,0 +1,155 @@
+.button {
+  --button-background: var(--ds-button-primary-background);
+  --button-color: var(--ds-button-primary-color);
+  --button-border-color: transparent;
+  --button-min-height: var(--ds-button-md-min-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-block-size: var(--button-min-height);
+  margin: 0;
+  /* Transparent borders paint as the system border in forced colors. */
+  border: var(--ds-border-width-thin) solid var(--button-border-color);
+  border-radius: var(--ds-button-radius);
+  background: var(--button-background);
+  color: var(--button-color);
+  font-family: var(--ds-font-family-sans);
+  font-weight: var(--ds-font-weight-medium);
+  line-height: 1.25;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.button[data-size='sm'] {
+  --button-min-height: var(--ds-button-sm-min-height);
+  gap: var(--ds-button-sm-gap);
+  padding-block: var(--ds-button-sm-padding-block);
+  padding-inline: var(--ds-button-sm-padding-inline);
+  font-size: var(--ds-button-sm-font-size);
+}
+
+.button[data-size='md'] {
+  --button-min-height: var(--ds-button-md-min-height);
+  gap: var(--ds-button-md-gap);
+  padding-block: var(--ds-button-md-padding-block);
+  padding-inline: var(--ds-button-md-padding-inline);
+  font-size: var(--ds-button-md-font-size);
+}
+
+.button[data-size='lg'] {
+  --button-min-height: var(--ds-button-lg-min-height);
+  gap: var(--ds-button-lg-gap);
+  padding-block: var(--ds-button-lg-padding-block);
+  padding-inline: var(--ds-button-lg-padding-inline);
+  font-size: var(--ds-button-lg-font-size);
+}
+
+.button[data-icon-only] {
+  inline-size: var(--button-min-height);
+  padding: 0;
+}
+
+.button[data-variant='primary'] {
+  --button-background: var(--ds-button-primary-background);
+  --button-color: var(--ds-button-primary-color);
+}
+
+.button[data-variant='primary']:is(:hover, [data-force-state='hover']) {
+  --button-background: var(--ds-button-primary-hover-background);
+}
+
+.button[data-variant='primary']:is(:active, [data-force-state='active']) {
+  --button-background: var(--ds-button-primary-active-background);
+}
+
+.button[data-variant='secondary'] {
+  --button-background: var(--ds-button-secondary-background);
+  --button-color: var(--ds-button-secondary-color);
+  --button-border-color: var(--ds-button-secondary-border-color);
+}
+
+.button[data-variant='secondary']:is(:hover, [data-force-state='hover']) {
+  --button-background: var(--ds-button-secondary-hover-background);
+  --button-color: var(--ds-button-secondary-hover-color);
+  --button-border-color: var(--ds-button-secondary-hover-border-color);
+}
+
+.button[data-variant='secondary']:is(:active, [data-force-state='active']) {
+  --button-background: var(--ds-button-secondary-active-background);
+  --button-color: var(--ds-button-secondary-active-color);
+  --button-border-color: var(--ds-button-secondary-active-border-color);
+}
+
+.button[data-variant='destructive'] {
+  --button-background: var(--ds-button-destructive-background);
+  --button-color: var(--ds-button-destructive-color);
+}
+
+.button[data-variant='destructive']:is(:hover, [data-force-state='hover']) {
+  --button-background: var(--ds-button-destructive-hover-background);
+}
+
+.button[data-variant='destructive']:is(:active, [data-force-state='active']) {
+  --button-background: var(--ds-button-destructive-active-background);
+}
+
+.button[data-variant='link'] {
+  --button-background: var(--ds-button-link-background);
+  --button-color: var(--ds-button-link-color);
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+}
+
+.button[data-variant='link']:is(
+    :hover,
+    :focus-visible,
+    [data-force-state='hover'],
+    [data-force-state='focus-visible']
+  ) {
+  text-decoration: underline;
+}
+
+.button[data-variant='link']:is(:hover, [data-force-state='hover']) {
+  --button-color: var(--ds-button-link-hover-color);
+}
+
+.button[data-variant='link']:is(:active, [data-force-state='active']) {
+  --button-color: var(--ds-button-link-active-color);
+}
+
+.button:is(:focus-visible, [data-force-state='focus-visible']) {
+  outline: var(--ds-focus-ring-width) solid var(--ds-color-border-focus);
+  outline-offset: var(--ds-space-1);
+}
+
+.button:disabled,
+.button:disabled:hover,
+.button:disabled:active {
+  --button-background: var(--ds-button-disabled-background);
+  --button-color: var(--ds-button-disabled-color);
+  --button-border-color: var(--ds-button-disabled-border-color);
+  cursor: not-allowed;
+}
+
+.button[data-variant='link']:disabled {
+  --button-background: var(--ds-button-link-background);
+  --button-border-color: transparent;
+  text-decoration: none;
+}
+
+@media (forced-colors: active) {
+  .button {
+    border-color: ButtonText;
+    forced-color-adjust: auto;
+  }
+
+  .button:disabled {
+    border-color: GrayText;
+    color: GrayText;
+  }
+
+  .button:is(:focus-visible, [data-force-state='focus-visible']) {
+    outline-color: Highlight;
+  }
+}

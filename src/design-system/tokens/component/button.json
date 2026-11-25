@@ -1,23 +1,69 @@
 {
   "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
   "button": {
-    "$type": "color",
     "primary": {
+      "$type": "color",
       "background": { "$value": "{color.accent.default}" },
-      "color": { "$value": "{color.text.on-accent}" }
+      "color": { "$value": "{color.text.on-accent}" },
+      "hover-background": { "$value": "{color.accent.hover}" },
+      "active-background": { "$value": "{color.accent.active}" }
     },
     "secondary": {
+      "$type": "color",
       "background": { "$value": "{color.bg.canvas}" },
       "border-color": { "$value": "{color.accent.default}" },
-      "color": { "$value": "{color.accent.default}" }
+      "color": { "$value": "{color.accent.default}" },
+      "hover-background": { "$value": "{color.accent.subtle}" },
+      "hover-color": { "$value": "{color.accent.hover}" },
+      "hover-border-color": { "$value": "{color.accent.hover}" },
+      "active-background": { "$value": "{color.accent.subtle}" },
+      "active-color": { "$value": "{color.accent.active}" },
+      "active-border-color": { "$value": "{color.accent.active}" }
     },
     "destructive": {
+      "$type": "color",
       "background": { "$value": "{color.danger.default}" },
-      "color": { "$value": "{color.text.on-danger}" }
+      "color": { "$value": "{color.text.on-danger}" },
+      "hover-background": { "$value": "{color.danger.hover}" },
+      "active-background": { "$value": "{color.danger.active}" }
     },
     "link": {
+      "$type": "color",
       "background": { "$value": "{color.bg.transparent}" },
-      "color": { "$value": "{color.text.link}" }
+      "color": { "$value": "{color.text.link}" },
+      "hover-color": { "$value": "{color.accent.hover}" },
+      "active-color": { "$value": "{color.accent.active}" }
+    },
+    "disabled": {
+      "$type": "color",
+      "background": { "$value": "{color.bg.surface}" },
+      "color": { "$value": "{color.text.muted}" },
+      "border-color": { "$value": "{color.border.default}" }
+    },
+    "radius": { "$type": "dimension", "$value": "{radius.sm}" },
+    "sm": {
+      "$type": "dimension",
+      "min-height": { "$value": "{space.8}" },
+      "padding-block": { "$value": "{space.1}" },
+      "padding-inline": { "$value": "{space.3}" },
+      "gap": { "$value": "{space.1}" },
+      "font-size": { "$value": "{font.size.14}" }
+    },
+    "md": {
+      "$type": "dimension",
+      "min-height": { "$value": { "value": 2.5, "unit": "rem" } },
+      "padding-block": { "$value": "{space.2}" },
+      "padding-inline": { "$value": "{space.4}" },
+      "gap": { "$value": "{space.2}" },
+      "font-size": { "$value": "{font.size.16}" }
+    },
+    "lg": {
+      "$type": "dimension",
+      "min-height": { "$value": "{space.12}" },
+      "padding-block": { "$value": "{space.3}" },
+      "padding-inline": { "$value": "{space.6}" },
+      "gap": { "$value": "{space.2}" },
+      "font-size": { "$value": "{font.size.18}" }
     }
   }
 }

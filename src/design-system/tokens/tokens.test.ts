@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 
 import {
+  cssCustomProperty,
   tokenFilePaths,
   tokenFileSource,
   tokenFiles,
@@ -83,4 +84,22 @@ test('generated CSS publishes light, dark, and system-dark token sets', () => {
     '--ds-color-text-link: var(--ds-color-accent-default)',
   );
   expect(tokensCss).toContain('--ds-color-bg-transparent: transparent');
+});
+
+test('button sizes are rem and the radius stays px', () => {
+  for (const size of ['sm', 'md', 'lg']) {
+    for (const part of [
+      'min-height',
+      'padding-block',
+      'padding-inline',
+      'gap',
+      'font-size',
+    ]) {
+      expect(cssCustomProperty(`--ds-button-${size}-${part}`)).not.toBe('');
+    }
+  }
+  expect(cssCustomProperty('--ds-button-sm-min-height')).toBe('2rem');
+  expect(cssCustomProperty('--ds-button-md-min-height')).toBe('2.5rem');
+  expect(cssCustomProperty('--ds-button-lg-min-height')).toBe('3rem');
+  expect(cssCustomProperty('--ds-radius-sm')).toBe('4px');
 });
