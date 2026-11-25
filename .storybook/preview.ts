@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/react-vite';
 
-import '../src/design-system/styles/normalize.css';
-import '../src/design-system/tokens/tokens.css';
+import '../src/component-lab/styles/normalize.css';
+import '../src/component-lab/tokens/tokens.css';
 import './preview.css';
 
 type ThemeName = 'light' | 'dark';

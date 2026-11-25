@@ -1,12 +1,12 @@
 import { useRef } from 'react';
 
-import './styles.css';
-import { Sidebar } from './Sidebar';
+import '../styles.css';
+import { useCurrentSection } from '../hooks/useCurrentSection';
+import { useWideViewport } from '../hooks/useWideViewport';
+import type { ThemeName } from '../theme';
+import type { SectionId } from '../types';
 import { About, ComponentLab, Experience } from './Sections';
-import type { ThemeName } from './theme';
-import type { SectionId } from './types';
-import { useCurrentSection } from './useCurrentSection';
-import { useWideViewport } from './useWideViewport';
+import { Sidebar } from './Sidebar';
 
 const sectionIds: readonly SectionId[] = [
   'about',

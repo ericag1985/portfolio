@@ -1,8 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import './design-system/styles/normalize.css';
-import './design-system/tokens/tokens.css';
+import './component-lab/styles/normalize.css';
+import './component-lab/tokens/tokens.css';
 import { App } from './site/App';
 import { applyTheme, initialTheme } from './site/theme';
 

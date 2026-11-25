@@ -1,9 +1,12 @@
-import { Button } from '../design-system/components/Button';
-import photoJpg from '../assets/erica-epcot-800.jpg';
-import photoWebp from '../assets/erica-epcot-800.webp';
-import { linkedinUrl, photoAlt, siteName, siteRole } from './content';
-import type { SectionId } from './types';
-import type { ThemeName } from './theme';
+import { useRef } from 'react';
+
+import photoJpg from '../../assets/erica-epcot-800.jpg';
+import photoWebp from '../../assets/erica-epcot-800.webp';
+import { Button } from '../../component-lab/components/Button';
+import { linkedinUrl, photoAlt, siteName, siteRole } from '../data/content';
+import { useScrollEdges } from '../hooks/useScrollEdges';
+import type { ThemeName } from '../theme';
+import type { SectionId } from '../types';
 
 export const navItems: { id: SectionId; label: string }[] = [
   { id: 'about', label: 'About' },
@@ -40,6 +43,8 @@ export function Sidebar({
   onToggleTheme,
 }: SidebarProps) {
   const next = theme === 'dark' ? 'light' : 'dark';
+  const navListRef = useRef<HTMLUListElement>(null);
+  const scrollEdges = useScrollEdges(navListRef);
 
   return (
     <header className="sidebar">
@@ -60,8 +65,12 @@ export function Sidebar({
       </div>
       <h1 className="site-name">{siteName}</h1>
       <p className="site-role">{siteRole}</p>
-      <nav aria-label="Site">
-        <ul className="nav-list">
+      <nav
+        aria-label="Site"
+        data-scroll-start={scrollEdges.start ? '' : undefined}
+        data-scroll-end={scrollEdges.end ? '' : undefined}
+      >
+        <ul ref={navListRef} className="nav-list">
           {navItems.map((item) => (
             <li key={item.id}>
               <a

@@ -4,8 +4,8 @@ import { beforeEach, expect, test, vi } from 'vitest';
 
 import { expectNoAxeViolations } from '../test/axe';
 import { App } from './App';
-import { aboutText, iaapName, iaapUrl, photoAlt } from './content';
-import { certifications, employers } from './experience';
+import { aboutText, iaapName, iaapUrl, photoAlt } from './data/content';
+import { certifications, employers } from './data/experience';
 import { themeStorageKey } from './theme';
 
 let systemPrefersDark = false;
@@ -85,9 +85,7 @@ test('About uses the exact paragraph', () => {
   render(<App />);
 
   const about = screen.getByRole('region', { name: 'About' });
-  expect(about.querySelector('p')).toHaveTextContent(aboutText, {
-    exact: true,
-  });
+  expect(about.querySelector('p')?.textContent).toBe(aboutText);
   expect(aboutText).toBe(
     "I'm a front end engineer in Durham, NC who builds design systems and accessible components. For 14 years I've worked mainly in React and TypeScript, and for 8 of those I've focused on the shared UI and UX other teams build on. I'm a certified accessibility professional from the International Association of Accessibility Professionals (IAAP), and I care most about making inclusive products the default.",
   );
@@ -156,9 +154,9 @@ test('Component lab cards link to the published Storybook pages', () => {
   const base = `${import.meta.env.BASE_URL}storybook/`;
   const expected = {
     Tokens: '?path=/story/foundations-colors--default',
-    Icon: '?path=/docs/design-system-icon--docs',
-    Tooltip: '?path=/docs/design-system-tooltip--docs',
-    Button: '?path=/docs/design-system-button--docs',
+    Icon: '?path=/docs/component-lab-icon--docs',
+    Tooltip: '?path=/docs/component-lab-tooltip--docs',
+    Button: '?path=/docs/component-lab-button--docs',
     'Spacing tokens': '?path=/story/foundations-spacing--default',
     'Typography tokens': '?path=/story/foundations-typography--default',
   };

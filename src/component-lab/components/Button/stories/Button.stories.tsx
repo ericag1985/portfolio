@@ -8,7 +8,7 @@ import { Button, sizes, variants } from '../index';
 import './Button.stories.css';
 
 const meta = {
-  title: 'Design System/Button',
+  title: 'Component lab/Button',
   component: Button,
   tags: ['autodocs'],
   args: { label: 'Save changes', variant: 'primary', size: 'md' },

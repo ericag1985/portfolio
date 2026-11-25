@@ -6,7 +6,7 @@ import {
   persistTheme,
   storedTheme,
   type ThemeName,
-} from './theme';
+} from '../theme';
 
 /**
  * The page theme. It follows `prefers-color-scheme` until `toggle` stores a

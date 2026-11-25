@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-import { Icon } from '../design-system/components/Icon';
+import { Icon } from '../../component-lab/components/Icon';
 import {
   aboutText,
   iaapName,
@@ -8,8 +8,8 @@ import {
   labCards,
   resumeUrl,
   storybookUrl,
-} from './content';
-import { certifications, employers } from './experience';
+} from '../data/content';
+import { certifications, employers } from '../data/experience';
 
 export function About() {
   const [beforeIaap, afterIaap] = aboutText.split(iaapName);

@@ -1,4 +1,4 @@
-import type { LabCard } from './types';
+import type { LabCard } from '../types';
 
 export const siteName = 'Erica Gugliemella';
 export const siteRole = 'Senior UX Engineer, design systems and accessibility';
@@ -34,19 +34,19 @@ export const labCards: LabCard[] = [
   {
     title: 'Icon',
     description: 'An allowlisted Lucide icon that follows the text color.',
-    path: '?path=/docs/design-system-icon--docs',
+    path: '?path=/docs/component-lab-icon--docs',
   },
   {
     title: 'Tooltip',
     description:
       'Supplementary text for a trigger, shown on hover and focus and dismissible with Escape.',
-    path: '?path=/docs/design-system-tooltip--docs',
+    path: '?path=/docs/component-lab-tooltip--docs',
   },
   {
     title: 'Button',
     description:
       'A native button with four variants, three sizes, and an icon-only mode.',
-    path: '?path=/docs/design-system-button--docs',
+    path: '?path=/docs/component-lab-button--docs',
   },
 ];
 

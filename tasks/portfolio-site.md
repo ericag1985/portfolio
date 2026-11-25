@@ -9,10 +9,9 @@ and Component lab. Style only with existing design tokens. Meet
 WCAG 2.2 AA.
 
 Follow `AGENTS.md`. In site UI, use the name **Component lab**.
-Never call it a "design system" as a product name. Do not rename
-`src/design-system/` or existing Storybook titles
-(`Design System/Button`, `Foundations/Colors`, and so on). Those
-titles already define published story ids.
+Never call it a "design system" as a product name. Storybook titles
+are `Component lab/Button`, `Foundations/Colors`, and so on. Those
+titles define the published story ids.
 
 ## Inputs
 
@@ -20,8 +19,8 @@ titles already define published story ids.
 - Existing site: `src/site/App.tsx`, `src/site/theme.ts`,
   `src/site/styles.css`, `src/site/App.test.tsx`, `src/main.tsx`,
   `index.html`
-- Components: `src/design-system/components/{Icon,Tooltip,Button}/`
-- Tokens: `src/design-system/tokens/` and generated `tokens.css`
+- Components: `src/component-lab/components/{Icon,Tooltip,Button}/`
+- Tokens: `src/component-lab/tokens/` and generated `tokens.css`
 - Shared tests: `src/test/`
 - Assets already committed on this branch. Theme handling:
 
@@ -234,9 +233,9 @@ ids, from the live index at
 https://ericag1985.github.io/portfolio/storybook/index.json:
 
 - Tokens: `?path=/story/foundations-colors--default`
-- Icon: `?path=/docs/design-system-icon--docs`
-- Tooltip: `?path=/docs/design-system-tooltip--docs`
-- Button: `?path=/docs/design-system-button--docs`
+- Icon: `?path=/docs/component-lab-icon--docs`
+- Tooltip: `?path=/docs/component-lab-tooltip--docs`
+- Button: `?path=/docs/component-lab-button--docs`
 
 Same-origin links may open in the same tab. If a Tokens card also
 points at Spacing or Typography, keep Colors as the primary
@@ -325,7 +324,7 @@ If those tokens change, update the meta values.
   Storybook story for the page or its sections
 - `src/assets/` (already committed; import the 800×800 web photo)
 - `public/` (already committed)
-- `src/design-system/components/Icon/` (allowlist only, as above)
+- `src/component-lab/components/Icon/` (allowlist only, as above)
 - Token JSON plus generated `tokens.css` if you add a breakpoint
   or 3px border-width token
 
@@ -389,8 +388,7 @@ Each item is testable.
 
 ## Out of scope
 
-- Renaming `src/design-system`, changing published Storybook
-  titles or story ids, or rewriting `README.md`.
+- Changing published story ids again, or rewriting `README.md`.
 - A polymorphic Button (`as="a"`).
 - Contact details on the site (phone, email, street address).
 - Earlier experience (2010–2014) and the skills list from the

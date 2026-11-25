@@ -7,8 +7,8 @@
     "node": ">=22.13"
   },
   "scripts": {
-    "tokens:build": "node --experimental-strip-types --disable-warning=ExperimentalWarning src/design-system/tokens/build.ts",
-    "tokens:check": "npm run tokens:build && git diff --exit-code -- src/design-system/tokens/tokens.css",
+    "tokens:build": "node --experimental-strip-types --disable-warning=ExperimentalWarning src/component-lab/tokens/build.ts",
+    "tokens:check": "npm run tokens:build && git diff --exit-code -- src/component-lab/tokens/tokens.css",
     "prebuild": "npm run tokens:build",
     "pre-storybook": "npm run tokens:build",
     "prestorybook": "npm run pre-storybook",

@@ -7,7 +7,7 @@ import { Icon, iconNames, iconSizes } from '../index';
 import './Icon.stories.css';
 
 const meta = {
-  title: 'Design System/Icon',
+  title: 'Component lab/Icon',
   component: Icon,
   tags: ['autodocs'],
   args: {

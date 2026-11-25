@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { Portfolio } from '../Portfolio';
+import { Portfolio } from '../components/Portfolio';
 
 const meta = {
   title: 'Site/Portfolio',

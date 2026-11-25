@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { SectionId } from './types';
+import type { SectionId } from '../types';
 
 /**
  * The section nearest the top of the viewport, for `aria-current` in the nav.

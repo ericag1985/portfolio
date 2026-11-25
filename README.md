@@ -1,15 +1,15 @@
 # portfolio
 
-Personal site and design system for Erica Gugliemella.
+Personal site and component lab for Erica Gugliemella.
 
 The site is published at [ericag1985.github.io/portfolio](https://ericag1985.github.io/portfolio/). Storybook is published beside it at `/portfolio/storybook/`.
 
 ## Layout
 
 - `src/site/` is the portfolio: About, resume, and the other pages.
-- `src/design-system/tokens/` holds DTCG token JSON and the generated CSS custom properties. Light values go on `:root`. Dark values go on `[data-theme="dark"]`.
-- `src/design-system/components/` holds one folder per component. `Component.tsx` is only the component. Stateful behavior lives in `useComponent.ts` next to it. `types.ts` holds its types, `utils.ts` holds helpers and constants, `index.ts` is the public export, and stories live in `stories/`. `Icon` is the example: five Lucide icons (`plus`, `trash`, `settings`, `info`, `arrow-right`). Omit `label` when nearby text names it; pass `label` when the icon itself is the accessible name. `Tooltip` shows supplementary text on hover or focus for one focusable child trigger, which is required. Never put information in a tooltip that isn't available some other way. The same rules are in `.cursor/skills/component-authoring/SKILL.md`.
-- `src/design-system/foundations/` holds the color, type, and spacing sticker sheets.
+- `src/component-lab/tokens/` holds DTCG token JSON and the generated CSS custom properties. Light values go on `:root`. Dark values go on `[data-theme="dark"]`.
+- `src/component-lab/components/` holds one folder per component. `Component.tsx` is only the component. Stateful behavior lives in `useComponent.ts` next to it. `types.ts` holds its types, `utils.ts` holds helpers and constants, `index.ts` is the public export, and stories live in `stories/`. `Icon` is the example: five Lucide icons (`plus`, `trash`, `settings`, `info`, `arrow-right`). Omit `label` when nearby text names it; pass `label` when the icon itself is the accessible name. `Tooltip` shows supplementary text on hover or focus for one focusable child trigger, which is required. Never put information in a tooltip that isn't available some other way. The same rules are in `.cursor/skills/component-authoring/SKILL.md`.
+- `src/component-lab/foundations/` holds the color, type, and spacing sticker sheets.
 
 The Button component comes in a later change. Button tokens are already defined.
 
@@ -17,7 +17,7 @@ The Button component comes in a later change. Button tokens are already defined.
 
 Plain CSS only: `.css` files, and CSS Modules when a component needs them. No SCSS, Sass, Less, CSS-in-JS, or Tailwind, and no CSS preprocessor is installed.
 
-`src/design-system/styles/normalize.css` is the shared baseline for the site and Storybook. It standardizes the box model, body margin, form fonts, and media. When `prefers-reduced-motion: reduce` matches, animation, transitions, and smooth scrolling are turned off.
+`src/component-lab/styles/normalize.css` is the shared baseline for the site and Storybook. It standardizes the box model, body margin, form fonts, and media. When `prefers-reduced-motion: reduce` matches, animation, transitions, and smooth scrolling are turned off.
 
 ## TypeScript
 
@@ -48,13 +48,13 @@ Build the site before Storybook when producing the Pages artifact. `vite build` 
 
 ## Tokens
 
-Design tokens live in `src/design-system/tokens/` as [DTCG 2025.10](https://www.designtokens.org/tr/2025.10/) JSON, in three layers:
+Design tokens live in `src/component-lab/tokens/` as [DTCG 2025.10](https://www.designtokens.org/tr/2025.10/) JSON, in three layers:
 
 - **Primitive** (`primitive/`): color ramps, white, black, spacing, radius, type, border widths, the focus ring, motion, and icon sizes.
 - **Semantic** (`semantic/light.json` and `semantic/dark.json`): theme aliases such as `color.bg.canvas` and `color.text.primary`. `semantic/common.json` holds values that do not change with the theme.
 - **Component** (`component/`): button and tooltip tokens. These reference semantic tokens only.
 
-`npm run tokens:build` runs Style Dictionary and writes `src/design-system/tokens/tokens.css`. Light tokens are custom properties on `:root` (`color-scheme: light`). Dark tokens are on `[data-theme="dark"]` (`color-scheme: dark`). The same dark values also apply under `prefers-color-scheme: dark` unless `data-theme="light"`. Space, icon size, and type are rem in that CSS. Space and icon size are authored in px and divided by 16 (zero stays `0`). Border width, the focus ring, and radius stay px. `prebuild`, `prestorybook`, and `prebuild-storybook` run the build so the CSS is regenerated before the site or Storybook starts. CI runs `npm run tokens:check` and fails if the committed CSS does not match the JSON.
+`npm run tokens:build` runs Style Dictionary and writes `src/component-lab/tokens/tokens.css`. Light tokens are custom properties on `:root` (`color-scheme: light`). Dark tokens are on `[data-theme="dark"]` (`color-scheme: dark`). The same dark values also apply under `prefers-color-scheme: dark` unless `data-theme="light"`. Space, icon size, and type are rem in that CSS. Space and icon size are authored in px and divided by 16 (zero stays `0`). Border width, the focus ring, and radius stay px. `prebuild`, `prestorybook`, and `prebuild-storybook` run the build so the CSS is regenerated before the site or Storybook starts. CI runs `npm run tokens:check` and fails if the committed CSS does not match the JSON.
 
 To add a token, add `$type` and `$value` in the layer it belongs to. Point a semantic token at a primitive with `{color.gray.900}`. Point a component token at a semantic token, such as `{color.accent.default}`. Run `npm run tokens:build`.
 

@@ -1,4 +1,4 @@
-import type { Certification, Employer } from './types';
+import type { Certification, Employer } from '../types';
 
 export const employers: Employer[] = [
   {

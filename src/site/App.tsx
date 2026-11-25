@@ -1,5 +1,5 @@
-import { Portfolio } from './Portfolio';
-import { useTheme } from './useTheme';
+import { Portfolio } from './components/Portfolio';
+import { useTheme } from './hooks/useTheme';
 
 export function App() {
   const { theme, toggle } = useTheme();
