@@ -55,3 +55,22 @@ jobs:
           claude_args: |
             --max-turns 60
             --allowedTools "Bash(npm ci),Bash(npm run:*),Bash(npm test),Bash(gh pr view:*),Bash(gh pr edit:*),Bash(gh pr ready:*)"
+
+      # Wakes Alice's review routine once, only when this round ended with
+      # `needs-review`. Labels set with github.token can't trigger other
+      # workflows, so the ping lives here instead of on a `labeled` event.
+      - name: Ping Alice for review
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.issue.number || github.event.pull_request.number }}
+          WEBHOOK_URL: ${{ secrets.ALICE_REVIEW_WEBHOOK_URL }}
+          WEBHOOK_AUTH: ${{ secrets.ALICE_REVIEW_WEBHOOK_AUTH }}
+        run: |
+          [ -n "$WEBHOOK_URL" ] || exit 0
+          if gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json labels --jq '.labels[].name' | grep -qx needs-review; then
+            curl -fsS -X POST "$WEBHOOK_URL" \
+              -H "Authorization: $WEBHOOK_AUTH" \
+              -H 'Content-Type: application/json' \
+              -d "{\"repo\":\"$GITHUB_REPOSITORY\",\"pr\":$PR}"
+          fi
