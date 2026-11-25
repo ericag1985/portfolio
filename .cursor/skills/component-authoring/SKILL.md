@@ -46,6 +46,9 @@ Variant and name props are unions (`'sm' | 'md' | 'lg'`), exported from
 
 ## Accessibility
 
+- Every component must meet WCAG 2.2 AA. This is a must, not a
+  nice-to-have. Stories don't have to: a sticker sheet that crowds every
+  state together is fine.
 - Use a semantic element, and give every control visible text or an
   accessible name.
 - Style `:focus-visible`.

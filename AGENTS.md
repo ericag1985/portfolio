@@ -54,9 +54,19 @@ mid-build, Grok edits `tasks/<name>.md` on the same branch.
    of the repo.
 2. Before pushing, Claude runs the checks in the spec's Done section on the
    runner and fixes what fails.
-3. When every acceptance criterion is met, Claude ticks the criteria in the
-   PR description, marks the PR ready for review, and adds `needs-review`.
+3. Claude ends every build or fix round the same way, even when something
+   is unfinished:
+   - Update the PR description: tick each criterion that's met, and add a
+     Verification section listing the checks run and their results.
+   - List anything not done, with the reason, under "Not done" in the
+     description. That's for Grok and Erica to decide, not a reason to stop.
+   - Mark the PR ready for review (`gh pr ready`) and add `needs-review`
+     (`gh pr edit --add-label needs-review`).
+
    CI then runs on the push, and Grok won't stamp until it's green.
+
+Claude can't attach screenshots from the runner, so specs shouldn't require
+them. Erica checks visuals in Storybook herself.
 
 ### Review
 
@@ -68,8 +78,8 @@ mid-build, Grok edits `tasks/<name>.md` on the same branch.
    answer in the PR.
 4. Grok posts the fix list as a single PR comment that starts with `@claude`
    and has checkbox criteria. Review fixes never get a `tasks/` file.
-5. Claude pushes the fixes to the same branch, ticks the fix list, and adds
-   `needs-review` again. Grok re-reviews only the new commits.
+5. Claude pushes the fixes to the same branch, ticks the fix list, and ends
+   the round as in Build step 3. Grok re-reviews only the new commits.
 
 Stop after three review rounds and hand it to Erica. A fourth round usually
 means the spec is wrong.
